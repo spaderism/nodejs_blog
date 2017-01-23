@@ -1,3 +1,3 @@
-#!/usr/bin/env node
+#! /usr/bin/env node
 const app = require('../lib/index');
 app.open();

@@ -15,7 +15,7 @@
     "delete": "node bin/run.js delete",
     "nodemon": "nodemon ./bin/www",
     "eslint": "node ./node_modules/eslint/bin/eslint --config .eslintrc --ignore-path .eslintignore .",
-    "test": "istanbul cover node_modules/.bin/_mocha -- --timeout=60000 testcase"
+    "test": "istanbul cover ./node_modules/mocha/bin/_mocha -- --timeout=60000 testcase"
   },
   "dependencies": {
     "async": "^2.1.4",

@@ -1,0 +1,19 @@
+{
+  "name": "istanbul-html",
+  "version": "1.0.0",
+  "description": "Open coverage result of istanbul in html",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "istanbul-html": "bin/istanbul-html.js"
+  },
+  "preferGlobal": true,
+  "author": "yicho@simplexi.com",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "open": "0.0.5"
+  }
+}

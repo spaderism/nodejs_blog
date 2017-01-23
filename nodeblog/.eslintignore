@@ -1,0 +1,7 @@
+*.json
+pid
+log
+node_modules
+dummy
+public
+views

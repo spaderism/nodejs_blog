@@ -1,0 +1,49 @@
+{
+  "name": "nodeblog",
+  "version": "1.0.0",
+  "private": true,
+  "author": {
+    "name": "Binary Cho",
+    "email": "joyikr@gmail.com"
+  },
+  "scripts": {
+    "start": "node bin/run.js start",
+    "restart": "node bin/run.js restart",
+    "reload": "node bin/run.js reload",
+    "graceful": "node bin/run.js graceful",
+    "stop": "node bin/run.js stop",
+    "delete": "node bin/run.js delete",
+    "nodemon": "nodemon ./bin/www",
+    "eslint": "node ./node_modules/eslint/bin/eslint --config .eslintrc --ignore-path .eslintignore .",
+    "test": "istanbul cover node_modules/.bin/_mocha -- --timeout=60000 testcase"
+  },
+  "dependencies": {
+    "async": "^2.1.4",
+    "bcrypt": "^1.0.2",
+    "body-parser": "~1.15.2",
+    "clone": "^2.1.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "^2.2.0",
+    "ejs": "~2.5.2",
+    "eslint": "^3.13.1",
+    "express": "~4.14.0",
+    "express-session": "^1.14.2",
+    "handlebars": "^4.0.6",
+    "mkdirp": "^0.5.1",
+    "mocha": "^3.2.0",
+    "moment": "^2.17.1",
+    "mongoose": "^4.7.2",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.4",
+    "pm2": "^2.2.3",
+    "prettyjson": "^1.2.1",
+    "serve-favicon": "~2.3.0",
+    "stylus": "0.54.5",
+    "uuid": "^3.0.1",
+    "xss": "^0.3.3"
+  }
+}

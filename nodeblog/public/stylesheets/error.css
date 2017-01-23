@@ -1,0 +1,20 @@
+body {
+    margin: 50px;
+    background: url('/images/admin/adminbg.jpg')
+    no-repeat center fixed;
+    background-size: cover;
+    color: #4c5667;
+    overflow-x: hidden !important;
+    padding-top: 40px;
+    font-family: 'Lucida Sans','trebuchet MS',Arial,Helvetica;
+    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/admin/adminbg.jpg',sizingMethod='scale')";
+    text-align: center;
+}
+
+.message-box h1 {
+    color: #252932;
+    font-size: 98px;
+    font-weight: 700;
+    line-height: 98px;
+    text-shadow: rgba(61, 61, 61, 0.3) 1px 1px, rgba(61, 61, 61, 0.2) 2px 2px, rgba(61, 61, 61, 0.3) 3px 3px;
+}

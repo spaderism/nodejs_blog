@@ -1,0 +1,62 @@
+<header id="wrapper" class="wrapper-content toggled">
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li style="text-align: center; margin-top: 30px;">
+                <img src="/images/include/useravatar.jpg" class="img-circle profile-avatar" alt="User avatar" width="110px", height="110px" style="border: 2px solid #999999;"><br>
+                <div style="font-weight: bold; margin-top: 10px;">YoungIl Cho</div>
+            </li><hr>
+            <li class="active">
+                <a href="/" style="font-weight: bold;">Home.</a>
+            </li>
+            <li>
+                <a href="#" style="font-weight: bold;">Portfolio.</a>
+            </li><hr>
+            <li>
+                <a href="#" style="font-weight: bold;">Javascript.</a>
+                <a href="#" style="font-weight: bold;">Node.js.</a>
+                <a href="#" style="font-weight: bold;">Java.</a>
+                <a href="#" style="font-weight: bold;">Php.</a>
+                <a href="#" style="font-weight: bold;">Database.</a>
+                <a href="#" style="font-weight: bold;">Linux.</a>
+                <a href="#" style="font-weight: bold;">Etc.</a>
+            </li>
+            <hr><li>
+                <a href="#" style="font-weight: bold;">Guest Book.</a>
+            </li>
+        </ul>
+    </div>
+
+    <div id="page-content-wrapper" style="margin: 0; padding: 0px;">
+        <div class="intro-header" style="background-image: url('/images/include/headerbg.jpg'); height: 400px;">
+            <a id="btnShowMenu" class="custom-button btn"
+               style="position: absolute; top: 10px; left: 10px; z-index: 99;">
+                <i class="fa fa-bars"></i>MENU
+            </a>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        <div class="site-heading" style="height: 400px;">
+                            <a href="/" style="text-decoration: none;"><h1 class="typo" style="font-size: 60px; font-weight: 900; color: beige;">JOYI'S DEV STORY</h1></a><br><hr>
+
+                            <% if (user) { %>
+                            <button id="newPostBtn" class="custom-button" data-toggle="modal" data-target="#newPostModal">
+                                <i class="fa fa-fw fa-file-text-o"></i>NEW POST
+                            </button>
+                            <% } %>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="searchbar-wrapper">
+        <form action="" class="search-form">
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" name="search" id="search">
+                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+        </form>
+    </div>
+</header>

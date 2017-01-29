@@ -86,24 +86,3 @@ $('#btnShowMenu').click(function() {
     $('#wrapper.content-body').toggleClass('toggled');
     $('footer#wrapper').toggleClass('toggled');
 });
-
-// var sh = 18;
-
-// function dropSh(val){
-//     var $txsh = $('h1.typo').css('text-shadow');
-//     $('h1.typo').css('text-shadow', $txsh + ', ' + val + 'px ' + val + 'px 0 #ff7373');
-// }
-
-// var i = 0;
-
-// function myLoop(){
-//     setTimeout(function(){
-//         dropSh(i);
-//         i++;
-//         if (i<sh){
-//             myLoop();
-//         }
-//     }, 5 * (i * 5 / 3))
-// }
-
-// myLoop();

@@ -4,6 +4,7 @@ const contLocal = require('control/login/local');
 const logger = require('lib/logger')('route:routePassport');
 const constant = require('config/constant');
 const responsor = require('lib/responsor');
+const appConfig = require('config/appConfig');
 
 module.exports = (app, passport) => {
     // 홈 화면 - 로그인 링크
@@ -44,28 +45,10 @@ module.exports = (app, passport) => {
         res.redirect('/');
     });
 
-
-    // 패스포트 - 로컬 로그인 라우팅
-    app.post('/login',
-        passport.authenticate('local-login', {
-            successRedirect : '/profile',
-            failureRedirect : '/login',
-            failureFlash : true
-        })
-    );
-
-    // 패스포트 - 로컬 회원가입 라우팅
-    // app.post('/signup',
-    //     passport.authenticate('local-signup', {
-    //         successRedirect : '/profile',
-    //         failureRedirect : '/failureLocalPassport',
-    //         failureFlash : true
-    //     })
-    // );
-
-    app.post('/signup', (req, res, done) => {
-        passport.authenticate('local-signup', (err, user, message) => {
-            if (err) throw err;
+    // 패스포트 - 로컬 로그인 ajax endpoint
+    app.post('/login', (req, res, done) => {
+        passport.authenticate('local-login', (err, user, message) => {
+            if (err) done(err);
 
             const meta = {};
 
@@ -76,12 +59,41 @@ module.exports = (app, passport) => {
                 return responsor(req, res, { meta: meta });
             }
 
-            meta.code = constant.statusCodes.SUCCESS,
+            meta.code = constant.statusCodes.SUCCESS;
             meta.message = constant.statusMessages[meta.code];
 
-            responsor(req, res, {
-                meta: meta, response: [req.body]
+            if (!req.body.useCookie) return responsor(req, res, {
+                meta: meta, response: [ user ]
             });
+
+            const database = req.app.get('database');
+            database.mongodb.UserModel.findByEmailAndUpdate(req.body.email, { $set: { session_id: req.sessionID } }, (err) => {
+                if (err) done(err);
+                res.cookie('user', req.sessionID, appConfig.cookie);
+                logger.debug('쿠키 저장함. %s', req.sessionID);
+                responsor(req, res, { meta: meta, response: [ user ] });
+            });
+        })(req, res, done);
+    });
+
+    // 패스포트 - 로컬 회원가입 ajax endpoint
+    app.post('/signup', (req, res, done) => {
+        passport.authenticate('local-signup', (err, user, message) => {
+            if (err) done(err);
+
+            const meta = {};
+
+            if (!user) {
+                meta.code = constant.statusCodes.BAD_REQUEST;
+                meta.message = req.flash('message')[0];
+
+                return responsor(req, res, { meta: meta });
+            }
+
+            meta.code = constant.statusCodes.SUCCESS;
+            meta.message = constant.statusMessages[meta.code];
+
+            responsor(req, res, { meta: meta, response: [req.body] });
         })(req, res, done);
     });
 

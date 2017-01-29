@@ -1,6 +1,10 @@
 'use strict';
 
-const expressSession = require('express-session');
+const appConfig = require('config/appConfig');
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+const Redis = require('ioredis');
+const redisClient = new Redis(appConfig.database.redis);
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
@@ -8,14 +12,15 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-const appConfig = require('config/appConfig');
-
 // view engine setup
 app.set('views', path.join(appConfig.NODE_PATH, 'views'));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.get('/favicon.ico', (req, res) => {
+    res.sendStatus(204);
+});
 
 // bodyParser
 app.use(bodyParser.json());
@@ -23,7 +28,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // cookie, session
 app.use(cookieParser());
-app.use(expressSession(appConfig.expressSession));
+app.use(session({
+	secret: appConfig.session.secret,
+	store: new RedisStore({ client: redisClient }),
+	resave: appConfig.session.resave,
+	saveUninitialized: appConfig.session.saveUninitialized
+}));
 
 // public
 app.use(require('stylus').middleware(path.join(appConfig.NODE_PATH, 'public')));

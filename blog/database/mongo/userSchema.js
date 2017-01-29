@@ -106,8 +106,8 @@ Schema.createSchema = function(mongoose) {
             .exec(callback);
     });
 
-    UserSchema.static('findOneAndUpdate', function(conditions, update, options, callback) {
-        return this.findOneAndUpdate(conditions, update, options, callback);
+    UserSchema.static('findByEmailAndUpdate', function(email, update, callback) {
+        return this.update({ email: email }, update, callback);
     });
 
     // 모델을 위한 스키마 등록

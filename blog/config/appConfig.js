@@ -14,10 +14,10 @@ const appConfig = {
 
     // * cookieOpts     : 쿠키 옵션
     // * expressSession : express 세션 옵션
-    cookieOption: {
+    cookie: {
         maxAge: 60 * 60 * 24 * 7
     },
-    expressSession: {
+    session: {
         secret: privateConfig.masterKey,
         resave: false, saveUninitialized: true
     },
@@ -58,6 +58,11 @@ const appConfig = {
             schemas: [
                 { file: 'database/mongo/userSchema', collection: 'users', schemaName: 'UserSchema', modelName: 'UserModel' }
             ]
+        },
+        redis: {
+            host: '127.0.0.1',
+            port: 6379,
+            db: 0
         }
     },
 

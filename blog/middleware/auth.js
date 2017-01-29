@@ -7,20 +7,17 @@ const userDBA = require('database/mongo/user');
 module.exports = (req, res, next) => {
     logger.debug('auth middleware 실행.');
 
-    const execPath = [  ];
-
-    if (execPath.indexOf(req.url) === -1) { return next(); }
+    const execPath = [ ];
 
     const session = req.session.user;
     if (!session) {
-
         const userCookie = req.cookies.user;
         if (userCookie) {
-
             const conditions = { session_id: userCookie };
-            userDBA.findByConditions(conditions, (err, users) => {
+            const database = req.app.get('database');
+            database.mongodb.UserModel.findByConditions(conditions, (err, users) => {
                 if (err) { return next(err); }
-                if (!users) {
+                if (users) {
                     const user = users[0];
                     req.session.user = {
                         email: user.email,
@@ -28,14 +25,14 @@ module.exports = (req, res, next) => {
                         created: moment(user.created_at).format('YYYY-MM-DD HH:mm:ss'),
                         updated: moment(user.updated_at).format('YYYY-MM-DD HH:mm:ss')
                     };
-                    next();
+                    return next();
                 }
             });
-
+        } else {
+            if (execPath.indexOf(req.url) === -1) { return next(); }
+            return res.redirect('/login');
         }
-
-        return res.redirect('/loginGET');
+    } else {
+        next();
     }
-
-    next();
 };

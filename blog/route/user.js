@@ -67,7 +67,7 @@ const loginPOST = (req, res) => {
             userDBA.updateSessionId(database, user.email, req.sessionID, (err) => {
                 if (err) { return callback(err); }
 
-                res.cookie('user', req.sessionID, config.cookieOption);
+                res.cookie('user', req.sessionID, config.cookie);
                 logger.debug('쿠키 저장함. %s', req.sessionID);
 
                 callback(null, true);

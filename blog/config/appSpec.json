@@ -1,0 +1,87 @@
+{
+	"info": {
+		"title": "Binary's api about node.js blog.",
+		"description": "node.js blog api spec."
+	},
+	"produces": [ "application/json" ],
+	"host": "localhost:8080",
+	"basePath": "/",
+	"paths": {
+		"/": {
+			"GET": {
+				"function": "index::index::index",
+				"parameters": [],
+				"response": []
+			}
+		},
+		"/login": {
+			"GET": {
+				"function": "login::local::loginGET",
+				"parameters": [],
+				"response": []
+			}
+		},
+		"/signup": {
+			"GET": {
+				"function": "login::local::signupPOST",
+				"request": [],
+				"response": []
+			},
+			"POST": {
+				"function": "login::local::signupGET",
+				"request": [
+					{
+						"name": "provider",
+						"summary": "정보 제공자",
+						"description": "local | facebook | github | google",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "email",
+						"summary": "이메일",
+						"description": "",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "name",
+						"summary": "이름",
+						"description": "",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "password",
+						"summary": "암호",
+						"description": "provider = facebook | gitbub | google 일때 필수.<br>provider = local 일때 필수 아님.",
+						"type": "string"
+					},
+					{
+						"name": "confirm_password",
+						"summary": "암호 확인",
+						"description": "provider = facebook | gitbub | google 일때 필수.<br>provider = local 일때 필수 아님.",
+						"type": "string"
+					},
+					{
+						"name": "master_key",
+						"summary": "마스터키",
+						"type": "string"
+					}
+				],
+				"response": [
+					{
+						"name": "email",
+						"summary": "이메일",
+						"type": "string"
+					},
+					{
+						"name": "name",
+						"summary": "이름",
+						"type": "string"
+					}
+				]
+			}
+		}
+	}
+}

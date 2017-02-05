@@ -28,7 +28,7 @@ const appConfig = {
     // * type   : get or post
     routeInfo: [
         // route/index
-        { file: 'control/index/index', path: '/', method: 'index', type: 'get' }
+        { file: 'control/index/index', path: '/', method: 'indexGET', type: 'get' }
     ],
 
     // * facebook : facebook 개발자 센터 정보

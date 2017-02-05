@@ -45,7 +45,7 @@ rules:
     no-delete-var: 2
     no-undef: 2
     # no-unused-vars: [2, {"args": "none"}]
-    no-unused-vars: [2, {"args": "none", "varsIgnorePattern": "oShop|oMarket|oDhub|oConstant|oApiError|oDebugLog|oErrorLog|oTraceLog|oAppConfig|aCommonTestCase|aOldTestCase|aNewTestCase"}]
+    no-unused-vars: [2, {"args": "none", "varsIgnorePattern": ""}]
 
     # Node.js and CommonJS
     # http://eslint.org/docs/rules/#nodejs-and-commonjs

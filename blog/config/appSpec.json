@@ -24,8 +24,7 @@
 		"/signup": {
 			"GET": {
 				"function": "login::local::signupPOST",
-				"request": [],
-				"response": []
+				"request": []
 			},
 			"POST": {
 				"function": "login::local::signupGET",
@@ -40,14 +39,12 @@
 					{
 						"name": "email",
 						"summary": "이메일",
-						"description": "",
 						"type": "string",
 						"required": true
 					},
 					{
 						"name": "name",
 						"summary": "이름",
-						"description": "",
 						"type": "string",
 						"required": true
 					},
@@ -66,19 +63,8 @@
 					{
 						"name": "master_key",
 						"summary": "마스터키",
-						"type": "string"
-					}
-				],
-				"response": [
-					{
-						"name": "email",
-						"summary": "이메일",
-						"type": "string"
-					},
-					{
-						"name": "name",
-						"summary": "이름",
-						"type": "string"
+						"type": "string",
+						"required": true
 					}
 				]
 			}

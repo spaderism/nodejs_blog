@@ -1,11 +1,28 @@
 'use strict';
 
 const moment = require('moment');
+const appConfig = require('config/appConfig');
+const constant = require('config/constant');
+const endpoint = require('lib/endpoint');
 const logger = require('lib/logger')('middleware:auth');
-const userDBA = require('database/mongo/user');
 
 module.exports = (req, res, next) => {
     logger.debug('auth middleware 실행.');
+
+    const registPath = [ '/signup' ];
+    if (registPath.includes(req.url)) {
+        if (req.body.master_key !== appConfig.masterKey) {
+            const message = 'master_key value is not correct';
+
+            logger.debug(message);
+
+            const meta = {};
+            meta.code = constant.statusCodes.BAD_REQUEST;
+            meta.message = message;
+
+            return endpoint(req, res, { meta: meta });
+        }
+    }
 
     const execPath = [ ];
 
@@ -29,7 +46,7 @@ module.exports = (req, res, next) => {
                 }
             });
         } else {
-            if (execPath.indexOf(req.url) === -1) { return next(); }
+            if (!execPath.includes(req.url)) { return next(); }
             return res.redirect('/login');
         }
     } else {

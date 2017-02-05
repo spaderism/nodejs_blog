@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // jquery.typoshadow.js
 (function($) {
 
@@ -85,4 +87,5 @@ $('#btnShowMenu').click(function() {
     $('header#wrapper').toggleClass('toggled');
     $('#wrapper.content-body').toggleClass('toggled');
     $('footer#wrapper').toggleClass('toggled');
+    $('form.search-form').toggleClass('search-form-toggled');
 });

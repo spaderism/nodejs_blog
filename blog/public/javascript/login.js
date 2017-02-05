@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 var login = {
     signinForm: $('div.login-container #signin'),
     signupForm: $('div.signup-modal #signup'),
@@ -32,6 +34,7 @@ var login = {
     signupEvent: function() {
         var $signupForm = login.signupForm;
         var provider = $signupForm.find('#provider');
+        var thirdParty = $signupForm.find('#thirdParty');
         var email = $signupForm.find('#email');
         var name = $signupForm.find('#name');
         var password = $signupForm.find('#password');
@@ -81,7 +84,18 @@ var login = {
 
         if (provider.val() === 'local') {
             formData.password = password.val();
-            formData.confirmPassword = confirmPassword.val();
+            formData.confirm_password = confirmPassword.val();
+        } else {
+            formData[provider.val()] = JSON.parse(thirdParty.val());
+            formData.password = (function() {
+                function s4() {
+                    return Math.floor((1 + Math.random()) * 0x10000)
+                            .toString(16).substring(1);
+                }
+                return s4() + s4() + '-' + s4() + '-' + s4()
+                    + '-' + s4() + '-' + s4() + s4() + s4();
+            })();
+            formData.confirm_password = formData.password;
         }
 
         $.post('/signup', formData)
@@ -118,6 +132,11 @@ var login = {
         self.signupForm.submit(self.signupEvent);
         self.showSignupBtn.on('click', self.showSignupEvent);
         self.closeSignupModalBtn.on('click', self.closeSignupModalEvent);
+
+        var provider = self.signupForm.find('#provider');
+        if (provider.val() !== 'local') {
+            self.showSignupBtn.trigger('click');
+        }
     }
 };
 

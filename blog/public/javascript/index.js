@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 $('#newPostBtn').on('click', function() {
     var initialValue = [];
     initialValue.push('# Intro');

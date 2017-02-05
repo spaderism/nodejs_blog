@@ -60,8 +60,10 @@ const reformResData = (req, resData, error) => {
 const getSubPath = (req, logtime) => {
 	const datetimes = logtime.split(' ')[0].split('-');
 	return handlebars.compile('{{url}}/{{year}}/{{month}}/{{day}}')({
-		url: req.url || 'blank', year: datetimes[0] || 'blank',
-		month: datetimes[1] || 'blank', day: datetimes[2] || 'blank'
+		url: req.url === '/' ? '/index' : req.url || 'blank',
+		year: datetimes[0] || 'blank',
+		month: datetimes[1] || 'blank',
+		day: datetimes[2] || 'blank'
 	});
 };
 

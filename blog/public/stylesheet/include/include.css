@@ -17,12 +17,12 @@ body {
 }
 
 #newPostBtn.custom-button {
-    background-color: #337ab7;
-    border:3px solid #337ab7;
+    background-color: #A94442;
+    border:3px solid #A94442;
 }
 #newPostBtn.custom-button:hover {
-    background-color: #2e6da4;
-    border: 3px solid #2e6da4;
+    background-color: #A94442;
+    border: 3px solid #A94442;
 }
 
 
@@ -144,9 +144,9 @@ body {
 
 /* Searchbar */
 #searchbar-wrapper {
-    z-index: 1000;
+    z-index: 50;
     position: absolute;
-    right: 2%;
+    right: 10px;
     top:17px;
     opacity: 0.8;
 }
@@ -183,4 +183,9 @@ body {
     color: #D9230F;
     left: initial;
     font-size: 14px;
+}
+
+.search-form-toggled {
+    position: absolute;
+    right: -300px;
 }

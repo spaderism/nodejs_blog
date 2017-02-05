@@ -2,20 +2,29 @@
 
 const logger = require('lib/logger')('route:index');
 const constant = require('config/constant');
-const responsor = require('lib/responsor');
+const endpoint = require('lib/endpoint');
 
-const index = (req, res) => {
+const indexGET = (req, res, next) => {
 	logger.debug('index');
 
-	const meta = {};
-    meta.code = constant.statusCodes.SUCCESS;
-    meta.message = constant.statusMessages[meta.code];
+    let data = null;
+    const flashBody = req.flash('flashBody');
 
-    responsor(req, res, { meta: meta });
+    if (flashBody.length) {
+        data = flashBody[0];
+    } else {
+        const meta = {};
+
+        meta.code = constant.statusCodes.SUCCESS;
+        meta.message = constant.statusMessages[meta.code];
+
+        data = { meta: meta };
+    }
 
     res.render('index', { user: req.session.user });
+    endpoint(req, res, data);
 };
 
 module.exports = {
-	index: index
+	indexGET: indexGET
 };

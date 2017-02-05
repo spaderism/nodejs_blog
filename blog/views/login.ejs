@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/stylesheets/login.css">
-    <title>JOYI'S DEV STORY</title>
+    <link rel="stylesheet" href="/stylesheet/login.css">
+    <title>Binary-dev.log</title>
 </head>
 <body>
 
 <div class="login-container animated fadeInDown bootstrap snippets">
     <div class="logobox">
-        <div class="logobox-title">JOYI'S DEV STORY</div>
+        <div class="logobox-title">Binary-dev.log</div>
     </div>
     <div class="loginbox bg-white">
         <div class="loginbox-title">SIGN IN</div>
         <div class="loginbox-social">
             <div class="social-title">Connect with Your Social Accounts</div>
             <div class="social-buttons">
-                <a href="/auth/facebook" class="button-facebook">
+                <a href="/facebook" class="button-facebook">
                     <i class="social-icon fa fa-facebook"></i>
                 </a>
                 <a href="" class="button-github">
@@ -35,10 +35,12 @@
         </div>
         <form id="signin" role="form" class="text">
             <div class="loginbox-textbox">
-                <input type="text" name="email" class="form-control" placeholder="EMAIL" required="required">
+                <input type="text" name="email" class="form-control"
+                    placeholder="EMAIL" required="required">
             </div>
             <div class="loginbox-textbox">
-                <input type="password" name="password" class="form-control" placeholder="PASSWORD" required="required">
+                <input type="password" name="password" class="form-control"
+                    placeholder="PASSWORD" required="required">
             </div>
             <div class="loginbox-checkbox">
                 <label class="checkbox">
@@ -68,13 +70,19 @@
 
                 <input type="hidden" id="provider" name="provider" value=<%= provider %>>
 
-                <% if (provider === 'passport') { %>
+                <% if (provider !== 'local') { %>
+                    <input type="hidden" id="thirdParty" name="thirdParty" value=<%= JSON.stringify(thirdParty) %>>
+                <% } %>
+
+                <% if (provider !== 'local') { %>
                 <div class="input-group margin-bottom-20">
                     <span class="input-group-addon">
                         <i class="fa fa-fw fa-user-plus"></i>
                     </span>
-                    <input size="60" maxlength="255" class="form-control" style="font-weight: bold;"
-                           value="JOIN WITH FACEBOOK ACCOUNT", readonly>
+                    <input size="60" maxlength="255" class="form-control"
+                        style="font-weight: bold;"
+                        value="JOIN WITH <%= provider.toUpperCase() %> ACCOUNT"
+                        readonly>
                 </div>
                 <% } %>
 
@@ -83,18 +91,24 @@
                         <i class="glyphicon glyphicon-envelope"></i>
                     </span>
                     <input size="60" maxlength="255" class="form-control"
-                           placeholder="Email" required="required"
-                           name="email" id="email" type="email"
-                           <% if (provider === 'passport') { %> disabled <% } %>>
+                        style="font-weight: bold;" placeholder="Email" required="required"
+                        name="email" id="email" type="email"
+                        <% if (provider !== 'local') { %>
+                            value=<%= email %>
+                            disabled
+                        <% } %>>
                 </div>
                 <div class="input-group margin-bottom-20">
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-user"></i>
                     </span>
                     <input size="60" maxlength="255" class="form-control"
-                           required="required" placeholder="Name" name="name"
-                           id="name" type="text"
-                           <% if (provider === 'passport') { %> disabled <% } %>>
+                        style="font-weight: bold;" required="required" placeholder="Name"
+                        name="name" id="name" type="text"
+                        <% if (provider !== 'local') { %>
+                            value=<%= name %>
+                            disabled
+                        <% } %>>
                 </div>
 
                 <% if (provider === 'local') { %>
@@ -103,18 +117,18 @@
                         <i class="glyphicon glyphicon-lock"></i>
                     </span>
                     <input size="60" maxlength="255" class="form-control"
-                           required="required" placeholder="Password" name="password"
-                           id="password" type="password" pattern=".{8,}"
-                           title="At least 8 characters">
+                        required="required" placeholder="Password" name="password"
+                        id="password" type="password" pattern=".{8,}"
+                        title="At least 8 characters">
                 </div>
                 <div class="input-group margin-bottom-20">
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-lock"></i>
                     </span>
                     <input size="60" maxlength="255" class="form-control"
-                           required="required" placeholder="Confirm Password"
-                           name="confirmPassword" id="confirmPassword" type="password"
-                           pattern=".{8,}" title="At least 8 characters">
+                        required="required" placeholder="Confirm Password"
+                        name="confirmPassword" id="confirmPassword" type="password"
+                        pattern=".{8,}" title="At least 8 characters">
                 </div>
                 <% } %>
 
@@ -123,9 +137,9 @@
                         <i class="glyphicon glyphicon-lock"></i>
                     </span>
                     <input size="60" maxlength="255" class="form-control"
-                           required="required" placeholder="Master Key"
-                           name="masterKey" id="masterKey" type="password"
-                           title="Master Key is required">
+                        required="required" placeholder="Master Key"
+                        name="masterKey" id="masterKey" type="password"
+                        title="Master Key is required">
                 </div><hr/><br/>
                 <div class="row">
                     <div class="col-md-12">
@@ -141,7 +155,7 @@
 </div>
 
 <script src="/bower_components/jquery/jquery.min.js"></script>
-<script src="/javascripts/login.js"></script>
+<script src="/javascript/login.js"></script>
 
 </body>
 </html>

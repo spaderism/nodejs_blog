@@ -5,18 +5,15 @@ const logger = require('lib/logger')('database:mongo:userSchema');
 const Schema = {};
 
 Schema.createSchema = function(mongoose) {
-
     // 스키마 정의
     const UserSchema = mongoose.Schema({
         email: { type: String, 'default':'' },
         hashed_password: { type: String, 'default':'' },
         name: { type: String, index: 'hashed', 'default':'' },
-        salt: { type: String },
         session_id: { type: String, 'default': ''},
         created_at: { type: Date, index: { unique: false }, 'default': Date.now },
         updated_at: { type: Date, index: { unique: false }, 'default': Date.now },
         provider: { type: String, 'default':'' },
-        authToken: { type: String, 'default':'' },
         facebook: {},
         github: {},
         google: {}

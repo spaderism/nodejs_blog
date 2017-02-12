@@ -21,13 +21,13 @@
 				"response": []
 			}
 		},
-		"/signup": {
+		"/user/signup": {
 			"GET": {
-				"function": "login::local::signupPOST",
+				"function": "login::local::signupGET",
 				"request": []
 			},
 			"POST": {
-				"function": "login::local::signupGET",
+				"function": "login::local::signupPOST",
 				"request": [
 					{
 						"name": "provider",

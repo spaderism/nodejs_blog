@@ -1,21 +1,15 @@
 'use strict';
 
-const contLocal = require('control/login/local');
 const logger = require('lib/logger')('route:routePassport');
 const constant = require('config/constant');
 const endpoint = require('lib/endpoint');
-const BlogError = require('lib/error/BlogError');
 const appConfig = require('config/appConfig');
 
 module.exports = (app, passport) => {
-    // 로그인, 로그아웃
-    app.get('/login', contLocal.loginGET);
-    app.get('/logout', contLocal.logoutGET);
-
     // 패스포트 - 로컬 로그인 ajax endpoint
     app.post('/login', (req, res, next) => {
-        passport.authenticate('local-login', (err, user) => {
-            if (err) return next(err);
+        passport.authenticate('login', (err, user) => {
+            if (err) throw err;
 
             const meta = {};
 
@@ -35,7 +29,7 @@ module.exports = (app, passport) => {
 
             const database = req.app.get('database');
             database.mongodb.UserModel.findByEmailAndUpdate(req.body.email, { $set: { session_id: req.sessionID } }, (err) => {
-                if (err) return next(err);
+                if (err) throw err;
                 res.cookie('user', req.sessionID, appConfig.cookie);
                 logger.debug('쿠키 저장함. %s', req.sessionID);
                 endpoint(req, res, { meta: meta, response: [ user ] });
@@ -44,18 +38,11 @@ module.exports = (app, passport) => {
     });
 
     // 패스포트 - 로컬 회원가입 ajax endpoint
-    app.post('/signup', (req, res, next) => {
-        passport.authenticate('local-signup', (err, user) => {
+    app.post('/user/signup', (req, res, next) => {
+        passport.authenticate('signup', (err, user) => {
+            if (err) throw err;
+
             const meta = {};
-
-            if (err) {
-                logger.error(err);
-
-                meta.code = constant.statusCodes.INTERNAL_SERVER_ERROR;
-                meta.message = err.message || constant.statusMessages[meta.code];
-
-                throw new BlogError(req, res, { meta: meta });
-            }
 
             if (!user) {
                 meta.code = constant.statusCodes.BAD_REQUEST;
@@ -81,9 +68,7 @@ module.exports = (app, passport) => {
     // 패스포트 - 페이스북 인증 callback endpoint
     app.get('/facebook-callback', (req, res, next) => {
         passport.authenticate('facebook', (err, user, thirdParty) => {
-            if (err) {
-                throw new BlogError(req, res, err);
-            }
+            if (err) throw err;
 
             const meta = {};
 

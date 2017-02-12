@@ -1,19 +1,21 @@
 'use strict';
 
 const privateConfig = require('config/privateConfig');
+
+const NODE_PATH = process.env.NODE_PATH;
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
 const appConfig = {
 
-    NODE_PATH: process.env.NODE_PATH,
-    NODE_ENV: process.env.NODE_ENV || 'development',
+    NODE_PATH: NODE_PATH, NODE_ENV: NODE_ENV,
 
-    // * masterKey : 마스터키 - 어드민에서 사용(user signup)
+    // masterKey : 마스터키 - 어드민에서 사용(user signup)
     masterKey: privateConfig.masterKey,
 
-    // * serverPort : 서버 포트
-    serverPort: privateConfig.serverPort,
+    serverPort: privateConfig.serverPort[NODE_ENV], testServerPort: 9999,
 
-    // * cookieOpts     : 쿠키 옵션
-    // * expressSession : express 세션 옵션
+    // cookie  : 쿠키 옵션
+    // session : express 세션 옵션
     cookie: {
         maxAge: 60 * 60 * 24 * 7
     },
@@ -22,17 +24,20 @@ const appConfig = {
         resave: false, saveUninitialized: true
     },
 
-    // * file   : 라우팅 파일
-    // * path   : 클라이언트로부터 받은 요청 패스
-    // * method : 라우팅 파일 안에 만들어 놓은 객체의 함수 이름
-    // * type   : get or post
+    // file   : 라우팅 파일
+    // path   : 클라이언트로부터 받은 요청 패스
+    // method : 라우팅 파일 안에 만들어 놓은 객체의 함수 이름
+    // type   : get or post
     routeInfo: [
-        // route/index
-        { file: 'control/index/index', path: '/', method: 'indexGET', type: 'get' }
+        // index
+        { file: 'control/index.index', path: '/', method: 'indexGET', type: 'get' },
+        // login
+        { file: 'control/login.local', path: '/login', method: 'loginGET', type: 'get' },
+        { file: 'control/login.local', path: '/logout', method: 'logoutGET', type: 'get'},
+        // user
+        { file: 'control/user.user', path: '/user/delete', method: 'deletePOST', tyle: 'post' }
     ],
 
-    // * facebook : facebook 개발자 센터 정보
-    // * facebook oauth 로그인시 사용
     oauthSocial: {
         facebook: {
             clientID: privateConfig.oauthSocial.facebook.clientID,
@@ -52,17 +57,16 @@ const appConfig = {
     },
 
     database: {
-        // * mongodb : 몽고 DB
         mongodb: {
-            url: privateConfig.database.mongodb.url,
+            url: privateConfig.database.mongodb.url[NODE_ENV],
             schemas: [
                 { file: 'database/mongo/userSchema', collection: 'users', schemaName: 'UserSchema', modelName: 'UserModel' }
             ]
         },
         redis: {
-            host: '127.0.0.1',
-            port: 6379,
-            db: 0
+            host: privateConfig.database.redis.host,
+            port: privateConfig.database.redis.port,
+            db: privateConfig.database.redis.db[NODE_ENV]
         }
     },
 

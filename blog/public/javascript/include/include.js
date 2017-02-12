@@ -2,7 +2,6 @@
 
 // jquery.typoshadow.js
 (function($) {
-
     let uid = 0,
         now = (function(isDateHasNow) {
             return function() {

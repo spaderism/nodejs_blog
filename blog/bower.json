@@ -1,0 +1,36 @@
+{
+    "name": "nodeblog",
+    "homepage": "",
+    "description": "",
+    "main": "",
+    "moduleType": [],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "bootstrap": "~3.3.4",
+        "jquery": "2.0.3",
+        "jquery-ui": "1.10.4",
+        "font-awesome": "~4.3.0",
+        "clean-blog": "1.0.0",
+        "handlebars": "^4.0.5",
+        "simplemde": "^1.11.2"
+    },
+    "install": {
+        "path": "public/bower_components",
+        "sources": {
+            "bootstrap": "bower_components/bootstrap/**",
+            "jquery": "bower_components/jquery/**",
+            "jquery-ui": "bower_components/jquery-ui/**",
+            "font-awesome": "bower_components/font-awesome/**",
+            "clean-blog": "bower_components/clean-blog/**",
+            "handlebars": "bower_components/handlebars/**",
+            "simplemde": "bower_components/simplemde/**"
+        }
+    }
+}

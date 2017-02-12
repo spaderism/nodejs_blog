@@ -15,7 +15,7 @@
     "delete": "node bin/run.js delete",
     "nodemon": "nodemon ./bin/www",
     "eslint": "node ./node_modules/eslint/bin/eslint --config .eslintrc --ignore-path .eslintignore .",
-    "test": "istanbul cover ./node_modules/mocha/bin/_mocha -- --timeout=60000 testcase"
+    "test": "istanbul cover ./node_modules/.bin/_mocha -- --timeout=60000 testcase"
   },
   "dependencies": {
     "async": "^2.1.4",
@@ -33,7 +33,6 @@
     "handlebars": "^4.0.6",
     "ioredis": "^2.5.0",
     "mkdirp": "^0.5.1",
-    "mocha": "^3.2.0",
     "moment": "^2.17.1",
     "mongoose": "^4.7.2",
     "passport": "^0.3.2",
@@ -47,5 +46,10 @@
     "stylus": "0.54.5",
     "uuid": "^3.0.1",
     "xss": "^0.3.3"
+  },
+  "devDependencies": {
+    "bower-installer": "^1.3.5",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0"
   }
 }

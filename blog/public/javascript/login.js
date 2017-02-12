@@ -98,7 +98,7 @@ var login = {
             formData.confirm_password = formData.password;
         }
 
-        $.post('/signup', formData)
+        $.post('/user/signup', formData)
             .done(function(data) {
                 if (data.meta.code === 200 && data.meta.message === 'SUCCESS') {
                     alert(data.meta.message);

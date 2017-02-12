@@ -10,11 +10,11 @@ class BlogError extends Error {
 
 		super();
 		this.name = 'BlogError';
-		this.type = 'API';
 
-		const meta = {};
-		meta.code = constant.statusCodes.INTERNAL_SERVER_ERROR;
-		meta.message = err.message || constant.statusMessages[meta.code];
+		const meta = {
+			code: err.status || constant.statusCodes.INTERNAL_SERVER_ERROR,
+			message: err.message || constant.statusMessages[meta.code]
+		};
 
 		this.response(req, res, { meta: meta });
 		Error.captureStackTrace(this, BlogError);
@@ -22,7 +22,8 @@ class BlogError extends Error {
 
 	response(req, res, resData) {
 		endpoint(req, res, resData, {
-			stack: (this.stack).split('\n').map((value) => {
+			errMessage: resData.meta.message,
+			errStack: (this.stack).split('\n').map((value) => {
 				return value.trim();
 			})
 		});

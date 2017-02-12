@@ -14,7 +14,7 @@ module.exports = (req, res, resData, error) => {
 	resData = reformResData(req, resData, error);
 
 	const contentType = req.headers['content-type'] || '';
-	if (contentType.includes('application/x-www-form-urlencoded')) {
+	if (contentType.includes('application/json')) {
 		resJson(res, clone(resData));
 	}
 
@@ -31,6 +31,7 @@ const reformResData = (req, resData, error) => {
 
 	const method = req.method;
 	const logtime = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+
 	const debugLog = {};
 	debugLog.title = 'REQUEST LOG';
 	debugLog.datetime = logtime;

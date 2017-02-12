@@ -86,8 +86,9 @@ rules:
 
 # Global scoped method and vars
 globals:
-    __debug                              : true
     __dirname                            : true
+    before                               : true
+    after                                : true
     describe                             : true
     context                              : true
     it                                   : true

@@ -1,13 +1,13 @@
 body {
     margin: 50px;
-    background: url('/images/admin/adminbg.jpg')
+    background: url('/image/login/loginbg.jpg')
     no-repeat center fixed;
     background-size: cover;
     color: #4c5667;
     overflow-x: hidden !important;
     padding-top: 40px;
     font-family: 'Lucida Sans','trebuchet MS',Arial,Helvetica;
-    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/admin/adminbg.jpg',sizingMethod='scale')";
+    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/image/login/loginbg.jpg',sizingMethod='scale')";
     text-align: center;
 }
 

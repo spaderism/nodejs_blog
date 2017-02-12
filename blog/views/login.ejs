@@ -36,11 +36,11 @@
         <form id="signin" role="form" class="text">
             <div class="loginbox-textbox">
                 <input type="text" name="email" class="form-control"
-                    placeholder="EMAIL" required="required">
+                    style="font-weight: bold;" placeholder="EMAIL" required="required">
             </div>
             <div class="loginbox-textbox">
                 <input type="password" name="password" class="form-control"
-                    placeholder="PASSWORD" required="required">
+                    style="font-weight: bold;" placeholder="PASSWORD" required="required">
             </div>
             <div class="loginbox-checkbox">
                 <label class="checkbox">
@@ -65,7 +65,7 @@
                 </span>
                 <br/>
                 <h3 style="margin-bottom: 10px; font-weight: bold;">CREATE YOUR ACCOUNT</h3>
-                Fill in the form below to get instant access.
+                <p style="font-weight: bold;">Fill in the form below to get instant access.</p>
                 <hr>
 
                 <input type="hidden" id="provider" name="provider" value=<%= provider %>>
@@ -116,7 +116,7 @@
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-lock"></i>
                     </span>
-                    <input size="60" maxlength="255" class="form-control"
+                    <input size="60" maxlength="255" class="form-control" style="font-weight: bold;"
                         required="required" placeholder="Password" name="password"
                         id="password" type="password" pattern=".{8,}"
                         title="At least 8 characters">
@@ -125,7 +125,7 @@
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-lock"></i>
                     </span>
-                    <input size="60" maxlength="255" class="form-control"
+                    <input size="60" maxlength="255" class="form-control" style="font-weight: bold;"
                         required="required" placeholder="Confirm Password"
                         name="confirmPassword" id="confirmPassword" type="password"
                         pattern=".{8,}" title="At least 8 characters">
@@ -137,7 +137,7 @@
                         <i class="glyphicon glyphicon-lock"></i>
                     </span>
                     <input size="60" maxlength="255" class="form-control"
-                        required="required" placeholder="Master Key"
+                        required="required" placeholder="Master Key" style="font-weight: bold;"
                         name="masterKey" id="masterKey" type="password"
                         title="Master Key is required">
                 </div><hr/><br/>

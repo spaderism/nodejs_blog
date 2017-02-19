@@ -6,7 +6,7 @@ const logger = require('lib/logger')('lib:error:BlogError');
 
 class BlogError extends Error {
 	constructor(req, res, err) {
-		logger.error(err);
+		logger.error(err.stack);
 
 		super();
 		this.name = 'BlogError';

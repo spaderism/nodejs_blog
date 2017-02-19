@@ -29,6 +29,6 @@ const toFile = (req, res, resData) => {
 		}
 	], (err) => {
 		if (err) return logger.error(err);
-		logger.debug(`success to save log ${directory.replace(/\//g, path.sep)}`);
+		logger.debug(`success to save log ${filename.replace(/\//g, path.sep)}`);
 	});
 };

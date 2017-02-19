@@ -22,6 +22,11 @@ app.get('/favicon.ico', (req, res) => {
     res.sendStatus(204);
 });
 
+// swagger
+app.use('/swagger-ui', express.static(path.join(appConfig.NODE_PATH, 'node_modules/swagger-ui/dist')));
+app.use('/api/swagger', (req, res) => { res.json(require('swagger/api.docs.js')); });
+app.use('/swagger', (req, res) => { res.redirect('/swagger-ui?url=/api/swagger'); });
+
 // bodyParser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -51,7 +56,6 @@ app.use(require('middleware/login'));
 
 require('route/routeLoader')(app); // 라우팅
 require('config/passport')(app, passport); // 패스포트 설정
-require('route/routePassport')(app, passport); // 패스포트 관련 라우팅
 
 // catch 404 and forward to error handler
 // error handler

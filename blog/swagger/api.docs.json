@@ -1,0 +1,136 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "node.js blog api spec.",
+        "version": "1.0.0",
+        "title": "Binary's api about node.js blog."
+    },
+    "host": "",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "login",
+            "description": "Everything about Login API"
+        },
+        {
+            "name": "user",
+            "description": "Everything about User API"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "login"
+                ],
+                "summary": "패스포트 로그인, 권한을 얻는 API",
+                "description": "로컬 패스포트 로그인",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "email",
+                        "description": "",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password",
+                        "description": "",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    },
+                    "400": {
+                        "description": "BAD REQUEST"
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED"
+                    }
+                }
+            }
+        },
+
+        "/api/user": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "사용자 등록 API",
+                "description": "로컬 패스포트 로그인",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "provider",
+                        "description": "local | facebook | github | google",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "email",
+                        "description": "",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "name",
+                        "description": "",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password",
+                        "description": "provider != local 경우 필수",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "confirm_password",
+                        "description": "provider != local 경우 필수",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "master_key",
+                        "description": "",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    },
+                    "400": {
+                        "description": "BAD REQUEST"
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+
+
+    },
+    "externalDocs": {
+        "description": "Visit Binary's BLOG",
+        "url": ""
+    }
+}

@@ -1,0 +1,56 @@
+'use strict';
+
+const passport = require('passport');
+const constant = require('config/constant');
+const logger = require('lib/logger')('control:login');
+
+// 로그인 페이지 요청
+const loginGET = (req, res, next) => {
+    logger.debug('loginGET method 호출됨');
+    const flashBody = req.flash('flashBody');
+    const resData = flashBody.length ? flashBody[0] : { provider: 'local' };
+    res.render('login', resData);
+};
+
+// 로그아웃
+const logoutGET = (req, res, next) => {
+    logger.debug('logoutGET method 호출됨');
+    req.logout();
+    delete req.session.user;
+    res.redirect('/login');
+};
+
+const facebook = passport.authenticate('facebook', { scope: 'email' });
+
+const facebookCallback = (req, res, next) => {
+    passport.authenticate('facebook', (err, user, thirdParty) => {
+        if (err) throw err;
+
+        const meta = {};
+
+        if (!user) {
+            meta.code = constant.statusCodes.BAD_REQUEST;
+            meta.message = 'Third-party needs membership';
+
+            req.flash('flashBody', thirdParty);
+            return res.redirect('/login');
+        }
+
+        // 정상인 경우
+        logger.debug('계정과 비밀번호가 일치함.');
+
+        req.session.user = user;
+
+        logger.debug('세션 저장함. %o', req.session.user);
+
+        meta.code = constant.statusCodes.SUCCESS;
+        meta.message = constant.statusMessages[meta.code];
+
+        res.redirect('/');
+    })(req, res, next);
+};
+
+module.exports = {
+    loginGET: loginGET, logoutGET: logoutGET,
+    facebook: facebook, facebookCallback: facebookCallback
+};

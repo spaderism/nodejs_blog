@@ -10,6 +10,7 @@ Schema.createSchema = function(mongoose) {
         email: { type: String, 'default':'' },
         hashed_password: { type: String, 'default':'' },
         name: { type: String, index: 'hashed', 'default':'' },
+        salt: { type: String },
         session_id: { type: String, 'default': ''},
         created_at: { type: Date, index: { unique: false }, 'default': Date.now },
         updated_at: { type: Date, index: { unique: false }, 'default': Date.now },

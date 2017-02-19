@@ -3,9 +3,9 @@
 # command path
 prog="nodeblog"
 npm="/usr/local/bin/npm"
-bower_installer="/usr/local/bin/bower-installer"
 pm2="/usr/local/bin/pm2"
 pwd="/home/nodeblog"
+bower-installer="/usr/local/bin/bower-installer"
 
 # log color
 green='\033[0;32m'
@@ -37,7 +37,8 @@ fi
 start() {
 	cd $NODE_PATH
     $npm install -d
-    $bower_installer
+    $npm install bower-installer -g
+    $bower-installer
 
     printf "${green}[NODEBLOG]${nc} ${red}starting${nc} \n"
     $npm start
@@ -47,7 +48,7 @@ start() {
 restart() {
 	cd $NODE_PATH
     $npm install -d
-    $bower_installer
+    $bower-installer
 
     printf "${green}[NODEBLOG]${nc} ${red}restarting${nc} \n"
     $npm restart
@@ -57,7 +58,7 @@ restart() {
 reload() {
 	cd $NODE_PATH
     $npm install -d
-    $bower_installer
+    $bower-installer
 
     printf "${green}[NODEBLOG]${nc} ${red}reloading${nc} \n"
     $npm reload
@@ -67,7 +68,7 @@ reload() {
 graceful() {
     cd $NODE_PATH
     $npm install -d
-    $bower_installer
+    $bower-installer
 
     printf "${green}[NODEBLOG]${nc} ${red}gracefuling${nc} \n"
     $npm restart
@@ -127,6 +128,6 @@ case "$2" in
         $2
         ;;
     *)
-        echo $"Usage: $0 {start|restart|reload|graceful|stop|delete|status}"
+        echo $"Usage: $0 {development|stage|production} {start|restart|reload|graceful|stop|delete|status}"
         exit 2
 esac

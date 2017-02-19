@@ -15,10 +15,10 @@ module.exports = (app) => {
         logger.debug('Read module info in $s file', curItem.file);
 
         // Routing
-        if (curItem.type === 'get') {
-            app.get(curItem.path, curModule[curItem.method]);
-        } else {
-            app.post(curItem.path, curModule[curItem.method]);
+        const type = curItem.type.toLowerCase();
+        const methods = [ '*', 'get', 'post', 'put', 'delete' ];
+        if (methods.includes(type)) {
+            app[type](curItem.path, curModule[curItem.method]);
         }
 
         logger.debug('Comp setting routing module[%s]', curItem.method);

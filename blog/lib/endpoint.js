@@ -6,21 +6,17 @@ const moment = require('moment');
 const bcrypt = require('bcrypt');
 const handlebars = require('handlebars');
 const logSaver = require('lib/logSaver');
-const appSpec = require('config/appSpec');
 const constant = require('config/constant');
 const appConfig = require('config/appConfig');
 
 module.exports = (req, res, resData, error) => {
 	resData = reformResData(req, resData, error);
 
-	const contentType = req.headers['content-type'] || '';
-	if (contentType.includes('application/json')) {
+	if (req.url.startsWith('/api')) {
 		resJson(res, clone(resData));
 	}
 
-	if ((Object.keys(appSpec.paths)).includes(req.url)) {
-		logSaver(req, res, resData);
-	}
+	logSaver(req, res, resData);
 };
 
 const reformResData = (req, resData, error) => {

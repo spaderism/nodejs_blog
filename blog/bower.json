@@ -1,9 +1,5 @@
 {
     "name": "nodeblog",
-    "homepage": "",
-    "description": "",
-    "main": "",
-    "moduleType": [],
     "license": "MIT",
     "ignore": [
         "**/.*",

@@ -10,17 +10,47 @@
 		"/": {
 			"GET": {
 				"function": "index::index::index",
-				"parameters": [],
+				"request": [],
 				"response": []
 			}
 		},
+
 		"/login": {
 			"GET": {
 				"function": "login::local::loginGET",
 				"parameters": [],
 				"response": []
+			},
+			"POST": {
+				"function": "login::local::loginPOST",
+				"parameters": [
+					{
+						"name": "email",
+						"summary": "이메일",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "password",
+						"summary": "암호",
+						"type": "string"
+					}
+				],
+				"response": [
+					{
+						"name": "email",
+						"summary": "이메일",
+						"type": "string"
+					},
+					{
+						"name": "name",
+						"summary": "이름",
+						"type": "string"
+					}
+				]
 			}
 		},
+
 		"/user/signup": {
 			"GET": {
 				"function": "login::local::signupGET",

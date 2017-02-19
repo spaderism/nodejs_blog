@@ -30,12 +30,16 @@ const appConfig = {
     // type   : get or post
     routeInfo: [
         // index
-        { file: 'control/index.index', path: '/', method: 'indexGET', type: 'get' },
+        { file: 'control/index', path: '/', method: 'indexGET', type: 'get' },
         // login
-        { file: 'control/login.local', path: '/login', method: 'loginGET', type: 'get' },
-        { file: 'control/login.local', path: '/logout', method: 'logoutGET', type: 'get'},
+        { file: 'control/login', path: '/login', method: 'loginGET', type: 'get' },
+        { file: 'control/login', path: '/facebook', method: 'facebook', type: 'get' },
+        { file: 'control/login', path: '/facebook-callback', method: 'facebookCallback', type: 'get' },
+        { file: 'control/api.login', path: '/api/login', method: 'loginPOST', type: 'post' },
+        { file: 'control/login', path: '/logout', method: 'logoutGET', type: 'get'},
         // user
-        { file: 'control/user.user', path: '/user/delete', method: 'deletePOST', tyle: 'post' }
+        { file: 'control/api.user', path: '/api/user', method: 'signupPOST', type: 'post' },
+        { file: 'control/api.user', path: '/api/user', method: 'deletePOST', type: 'delete' }
     ],
 
     oauthSocial: {

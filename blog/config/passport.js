@@ -1,8 +1,6 @@
 'use strict';
 
-const localCont = require('control/login.local');
-const userCont = require('control/user.user');
-const socialCont = require('control/login.social');
+const passportStrategy = require('control/passport.strategy');
 const logger = require('lib/logger')('config:passport');
 
 module.exports = (app, passport) => {
@@ -26,11 +24,11 @@ module.exports = (app, passport) => {
     });
 
     // 인증방식 설정
-    passport.use('login', localCont.loginPOST);
-    passport.use('signup', userCont.signupPOST);
-    passport.use('facebook', socialCont.facebook(app, passport));
-    passport.use('github', socialCont.github(app, passport));
-    passport.use('google', socialCont.google(app, passport));
+    passport.use('login', passportStrategy.loginPOST);
+    passport.use('signup', passportStrategy.signupPOST);
+    passport.use('facebook', passportStrategy.facebook(app, passport));
+    passport.use('github', passportStrategy.github(app, passport));
+    passport.use('google', passportStrategy.google(app, passport));
 
     logger.debug('5가지 passport 인증방식 설정됨.');
 };

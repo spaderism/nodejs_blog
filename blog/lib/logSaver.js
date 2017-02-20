@@ -7,13 +7,13 @@ const mkdirp = require('mkdirp');
 const prettyjson = require('prettyjson');
 const logger = require('lib/logger')('lib:logSaver');
 
-module.exports = (req, res, resData) => {
-	toFile(req, res, resData);
+module.exports = (req, res, data) => {
+	toFile(req, res, data);
 };
 
-const toFile = (req, res, resData) => {
-	const directory = resData.debug.log_path;
-	const filename = `${directory}/${resData.meta.trace_id}.log`;
+const toFile = (req, res, data) => {
+	const directory = data.debug.log_path;
+	const filename = `${directory}/${data.debug.trace_id}.log`;
 
 	async.series([
 		(callback) => {
@@ -22,8 +22,8 @@ const toFile = (req, res, resData) => {
 			});
 		},
 		(callback) => {
-			resData = prettyjson.render(resData, { noColor: true });
-			fs.writeFile(filename, resData, 'utf8', (err) => {
+			data = prettyjson.render(data, { noColor: true });
+			fs.writeFile(filename, data, 'utf8', (err) => {
 				callback(err);
 			});
 		}

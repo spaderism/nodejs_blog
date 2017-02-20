@@ -1,23 +1,33 @@
 'use strict';
 
 const passport = require('passport');
+const endpoint = require('lib/endpoint');
 const constant = require('config/constant');
 const logger = require('lib/logger')('control:login');
 
 // 로그인 페이지 요청
 const loginGET = (req, res, next) => {
     logger.debug('loginGET method 호출됨');
+
     const flashBody = req.flash('flashBody');
     const resData = flashBody.length ? flashBody[0] : { provider: 'local' };
+
     res.render('login', resData);
+
+    endpoint(req, res);
 };
 
 // 로그아웃
 const logoutGET = (req, res, next) => {
     logger.debug('logoutGET method 호출됨');
+
     req.logout();
+
     delete req.session.user;
+
     res.redirect('/login');
+
+    endpoint(req, res);
 };
 
 const facebook = passport.authenticate('facebook', { scope: 'email' });
@@ -33,7 +43,10 @@ const facebookCallback = (req, res, next) => {
             meta.message = 'Third-party needs membership';
 
             req.flash('flashBody', thirdParty);
-            return res.redirect('/login');
+
+            res.redirect('/login');
+
+            return endpoint(req, res);
         }
 
         // 정상인 경우
@@ -47,6 +60,8 @@ const facebookCallback = (req, res, next) => {
         meta.message = constant.statusMessages[meta.code];
 
         res.redirect('/');
+
+        endpoint(req, res);
     })(req, res, next);
 };
 

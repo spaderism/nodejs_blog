@@ -9,49 +9,65 @@ const logSaver = require('lib/logSaver');
 const constant = require('config/constant');
 const appConfig = require('config/appConfig');
 
-module.exports = (req, res, resData, error) => {
-	resData = reformResData(req, resData, error);
+module.exports = (req, res, data, error) => {
+	data = reformData(req, data, error);
 
 	if (req.url.startsWith('/api')) {
-		resJson(res, clone(resData));
+		resJson(res, clone(data));
 	}
 
-	logSaver(req, res, resData);
+	logSaver(req, res, data);
 };
 
-const reformResData = (req, resData, error) => {
-	resData.meta.code = resData.meta.code || constant.statusMessages.UNKNOWN_ERROR;
-	resData.meta.message = resData.meta.message || constant.statusMessages[resData.meta.code];
-	resData.meta.trace_id = (uuid.v4()).replace(/-/gi, '');
-	resData.response = resData.response || {};
+const reformData = (req, data, error) => {
+	const traceId = uuid.v4().replace(/-/gi, '');
+
+	if (data) {
+		data.meta.code = data.meta.code || constant.statusMessages.UNKNOWN_ERROR;
+		data.meta.message = data.meta.message || constant.statusMessages[data.meta.code];
+		data.meta.trace_id = traceId;
+		data.response = data.response || {};
+	} else {
+		data = {};
+	}
 
 	const method = req.method;
 	const logtime = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
 
 	const debugLog = {};
 	debugLog.title = 'REQUEST LOG';
+	debugLog.trace_id = traceId;
+	debugLog.client_ip = req.headers['x-forwarded-for'] || 'development';
 	debugLog.datetime = logtime;
+
+	debugLog.url = {};
+	debugLog.url.method = `${req.method}:${req.url}`;
+	debugLog.url.protocol = req.protocol ? req.protocol : 'http';
+	debugLog.url.hostname = (req.headers.host).split(':')[0] || '';
+	debugLog.url.port = (req.headers.host).split(':')[1] || '';
+	debugLog.url.fulltext = `${debugLog.url.protocol}://${debugLog.url.hostname}${req.url}`;
+
+	debugLog.headers = req.headers;
+
 	debugLog.log_path = `${appConfig.logFilePath.history}${getSubPath(req, logtime)}`;
-	debugLog.log = { url: {}, headers: {} };
 
-	debugLog.log.url.method = `${req.method}:${req.url}`;
-	debugLog.log.url.protocol = req.protocol ? req.protocol : 'http';
-	debugLog.log.url.hostname = (req.headers.host).split(':')[0] || '';
-	debugLog.log.url.port = (req.headers.host).split(':')[1] || '';
-	debugLog.log.url.fulltext = `${debugLog.log.url.protocol}://${debugLog.log.url.hostname}${req.url}`;
+	if (method === 'GET') {
+		debugLog.query = req.query || {};
+	} else {
+		debugLog.body = req.body || {};
+	}
 
-	debugLog.log.headers = req.headers;
-	if (method === 'GET') debugLog.log.query = req.query || {};
-	if (method === 'POST') debugLog.log.body = req.body || {};
+	bcryptDebug(debugLog.query || debugLog.body || {});
 
-	debugLog.log.client_ip = req.headers['x-forwarded-for'] || 'development';
-	bcryptDebug(debugLog.log.query || debugLog.log.body || {});
+	data.debug = debugLog;
 
-	resData.debug = debugLog;
+	data.debug.error = error ? true : false;
 
-	if (error) resData.debug.log.error = error;
+	if (error) {
+		data.debug.error = error;
+	}
 
-	return resData;
+	return data;
 };
 
 const getSubPath = (req, logtime) => {
@@ -80,10 +96,10 @@ const bcryptDebug = (reqData) => {
 	}
 };
 
-const resJson = (res, cloneResData) => {
+const resJson = (res, cloneData) => {
 	const devIp = [ 'development', '127.0.0.1', '39.124.255.241' ];
-	const clientIp = cloneResData.debug.log.client_ip;
-	if (!devIp.includes(clientIp)) delete cloneResData.debug;
+	const clientIp = cloneData.debug.client_ip;
+	if (!devIp.includes(clientIp)) delete cloneData.debug;
 
-	res.status(cloneResData.meta.code).json(cloneResData);
+	res.status(cloneData.meta.code).json(cloneData);
 };

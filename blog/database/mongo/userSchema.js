@@ -15,6 +15,7 @@ Schema.createSchema = function(mongoose) {
         created_at: { type: Date, index: { unique: false }, 'default': Date.now },
         updated_at: { type: Date, index: { unique: false }, 'default': Date.now },
         provider: { type: String, 'default':'' },
+        auth_token: { type: String, 'default':'' },
         facebook: {},
         github: {},
         google: {}
@@ -48,11 +49,11 @@ Schema.createSchema = function(mongoose) {
 
     // 인증 메소드 - 입력된 비밀번호와 비교 (true/false 리턴)
     UserSchema.method('authenticate', function(plainText, inSalt, hashed_password) {
+        logger.debug('authenticate 호출됨');
+
         if (inSalt) {
-            logger.debug('authenticate 호출됨 : %s -> %s : %s', plainText, this.encryptPassword(plainText, inSalt), hashed_password);
             return this.encryptPassword(plainText, inSalt) === hashed_password;
         } else {
-            logger.debug('authenticate 호출됨 : %s -> %s : %s', plainText, this.encryptPassword(plainText), this.hashed_password);
             return this.encryptPassword(plainText) === this.hashed_password;
         }
     });

@@ -40,7 +40,7 @@ class Validation {
 
 		const regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
 		const email = req.body.email;
-		console.log(email + 'test');
+
 		if (!regex.test(email)) {
 			return { isValid: false, message: `invalid email: ${email}`};
 		}
@@ -56,8 +56,6 @@ module.exports = (req, res, next) => {
 
 	const method = req.method;
 	const validation = Validation[`${req.url.split('/').join('')}${method.toLowerCase()}`];
-
-	console.log(validation);
 
 	if (validation) {
 		const validation = Validation[`${req.url.split('/').join('')}${method.toLowerCase()}`](req, res);

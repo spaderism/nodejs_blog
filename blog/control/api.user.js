@@ -6,7 +6,6 @@ const constant = require('config/constant');
 
 const signupPOST = (req, res, next) => {
 	passport.authenticate('signup', (err, user) => {
-        throw err;
         if (err) throw err;
 
         const meta = {};

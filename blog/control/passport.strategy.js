@@ -71,7 +71,6 @@ const signupPOST = new LocalStrategy({
             }
 
             // 모델 인스턴스 객체 만들어 저장
-
             const model = {
                 email: email, password: password,
                 name: req.body.name, provider: provider,

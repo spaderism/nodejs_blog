@@ -13,18 +13,16 @@ body {
 }
 
 #btnShowMenu.custom-button:hover {
-    color: beige;
+    color: white;
 }
 
 #newPostBtn.custom-button {
+    width: 120px;
+    font-size: 12px;
+    font-weight: 900;
     background-color: #A94442;
     border:3px solid #A94442;
 }
-#newPostBtn.custom-button:hover {
-    background-color: #A94442;
-    border: 3px solid #A94442;
-}
-
 
 /* Header */
 #wrapper {

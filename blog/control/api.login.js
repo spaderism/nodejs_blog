@@ -31,8 +31,10 @@ const loginPOST = (req, res, next) => {
             if (err) throw err;
 
             res.cookie('user', req.sessionID, appConfig.cookie);
+
             logger.debug('쿠키 저장함. %s', req.sessionID);
-            endpoint(req, res, { meta: meta, response: [ user ] });
+
+            endpoint(req, res, { meta: meta, response: user });
         });
     })(req, res, next);
 };

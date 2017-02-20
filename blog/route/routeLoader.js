@@ -12,7 +12,7 @@ module.exports = (app) => {
 
         // Load in module file
         const curModule = require(curItem.file);
-        logger.debug('Read module info in $s file', curItem.file);
+        logger.debug(`Read module info in [${curItem.file}] file`);
 
         // Routing
         const type = curItem.type.toLowerCase();
@@ -21,6 +21,6 @@ module.exports = (app) => {
             app[type](curItem.path, curModule[curItem.method]);
         }
 
-        logger.debug('Comp setting routing module[%s]', curItem.method);
+        logger.debug(`Comp setting routing module [${curItem.method}]`);
     }
 };

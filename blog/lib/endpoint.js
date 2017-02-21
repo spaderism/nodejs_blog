@@ -72,8 +72,10 @@ const reformData = (req, data, error) => {
 
 const getSubPath = (req, logtime) => {
 	const datetimes = logtime.split(' ')[0].split('-');
+	const url = req.method === 'GET' ? req.url.split('?')[0] : req.url;
+
 	return handlebars.compile('{{url}}/{{year}}/{{month}}/{{day}}')({
-		url: req.url === '/' ? '/index' : req.url || 'blank',
+		url: url === '/' ? '/index' : url || 'blank',
 		year: datetimes[0] || 'blank',
 		month: datetimes[1] || 'blank',
 		day: datetimes[2] || 'blank'

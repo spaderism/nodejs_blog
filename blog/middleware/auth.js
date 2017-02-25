@@ -1,7 +1,7 @@
 'use strict';
 
 const moment = require('moment');
-const appConfig = require('config/appConfig');
+const appConfig = require('config/config.app');
 const constant = require('config/constant');
 const endpoint = require('lib/endpoint');
 const logger = require('lib/logger')('middleware:auth');

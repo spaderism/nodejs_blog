@@ -1,7 +1,7 @@
 'use strict';
 
-const appConfig = require('config/appConfig');
-const logger = require('lib/logger')('route:routeLoader');
+const appConfig = require('config/config.app');
+const logger = require('lib/logger')('route:route.loader');
 
 module.exports = (app) => {
     const infoLen = appConfig.routeInfo.length;

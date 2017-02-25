@@ -7,7 +7,7 @@ const http = require('http');
 const logger = require('lib/logger')('bin:www');
 
 const database = require('database/database');
-const appConfig = require('config/appConfig');
+const appConfig = require('config/config.app');
 
 const normalizePort = (val) => {
     const port = parseInt(val, 10);

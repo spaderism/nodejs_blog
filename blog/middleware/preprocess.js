@@ -24,22 +24,34 @@ class Validation {
 		const meta = {};
 		meta.code = constant.statusCodes.BAD_REQUEST;
 
+		const email = req.body.email;
 		const provider = req.body.provider;
+		const password = req.body.password;
+		const confirmPassword = req.body.confirm_password;
+		const regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+
 		if (!providers.includes(provider)) {
 			return { isValid: false, message: `invalid email: ${provider}`};
 		}
 
-		if (provider === 'local') {
-			const password = req.body.password;
-			const confirmPassword = req.body.confirm_password;
-
-			if (!password || !confirmPassword || password !== confirmPassword || password.length < 8) {
-				return { isValid: false, message: 'check password validation'};
-			}
+		if (!password || !confirmPassword || password !== confirmPassword || password.length < 8) {
+			return { isValid: false, message: 'check password validation'};
 		}
 
-		const regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
-		const email = req.body.email;
+		if (provider !== 'local') {
+			if (!req.body[provider].email || !req.body[provider].first_name || !req.body[provider].last_name || !req.body[provider].id) {
+				return { isValid: false, message: `invalid ${provider} info` };
+			}
+			if (!regex.test(req.body[provider].email)) {
+				return { isValid: false, message: `invalid ${provider} email: ${req.body[provider].email}`};
+			}
+			if (req.body[provider].email !== req.body.email) {
+				return { isValid: false, message: `not equal ${provider} email with email` };
+			}
+			if (`${req.body[provider].last_name}${req.body[provider.first_name]}` !== req.body.name) {
+				return { isValid: false, message: `not equal ${provider} full_name(${req.body[provider].last_name}${req.body[provider].first_name}) with name(${req.body.name})` };
+			}
+		}
 
 		if (!regex.test(email)) {
 			return { isValid: false, message: `invalid email: ${email}`};

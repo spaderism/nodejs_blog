@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const handlebars = require('handlebars');
 const logSaver = require('lib/logSaver');
 const constant = require('config/constant');
-const appConfig = require('config/appConfig');
+const appConfig = require('config/config.app');
 
 module.exports = (req, res, data, error) => {
 	data = reformData(req, data, error);
@@ -83,7 +83,10 @@ const getSubPath = (req, logtime) => {
 };
 
 const bcryptDebug = (reqData) => {
-	const bcryptField = [ 'password', 'confirmPassword', 'name', 'master_key' ];
+	const bcryptField = [
+		'name', 'first_name', 'last_name',
+		'password', 'confirm_password', 'master_key'
+	];
 
 	for (const key of Object.keys(reqData)) {
 		const value = reqData[key];

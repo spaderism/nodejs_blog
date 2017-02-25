@@ -61,7 +61,7 @@ reload() {
     $bower-installer
 
     printf "${green}[NODEBLOG]${nc} ${red}reloading${nc} \n"
-    $npm reload
+    $npm run reload
     printf "${green}[NODEBLOG]${nc} ${red}completed${nc} \n"
 }
 
@@ -71,31 +71,8 @@ graceful() {
     $bower-installer
 
     printf "${green}[NODEBLOG]${nc} ${red}gracefuling${nc} \n"
-    $npm restart
+    $npm run graceful
     printf "${green}[NODEBLOG]${nc} ${red}completed${nc} \n"
-}
-
-stop() {
-    cd $NODE_PATH
-
-    printf "${green}[NODEBLOG]${nc} ${red}stopping${nc} \n"
-    $npm stop
-    printf "${green}[NODEBLOG]${nc} ${red}completed${nc} \n"
-}
-
-delete() {
-    cd $NODE_PATH
-
-    printf "${green}[NODEBLOG]${nc} ${red}deleting${nc} \n"
-    $npm delete
-    printf "${green}[NODEBLOG]${nc} ${red}completed${nc} \n"
-}
-
-status() {
-    cd $NODE_PATH
-
-    $npm list
-    printf "Status $prog: [ ${green}OK${nc} ]\n"
 }
 
 case "$2" in
@@ -115,19 +92,7 @@ case "$2" in
         graceful && exit 0
         $2
         ;;
-    stop)
-        stop && exit 0
-        $2
-        ;;
-    delete)
-		delete && exit 0
-		$2
-		;;
-    status)
-        status && exit 0
-        $2
-        ;;
     *)
-        echo $"Usage: $0 {development|stage|production} {start|restart|reload|graceful|stop|delete|status}"
+        echo $"Usage: $0 {development|stage|production} {start|restart|reload|graceful}"
         exit 2
 esac

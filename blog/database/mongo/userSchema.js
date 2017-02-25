@@ -15,7 +15,6 @@ Schema.createSchema = function(mongoose) {
         created_at: { type: Date, index: { unique: false }, 'default': Date.now },
         updated_at: { type: Date, index: { unique: false }, 'default': Date.now },
         provider: { type: String, 'default':'' },
-        auth_token: { type: String, 'default':'' },
         facebook: {},
         github: {},
         google: {}

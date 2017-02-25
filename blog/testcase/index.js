@@ -5,7 +5,7 @@ const http = require('http');
 const logger = require('lib/logger')('testcase/index');
 
 const database = require('database/database');
-const appConfig = require('config/appConfig');
+const appConfig = require('config/config.app');
 
 const port = appConfig.testServerPort || 9999;
 

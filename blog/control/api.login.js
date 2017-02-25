@@ -3,7 +3,7 @@
 const passport = require('passport');
 const endpoint = require('lib/endpoint');
 const constant = require('config/constant');
-const appConfig = require('config/appConfig');
+const appConfig = require('config/config.app');
 const logger = require('lib/logger')('control:api:login');
 
 const loginPOST = (req, res, next) => {
@@ -23,7 +23,7 @@ const loginPOST = (req, res, next) => {
         meta.message = constant.statusMessages[meta.code];
 
         if (!req.body.useCookie) return endpoint(req, res, {
-            meta: meta, response: user
+            meta: meta, response: { email: req.body.email, session_id: req.sessionID }
         });
 
         const database = req.app.get('database');

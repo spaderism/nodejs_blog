@@ -89,15 +89,6 @@ class AppControl {
 				case 'graceful':
 					AppControl.graceful();
 					break;
-				case 'stop':
-					AppControl.restart();
-					break;
-				case 'delete':
-					AppControl.delete();
-					break;
-				case 'status':
-					AppControl.status();
-					break;
 				default:
 					pm2.disconnect();
 					console.log('[NODEBLOG] not match command');
@@ -155,30 +146,6 @@ class AppControl {
 			}
 
 			console.log('[NODEBLOG] gracefulReload completed');
-		});
-	}
-
-	static stop() {
-		pm2.stop(AppControlConfig.getConfig().name, (err, procs) => {
-			pm2.disconnect();
-			if (err) {
-				console.error('[NODEBLOG] Err: %o', err);
-                throw err;
-			}
-
-			console.log('[NODEBLOG] stop completed');
-		});
-	}
-
-	static delete() {
-		pm2.delete(AppControlConfig.getConfig().name, (err, procs) => {
-			pm2.disconnect();
-			if (err) {
-				console.error('[NODEBLOG] Err: %o', err);
-                throw err;
-			}
-
-			console.log('[NODEBLOG] delete completed');
 		});
 	}
 }

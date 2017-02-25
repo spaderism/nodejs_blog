@@ -34,27 +34,30 @@
                     {
                         "in": "formData",
                         "name": "email",
-                        "description": "",
+                        "description": "email address",
                         "type": "string",
                         "required": true
                     },
                     {
                         "in": "formData",
                         "name": "password",
-                        "description": "",
+                        "description": "password",
                         "type": "string",
                         "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "SUCCESS"
+                        "description": "SUCCESS",
+                        "schema": { "$ref": "#/definitions/Session" }
                     },
                     "400": {
-                        "description": "BAD REQUEST"
+                        "description": "BAD REQUEST",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
                     },
                     "401": {
-                        "description": "UNAUTHORIZED"
+                        "description": "UNAUTHORIZED",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
                     }
                 }
             }
@@ -66,7 +69,7 @@
                     "user"
                 ],
                 "summary": "사용자 등록 API",
-                "description": "로컬 패스포트 로그인",
+                "description": "사용자 등록",
                 "consumes": [ "application/json" ],
                 "produces": [ "application/json" ],
                 "parameters": [
@@ -80,28 +83,30 @@
                     {
                         "in": "formData",
                         "name": "email",
-                        "description": "",
+                        "description": "이메일",
                         "type": "string",
                         "required": true
                     },
                     {
                         "in": "formData",
                         "name": "name",
-                        "description": "",
+                        "description": "이름",
                         "type": "string",
                         "required": true
                     },
                     {
                         "in": "formData",
                         "name": "password",
-                        "description": "provider != local 경우 필수",
-                        "type": "string"
+                        "description": "패스워드",
+                        "type": "string",
+                        "required": true
                     },
                     {
                         "in": "formData",
                         "name": "confirm_password",
-                        "description": "provider != local 경우 필수",
-                        "type": "string"
+                        "description": "패스워드 확인",
+                        "type": "string",
+                        "required": true
                     },
                     {
                         "in": "formData",
@@ -109,28 +114,174 @@
                         "description": "",
                         "type": "string",
                         "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "facebook[first_name]",
+                        "description": "facebook 이름(provider = facebook 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "facebook[last_name]",
+                        "description": "facebook 성(provider = facebook 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "facebook[email]",
+                        "description": "facebook 이메일(provider = facebook 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "facebook[id]",
+                        "description": "facebook id 넘버(provider = facebook 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "github[first_name]",
+                        "description": "github 이름(provider = github 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "github[last_name]",
+                        "description": "github 성(provider = github 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "github[email]",
+                        "description": "github 이메일(provider = github 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "github[id]",
+                        "description": "github id 넘버(provider = github 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "google[first_name]",
+                        "description": "google 이름(provider = google 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "google[last_name]",
+                        "description": "google 성(provider = google 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "google[email]",
+                        "description": "google 이메일(provider = google 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "google[id]",
+                        "description": "google id 넘버(provider = google 경우 필수)",
+                        "type": "string"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "SUCCESS"
+                        "description": "SUCCESS",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
                     },
                     "400": {
-                        "description": "BAD REQUEST"
-                    },
-                    "401": {
-                        "description": "UNAUTHORIZED"
+                        "description": "BAD REQUEST",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
                     }
                 }
             }
         }
     },
     "definitions": {
-
-
+        "Session": {
+            "title": "res json",
+            "type": "object",
+            "required": [ "meta", "response" ],
+            "properties": {
+                "meta": {
+                    "title": "meta",
+                    "type": "object",
+                    "description": "메타 정보",
+                    "required": [ "code", "message", "trace_id" ],
+                    "properties": {
+                        "code": {
+                            "type": "integer",
+                            "format": "int64",
+                            "description": "상태 코드"
+                        },
+                        "message": {
+                            "type": "string",
+                            "description": "상태 메시지"
+                        },
+                        "trace_id": {
+                            "type": "string",
+                            "description": "고유 번호"
+                        }
+                    }
+                },
+                "response": {
+                    "title": "response",
+                    "type": "object",
+                    "description": "응답 데이터",
+                    "required": [ "email", "name" ],
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "description": "이메일"
+                        },
+                        "session_id": {
+                            "type": "string",
+                            "description": "세션 아이디"
+                        }
+                    }
+                }
+            }
+        },
+        "EmptyRes": {
+            "title": "res json",
+            "type": "object",
+            "required": [ "meta", "response" ],
+            "properties": {
+                "meta": {
+                    "title": "meta",
+                    "type": "object",
+                    "description": "메타 정보",
+                    "required": [ "code", "message", "trace_id" ],
+                    "properties": {
+                        "code": {
+                            "type": "integer",
+                            "format": "int64",
+                            "description": "상태 코드"
+                        },
+                        "message": {
+                            "type": "string",
+                            "description": "상태 메시지"
+                        },
+                        "trace_id": {
+                            "type": "string",
+                            "description": "고유 번호"
+                        }
+                    }
+                },
+                "response": {
+                    "title": "response",
+                    "type": "object",
+                    "description": "응답 데이터"
+                }
+            }
+        }
     },
     "externalDocs": {
-        "description": "Visit Binary's BLOG",
-        "url": ""
+        "description": "Binary's BLOG",
+        "url": "http://localhost:3002"
     }
 }

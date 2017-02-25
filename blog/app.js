@@ -1,6 +1,6 @@
 'use strict';
 
-const appConfig = require('config/appConfig');
+const appConfig = require('config/config.app');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const Redis = require('ioredis');
@@ -54,7 +54,7 @@ app.use(require('middleware/preprocess'));
 app.use(require('middleware/auth'));
 app.use(require('middleware/login'));
 
-require('route/routeLoader')(app); // 라우팅
+require('route/route.loader')(app); // 라우팅
 require('config/passport')(app, passport); // 패스포트 설정
 
 // catch 404 and forward to error handler

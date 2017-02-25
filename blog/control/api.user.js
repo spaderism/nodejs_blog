@@ -20,7 +20,7 @@ const signupPOST = (req, res, next) => {
         meta.code = constant.statusCodes.SUCCESS;
         meta.message = constant.statusMessages[meta.code];
 
-        endpoint(req, res, { meta: meta, response: req.body });
+        endpoint(req, res, { meta: meta });
     })(req, res, next);
 };
 

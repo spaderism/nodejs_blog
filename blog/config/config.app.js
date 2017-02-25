@@ -1,6 +1,6 @@
 'use strict';
 
-const privateConfig = require('config/privateConfig');
+const privateConfig = require('config/config.private');
 
 const NODE_PATH = process.env.NODE_PATH;
 const NODE_ENV = process.env.NODE_ENV || 'development';

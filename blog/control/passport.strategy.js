@@ -2,7 +2,7 @@
 
 const clone = require('clone');
 const async = require('async');
-const appConfig = require('config/appConfig');
+const appConfig = require('config/config.app');
 const LocalStrategy = require('passport-local').Strategy;
 const logger = require('lib/logger')('control:passport:strategy');
 

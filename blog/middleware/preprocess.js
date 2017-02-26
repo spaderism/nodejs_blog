@@ -1,64 +1,126 @@
 'use strict';
 
+const Joi = require('joi');
 const xss = require('xss');
 const async = require('async');
+const appConfig = require('config/config.app');
 const swagger = require('swagger/api.docs.js');
 const constant = require('config/constant');
 const endpoint = require('lib/endpoint');
 const logger = require('lib/logger')('middleware:preprocess');
 
 class Validation {
-	static apiloginpost(req, res) {
-		const regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
-		const email = req.body.email;
-		if (!regex.test(email)) {
-			return { isValid: false, message: `invalid email: ${email}`};
-		}
+	static apiloginpost(req, res, callback) {
+		const schema = Joi.object().keys({
+			email: Joi.string().email().required()
+		});
 
-		return { isValid: true };
+		Joi.validate({ email: req.body.email }, schema, (err) => {
+			if (err) return callback({ isValid: false, message: err.name });
+			callback({ isValid: true });
+		});
 	}
 
-	static apiuserpost(req, res) {
-		const providers = [ 'local', 'facebook', 'github', 'google' ];
+	static apiuserpost(req, res, callback) {
+		req.body.password = req.body.provider === 'local' ? req.body.password : 'third_party_default_password1!';
+		req.body.confirm_password = req.body.provider === 'local' ? req.body.confirm_password : 'third_party_default_password1!';
 
-		const meta = {};
-		meta.code = constant.statusCodes.BAD_REQUEST;
+		const model = {};
 
-		const email = req.body.email;
-		const provider = req.body.provider;
-		const password = req.body.password;
-		const confirmPassword = req.body.confirm_password;
-		const regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+		model.name = req.body.name;
+		model.email = req.body.email;
+		model.provider = req.body.provider;
+		model.password = req.body.password;
+		model.confirmPassword = req.body.confirm_password;
+		model.masterKey = req.body.master_key;
 
-		if (!providers.includes(provider)) {
-			return { isValid: false, message: `invalid email: ${provider}`};
+		if (model.password !== model.confirmPassword) {
+			return callback({ isValid: false, message: 'not equal password with confirm_password' });
 		}
 
-		if (!password || !confirmPassword || password !== confirmPassword || password.length < 8) {
-			return { isValid: false, message: 'check password validation'};
-		}
+		if (model.provider !== 'local') {
+			const thirdParty = req.body[model.provider] || {};
+			model.thirdPartyEmail = thirdParty.email || null;
+			model.thirdPartyFirstName = thirdParty.first_name || null;
+			model.thirdPartyLastName = thirdParty.last_name || null;
+			model.thirdPartyId = thirdParty.id || null;
 
-		if (provider !== 'local') {
-			if (!req.body[provider].email || !req.body[provider].first_name || !req.body[provider].last_name || !req.body[provider].id) {
-				return { isValid: false, message: `invalid ${provider} info` };
+			if (model.thirdPartyEmail !== model.email) {
+				return callback({ isValid: false, message: `not equal ${model.provider} email with email` });
 			}
-			if (!regex.test(req.body[provider].email)) {
-				return { isValid: false, message: `invalid ${provider} email: ${req.body[provider].email}`};
-			}
-			if (req.body[provider].email !== req.body.email) {
-				return { isValid: false, message: `not equal ${provider} email with email` };
-			}
-			if (`${req.body[provider].last_name}${req.body[provider.first_name]}` !== req.body.name) {
-				return { isValid: false, message: `not equal ${provider} full_name(${req.body[provider].last_name}${req.body[provider].first_name}) with name(${req.body.name})` };
+			if (`${model.thirdPartyLastName}${model.thirdPartyFirstName}` !== model.name) {
+				return callback({ isValid: false, message: `not equal ${model.provider} full_name(${model.thirdPartyLastName}${model.thirdPartyFirstName}) with name(${model.name})` });
 			}
 		}
 
-		if (!regex.test(email)) {
-			return { isValid: false, message: `invalid email: ${email}`};
-		}
+		const schema = Joi.object().keys({
+			provider: [ 'local', 'facebook', 'github', 'google' ],
+			name: Joi.string().min(3).max(30).required(),
+			email: Joi.string().email().required(),
+			password: Joi.string().regex(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}$/).required(),
+			confirmPassword: Joi.string().regex(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}$/).required(),
+			masterKey: appConfig.masterKey,
+			thirdPartyEmail: Joi.string().email(),
+			thirdPartyFirstName: Joi.string().min(2).max(20),
+			thirdPartyLastName: Joi.string().min(1).max(10),
+			thirdPartyId: Joi.number()
+		});
 
-		return { isValid: true };
+		Joi.validate(model, schema, (err) => {
+			if (err) return callback({ isValid: false, message: err.name });
+			callback({ isValid: true });
+		});
 	};
+
+	static common(req, res, next) {
+		const pathSpec = swagger.paths[req.url] || {};
+		const methodSpec = pathSpec[req.method] || {};
+		const parameters = methodSpec.parameters || [];
+
+		async.forEachOf(parameters, (paramSpec, index, callback) => {
+			const paramName = paramSpec.name;
+			const paramType = paramSpec.type;
+			const isEssential = paramSpec.required || false;
+			let paramVal = req.method === 'GET'
+						 ? req.query[paramName]
+						 : req.body[paramName];
+
+			if (isEssential) {
+				if (!paramVal) {
+					return callback(new Error(`:BAD:${paramName} value is required`));
+				}
+
+				if (typeof paramVal !== paramType) {
+					return callback(new Error(`:BAD:${paramName} value type is not ${paramType}`));
+				}
+
+				if (paramVal) {
+					paramVal = xss(paramVal);
+					return callback();
+				}
+			}
+			callback();
+		}, (err) => {
+			if (err) {
+				if ((err.message).startsWith(':BAD:')) {
+					err.message = (err.message).replace(':BAD:', '');
+
+					logger.debug(err.message);
+
+					const meta = {};
+					meta.code = constant.statusCodes.BAD_REQUEST;
+					meta.message = err.message;
+
+					return endpoint(req, res, { meta: meta });
+				} else {
+					logger.error(err);
+					throw err;
+				}
+			}
+
+			next();
+		});
+	}
 };
 
 module.exports = (req, res, next) => {
@@ -66,66 +128,21 @@ module.exports = (req, res, next) => {
 
 	if (!req.url.startsWith('/api')) return next();
 
-	const method = req.method;
-	const validation = Validation[`${req.url.split('/').join('')}${method.toLowerCase()}`];
+	const validation = Validation[`${req.url.split('/').join('')}${req.method.toLowerCase()}`];
 
 	if (validation) {
-		const validation = Validation[`${req.url.split('/').join('')}${method.toLowerCase()}`](req, res);
-
-		if (!validation.isValid) {
-			const meta = {};
-			meta.code = constant.statusCodes.BAD_REQUEST;
-			meta.message = validation.message;
-
-			return endpoint(req, res, { meta: meta });
-		}
-	}
-
-	const pathSpec = swagger.paths[req.url] || {};
-	const methodSpec = pathSpec[method] || {};
-	const parameters = methodSpec.parameters || [];
-
-	async.forEachOf(parameters, (paramSpec, index, callback) => {
-		const paramName = paramSpec.name;
-		const paramType = paramSpec.type;
-		const isEssential = paramSpec.required || false;
-		let paramVal = req.method === 'GET'
-					 ? req.query[paramName]
-					 : req.body[paramName];
-
-		if (isEssential) {
-			if (!paramVal) {
-				return callback(new Error(`:BAD:${paramName} value is required`));
-			}
-
-			if (typeof paramVal !== paramType) {
-				return callback(new Error(`:BAD:${paramName} value type is not ${paramType}`));
-			}
-
-			if (paramVal) {
-				paramVal = xss(paramVal);
-				return callback();
-			}
-		}
-		callback();
-	}, (err) => {
-		if (err) {
-			if ((err.message).startsWith(':BAD:')) {
-				err.message = (err.message).replace(':BAD:', '');
-
-				logger.debug(err.message);
-
+		validation(req, res, (result) => {
+			if (!result.isValid) {
 				const meta = {};
 				meta.code = constant.statusCodes.BAD_REQUEST;
-				meta.message = err.message;
+				meta.message = result.message;
 
 				return endpoint(req, res, { meta: meta });
-			} else {
-				logger.error(err);
-				throw err;
 			}
-		}
 
-		next();
-	});
+			Validation.common(req, res, next);
+		});
+	} else {
+		Validation.common(req, res, next);
+	}
 };

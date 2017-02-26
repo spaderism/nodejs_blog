@@ -2,7 +2,6 @@
 
 const constant = require('config/constant');
 const BlogError = require('lib/error/BlogError');
-const logger = require('lib/logger')('lib:error:errorHandler');
 
 module.exports = {
 	notFound: (req, res, next) => {
@@ -11,24 +10,20 @@ module.exports = {
 
 		err.status = errCode;
 
-		if (req.url.startsWith('/api')) {
-			next(err);
-		} else {
-			res.render('error', { error: err });
-		}
+		next(err);
 	},
 
 	errorHandler: (err, req, res, next) => {
 		if (req.url.startsWith('/api')) {
-			throw new BlogError(req, res, err);
+			new BlogError(req, res, err);
 		} else {
-			logger.error(err.stack);
+			const errCode = err.status || constant.statusCodes.INTERNAL_SERVER_ERROR;
+			const errMessage = err.message || constant.statusMessages[errCode];
 
-			res.status(err.status || 500);
-			res.render('error', {
-				message: err.message,
-				error: err.stack
-			});
+			res.status(errCode);
+			res.render('error', { errCode: errCode, errMessage: errMessage });
+
+			new BlogError(req, res, err);
 		}
 	}
 };

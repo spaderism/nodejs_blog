@@ -97,23 +97,14 @@
                     {
                         "in": "formData",
                         "name": "password",
-                        "description": "패스워드",
-                        "type": "string",
-                        "required": true
+                        "description": "패스워드(provider = local 경우 필수)",
+                        "type": "string"
                     },
                     {
                         "in": "formData",
                         "name": "confirm_password",
-                        "description": "패스워드 확인",
-                        "type": "string",
-                        "required": true
-                    },
-                    {
-                        "in": "formData",
-                        "name": "master_key",
-                        "description": "",
-                        "type": "string",
-                        "required": true
+                        "description": "패스워드 확인(provider = local 경우 필수)",
+                        "type": "string"
                     },
                     {
                         "in": "formData",
@@ -186,6 +177,13 @@
                         "name": "google[id]",
                         "description": "google id 넘버(provider = google 경우 필수)",
                         "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "master_key",
+                        "description": "",
+                        "type": "string",
+                        "required": true
                     }
                 ],
                 "responses": {

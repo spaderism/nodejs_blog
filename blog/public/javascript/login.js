@@ -87,15 +87,6 @@ var login = {
             formData.confirm_password = confirmPassword.val();
         } else {
             formData[provider.val()] = JSON.parse(thirdParty.val());
-            formData.password = (function() {
-                function s4() {
-                    return Math.floor((1 + Math.random()) * 0x10000)
-                            .toString(16).substring(1);
-                }
-                return s4() + s4() + '-' + s4() + '-' + s4()
-                    + '-' + s4() + '-' + s4() + s4() + s4();
-            })();
-            formData.confirm_password = formData.password;
         }
 
         $.post('/api/user', formData)

@@ -1,77 +1,24 @@
 'use strict';
 
-const app = require('app');
-const http = require('http');
-const logger = require('lib/logger')('testcase/index');
-
-const database = require('database/database');
+const should = require('should');
+const request = require('request');
 const appConfig = require('config/config.app');
 
-const port = appConfig.testServerPort || 9999;
+const url = `http://localhost:${appConfig.testServerPort || 9999}`;
 
-app.set('port', port);
-app.on('close', (callback) => {
-	logger.debug('서버 객체가 종료됩니다.');
-	if (database.mongodb) {
-		database.mongodb.close();
-	}
-	callback();
-});
+describe('index controller', () => {
+	context('성공', () => {
+		it('페이지 호출(GET)', (done) => {
+			const options = {};
+			options.url = url;
 
-const onError = (error) => {
-  	if (error.syscall !== 'listen') { throw error; }
+			request.get(options, (err, res, body) => {
+				if (err) throw err;
 
-  	const bind = typeof port === 'string'
-               ? 'Pipe ' + port
-               : 'Port ' + port;
+				should.strictEqual(200, res.statusCode);
 
-	switch (error.code) {
-    	case 'EACCES':
-			console.error(bind + ' requires elevated privileges');
-			process.exit(1);
-      		break;
-    	case 'EADDRINUSE':
-      		console.error(bind + ' is already in use');
-      		process.exit(1);
-      		break;
-
-		default:
-			throw error;
-  	}
-};
-
-process.on('uncaughtException', (err) => {
-  logger.debug('uncaughtException 발생함 : ' + err);
-  logger.debug('서버 프로세스 종료하지 않고 유지함.');
-  logger.debug(err.stack);
-});
-
-process.on('SIGTERM', () => {
-  logger.debug('프로세스가 종료됩니다.');
-  app.close();
-});
-
-const server = http.createServer(app);
-
-before((done) => {
-	server.on('error', onError);
-	server.listen(port, () => {
-		const addr = server.address();
-		const bind = typeof addr === 'string'
-	               ? 'pipe ' + addr
-	               : 'port ' + addr.port;
-
-		logger.debug('테스트 서버 스타트 Listening on ' + bind);
-
-		database.init(app, appConfig);
-
-		done();
-	});
-});
-
-after((done) => {
-	server.close(() => {
-		logger.debug('테스트 서버 종료');
-		done();
+				done();
+			});
+		});
 	});
 });

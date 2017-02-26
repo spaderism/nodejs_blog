@@ -4,7 +4,7 @@ const passport = require('passport');
 const endpoint = require('lib/endpoint');
 const constant = require('config/constant');
 
-const signupPOST = (req, res, next) => {
+const userPOST = (req, res, next) => {
 	passport.authenticate('signup', (err, user) => {
         if (err) throw err;
 
@@ -20,12 +20,14 @@ const signupPOST = (req, res, next) => {
         meta.code = constant.statusCodes.SUCCESS;
         meta.message = constant.statusMessages[meta.code];
 
-        endpoint(req, res, { meta: meta });
+        endpoint(req, res, { meta: meta, response: { user_id: user._id } });
     })(req, res, next);
 };
 
-const deletePOST = (req, res, next) => {
+const userDELETE = (req, res, next) => {
+    console.log('delete');
+    console.log(req.body);
 
 };
 
-module.exports = { signupPOST: signupPOST, deletePOST: deletePOST };
+module.exports = { userPOST: userPOST, userDELETE: userDELETE };

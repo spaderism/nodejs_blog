@@ -33,13 +33,15 @@ const appConfig = {
         { file: 'control/index', path: '/', method: 'indexGET', type: 'get' },
         // login
         { file: 'control/login', path: '/login', method: 'loginGET', type: 'get' },
-        { file: 'control/login', path: '/facebook', method: 'facebook', type: 'get' },
-        { file: 'control/login', path: '/facebook-callback', method: 'facebookCallback', type: 'get' },
         { file: 'control/api.login', path: '/api/login', method: 'loginPOST', type: 'post' },
-        { file: 'control/login', path: '/logout', method: 'logoutGET', type: 'get'},
         // user
-        { file: 'control/api.user', path: '/api/user', method: 'signupPOST', type: 'post' },
-        { file: 'control/api.user', path: '/api/user', method: 'deletePOST', type: 'delete' }
+        { file: 'control/api.user', path: '/api/user', method: 'userPOST', type: 'post' },
+        { file: 'control/api.user', path: '/api/user', method: 'userDELETE', type: 'delete' },
+        // logout
+        { file: 'control/login', path: '/logout', method: 'logoutGET', type: 'get'},
+        // facebook
+        { file: 'control/login', path: '/facebook', method: 'facebook', type: 'get' },
+        { file: 'control/login', path: '/facebook-callback', method: 'facebookCallback', type: 'get' }
     ],
 
     oauthSocial: {

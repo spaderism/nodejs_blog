@@ -97,13 +97,13 @@
                     {
                         "in": "formData",
                         "name": "password",
-                        "description": "패스워드(provider = local 경우 필수)",
+                        "description": "패스워드(provider = local 경우 필수)<br>REGEX: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}",
                         "type": "string"
                     },
                     {
                         "in": "formData",
                         "name": "confirm_password",
-                        "description": "패스워드 확인(provider = local 경우 필수)",
+                        "description": "패스워드 확인(provider = local 경우 필수)<br>REGEX: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}",
                         "type": "string"
                     },
                     {
@@ -181,7 +181,7 @@
                     {
                         "in": "formData",
                         "name": "master_key",
-                        "description": "",
+                        "description": "마스터키",
                         "type": "string",
                         "required": true
                     }
@@ -189,7 +189,7 @@
                 "responses": {
                     "200": {
                         "description": "SUCCESS",
-                        "schema": { "$ref": "#/definitions/EmptyRes" }
+                        "schema": { "$ref": "#/definitions/User" }
                     },
                     "400": {
                         "description": "BAD REQUEST",
@@ -201,7 +201,6 @@
     },
     "definitions": {
         "Session": {
-            "title": "res json",
             "type": "object",
             "required": [ "meta", "response" ],
             "properties": {
@@ -244,8 +243,48 @@
                 }
             }
         },
+
+        "User": {
+            "type": "object",
+            "required": [ "meta", "response" ],
+            "properties": {
+                "meta": {
+                    "title": "meta",
+                    "type": "object",
+                    "description": "메타 정보",
+                    "required": [ "code", "message", "trace_id" ],
+                    "properties": {
+                        "code": {
+                            "type": "integer",
+                            "format": "int64",
+                            "description": "상태 코드"
+                        },
+                        "message": {
+                            "type": "string",
+                            "description": "상태 메시지"
+                        },
+                        "trace_id": {
+                            "type": "string",
+                            "description": "고유 번호"
+                        }
+                    }
+                },
+                "response": {
+                    "title": "response",
+                    "type": "object",
+                    "description": "응답 데이터",
+                    "required": [ "user_id" ],
+                    "properties": {
+                        "user_id": {
+                            "type": "string",
+                            "description": "사용자 고유번호"
+                        }
+                    }
+                }
+            }
+        },
+
         "EmptyRes": {
-            "title": "res json",
             "type": "object",
             "required": [ "meta", "response" ],
             "properties": {

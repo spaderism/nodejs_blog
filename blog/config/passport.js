@@ -25,7 +25,7 @@ module.exports = (app, passport) => {
 
     // 인증방식 설정
     passport.use('login', passportStrategy.loginPOST);
-    passport.use('signup', passportStrategy.signupPOST);
+    passport.use('signup', passportStrategy.userPOST);
     passport.use('facebook', passportStrategy.facebook(app, passport));
     passport.use('github', passportStrategy.github(app, passport));
     passport.use('google', passportStrategy.google(app, passport));

@@ -118,8 +118,8 @@
                     </span>
                     <input size="60" maxlength="255" class="form-control" style="font-weight: bold;"
                         required="required" placeholder="Password" name="password"
-                        id="password" type="password" pattern=".{8,}"
-                        title="At least 8 characters">
+                        id="password" type="password" title="At least 8 characters (with number and special char)"
+                        pattern="(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}">
                 </div>
                 <div class="input-group margin-bottom-20">
                     <span class="input-group-addon">
@@ -127,8 +127,9 @@
                     </span>
                     <input size="60" maxlength="255" class="form-control" style="font-weight: bold;"
                         required="required" placeholder="Confirm Password"
-                        name="confirmPassword" id="confirmPassword" type="password"
-                        pattern=".{8,}" title="At least 8 characters">
+                        name="confirmPassword" id="confirmPassword"
+                        type="password" title="At least 8 characters (with number and special char)"
+                        pattern="(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}">
                 </div>
                 <% } %>
 

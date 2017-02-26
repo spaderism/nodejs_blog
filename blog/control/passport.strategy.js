@@ -45,12 +45,12 @@ const loginPOST = new LocalStrategy({
 });
 
 // 회원가입
-const signupPOST = new LocalStrategy({
+const userPOST = new LocalStrategy({
     usernameField : 'email',
     passwordField : 'password',
     passReqToCallback : true
 }, (req, email, password, next) => {
-    logger.debug('signupPOST method 호출됨');
+    logger.debug('userPOST method 호출됨');
 
     process.nextTick(() => {
         const database = req.app.get('database');
@@ -201,6 +201,6 @@ const google = (app, passport) => {
 };
 
 module.exports = {
-    signupPOST: signupPOST, loginPOST: loginPOST,
+    userPOST: userPOST, loginPOST: loginPOST,
     facebook: facebook, github: github, google: google
 };

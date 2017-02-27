@@ -16,7 +16,9 @@ module.exports = (req, res, data, error) => {
 		resJson(res, clone(data));
 	}
 
-	logSaver(req, res, data);
+	if (!error || (error && error.errMessage !== constant.statusMessages[constant.statusCodes.NOT_FOUND])) {
+		logSaver(req, res, data);
+	}
 };
 
 const reformData = (req, data, error) => {

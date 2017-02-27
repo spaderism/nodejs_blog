@@ -4,11 +4,11 @@ const should = require('should');
 const request = require('request');
 const appConfig = require('config/config.app');
 
-const url = `http://localhost:${appConfig.testServerPort || 9999}`;
+const url = `http://localhost:${appConfig.testServerPort || 9999}/api/swagger`;
 
-describe('index controller', () => {
+describe('api.swagger controller', () => {
 	context('성공', () => {
-		it('페이지 호출 GET', (done) => {
+		it('api.swagger 호출 GET', (done) => {
 			const options = {};
 			options.url = url;
 

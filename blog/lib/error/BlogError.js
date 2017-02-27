@@ -21,10 +21,8 @@ class BlogError {
 	}
 
 	response(req, res, resData, err) {
-		const resMeta = resData ? resData.meta : {};
-
 		endpoint(req, res, resData, {
-			errMessage: resMeta.message || constant.statusMessages[constant.statusCodes.INTERNAL_SERVER_ERROR],
+			errMessage: constant.statusMessages[err.status] || constant.statusMessages[constant.statusCodes.INTERNAL_SERVER_ERROR],
 			errStack: (err.stack).split('\n').map((value) => {
 				return value.trim();
 			})

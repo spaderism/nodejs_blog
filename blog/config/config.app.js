@@ -41,7 +41,10 @@ const appConfig = {
         { file: 'control/login', path: '/logout', method: 'logoutGET', type: 'get'},
         // facebook
         { file: 'control/login', path: '/facebook', method: 'facebook', type: 'get' },
-        { file: 'control/login', path: '/facebook-callback', method: 'facebookCallback', type: 'get' }
+        { file: 'control/login', path: '/facebook-callback', method: 'facebookCallback', type: 'get' },
+        // swagger
+        { file: 'control/swagger', path: '/swagger', method: 'swaggerGET', type: 'get' },
+        { file: 'control/api.swagger', path: '/api/swagger', method: 'swaggerGET', type: 'get' },
     ],
 
     oauthSocial: {

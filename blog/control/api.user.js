@@ -25,9 +25,6 @@ const userPOST = (req, res, next) => {
 };
 
 const userDELETE = (req, res, next) => {
-    console.log('delete');
-    console.log(req.body);
-
     const database = req.app.get('database');
     database.mongodb.UserModel.findByIdAndRemove(req.body.user_id, (err, user) => {
         if (err) throw err;

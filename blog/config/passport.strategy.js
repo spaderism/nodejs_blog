@@ -4,7 +4,7 @@ const clone = require('clone');
 const async = require('async');
 const appConfig = require('config/config.app');
 const LocalStrategy = require('passport-local').Strategy;
-const logger = require('lib/logger')('control:passport:strategy');
+const logger = require('lib/logger')('config:passport:strategy');
 
 // 로그인 요청
 const loginPOST = new LocalStrategy({

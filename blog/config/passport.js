@@ -1,6 +1,6 @@
 'use strict';
 
-const passportStrategy = require('control/passport.strategy');
+const passportStrategy = require('config/passport.strategy');
 const logger = require('lib/logger')('config:passport');
 
 module.exports = (app, passport) => {

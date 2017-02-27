@@ -196,6 +196,41 @@
                         "schema": { "$ref": "#/definitions/EmptyRes" }
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "사용자 삭제 API",
+                "description": "사용자 삭제",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "user_id",
+                        "description": "사용자 고유번호",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "master_key",
+                        "description": "마스터키",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS",
+                        "schema": { "$ref": "#/definitions/User" }
+                    },
+                    "400": {
+                        "description": "BAD REQUEST",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
+                    }
+                }
             }
         }
     },

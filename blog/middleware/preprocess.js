@@ -70,7 +70,19 @@ class Validation {
 			if (err) return callback({ isValid: false, message: err.name });
 			callback({ isValid: true });
 		});
-	};
+	}
+
+	static apiuserdelete(req, res, callback) {
+		const schema = Joi.object().keys({
+			userId: Joi.string().required(),
+			masterKey: appConfig.masterKey
+		});
+
+		Joi.validate({ userId: req.body.user_id, masterKey: req.body.master_key }, schema, (err) => {
+			if (err) return callback({ isValid: false, message: err.name });
+			callback({ isValid: true });
+		});
+	}
 
 	static common(req, res, next) {
 		const pathSpec = swagger.paths[req.url] || {};

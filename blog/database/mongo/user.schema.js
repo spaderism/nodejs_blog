@@ -1,7 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
-const logger = require('lib/logger')('database:mongo:userSchema');
+const logger = require('lib/logger')('database:mongo:user.schema');
 const Schema = {};
 
 Schema.createSchema = function(mongoose) {

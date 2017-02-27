@@ -66,7 +66,7 @@ const appConfig = {
         mongodb: {
             url: privateConfig.database.mongodb.url[NODE_ENV],
             schemas: [
-                { file: 'database/mongo/userSchema', collection: 'users', schemaName: 'UserSchema', modelName: 'UserModel' }
+                { file: 'database/mongo/user.schema', collection: 'users', schemaName: 'UserSchema', modelName: 'UserModel' }
             ]
         },
         redis: {

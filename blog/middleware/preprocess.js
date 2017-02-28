@@ -2,9 +2,7 @@
 
 const Joi = require('joi');
 const xss = require('xss');
-const async = require('async');
 const appConfig = require('config/config.app');
-const swagger = require('swagger/api.docs.js');
 const constant = require('config/constant');
 const endpoint = require('lib/endpoint');
 const logger = require('lib/logger')('middleware:preprocess');
@@ -84,54 +82,16 @@ class Validation {
 		});
 	}
 
-	static common(req, res, next) {
-		const pathSpec = swagger.paths[req.url] || {};
-		const methodSpec = pathSpec[req.method] || {};
-		const parameters = methodSpec.parameters || [];
+	static xssFilter(object) {
+	    for (const prop of Object.keys(object)) {
+	        if (!object.hasOwnProperty(prop)) continue;
 
-		async.forEachOf(parameters, (paramSpec, index, callback) => {
-			const paramName = paramSpec.name;
-			const paramType = paramSpec.type;
-			const isEssential = paramSpec.required || false;
-			let paramVal = req.method === 'GET'
-						 ? req.query[paramName]
-						 : req.body[paramName];
-
-			if (isEssential) {
-				if (!paramVal) {
-					return callback(new Error(`:BAD:${paramName} value is required`));
-				}
-
-				if (typeof paramVal !== paramType) {
-					return callback(new Error(`:BAD:${paramName} value type is not ${paramType}`));
-				}
-
-				if (paramVal) {
-					paramVal = xss(paramVal);
-					return callback();
-				}
-			}
-			callback();
-		}, (err) => {
-			if (err) {
-				if ((err.message).startsWith(':BAD:')) {
-					err.message = (err.message).replace(':BAD:', '');
-
-					logger.debug(err.message);
-
-					const meta = {};
-					meta.code = constant.statusCodes.BAD_REQUEST;
-					meta.message = err.message;
-
-					return endpoint(req, res, { meta: meta });
-				} else {
-					logger.error(err);
-					throw err;
-				}
-			}
-
-			next();
-		});
+	        if (typeof object[prop] === 'object') {
+	            this.xssFilter(object[prop]);
+	        } else {
+	            object[prop] = xss(object[prop]);
+	        }
+	    }
 	}
 };
 
@@ -152,9 +112,11 @@ module.exports = (req, res, next) => {
 				return endpoint(req, res, { meta: meta });
 			}
 
-			Validation.common(req, res, next);
+			Validation.xssFilter(req.method === 'GET' ? req.query : req.body);
+			next();
 		});
 	} else {
-		Validation.common(req, res, next);
+		Validation.xssFilter(req.method === 'GET' ? req.query : req.body);
+		next();
 	}
 };

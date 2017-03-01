@@ -4,9 +4,9 @@ const should = require('should');
 const request = require('request');
 const appConfig = require('config/config.app');
 
-describe('swagger controller', () => {
+describe('swagger', () => {
 	context('성공', () => {
-		it('swagger 페이지 호출 GET', (done) => {
+		it('swagger 호출 GET', (done) => {
 			const url = `http://localhost:${appConfig.testServerPort || 9999}/swagger`;
 
 			const options = {};
@@ -20,7 +20,7 @@ describe('swagger controller', () => {
 				done();
 			});
 		});
-		it('swagger-ui 페이지 호출 GET', (done) => {
+		it('swagger-ui 호출 GET', (done) => {
 			const url = `http://localhost:${appConfig.testServerPort || 9999}/swagger-ui`;
 
 			const options = {};

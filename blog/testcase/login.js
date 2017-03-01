@@ -4,9 +4,9 @@ const should = require('should');
 const request = require('request');
 const appConfig = require('config/config.app');
 
-describe('login controller', () => {
+describe('login', () => {
 	context('성공', () => {
-		it('로그인 페이지 호출 GET', (done) => {
+		it('login 호출 GET', (done) => {
 			const options = {};
 			options.url = `http://localhost:${appConfig.testServerPort || 9999}/login`;
 
@@ -18,7 +18,7 @@ describe('login controller', () => {
 				done();
 			});
 		});
-		it('로그아웃 호출 GET', (done) => {
+		it('logout 호출 GET', (done) => {
 			const options = {};
 			options.url = `http://localhost:${appConfig.testServerPort || 9999}/logout`;
 
@@ -30,7 +30,7 @@ describe('login controller', () => {
 				done();
 			});
 		});
-		it('페이스북 호출 GET', (done) => {
+		it('facebook 호출 GET', (done) => {
 			const options = {};
 			options.url = `http://localhost:${appConfig.testServerPort || 9999}/facebook`;
 
@@ -42,7 +42,7 @@ describe('login controller', () => {
 				done();
 			});
 		});
-		it('페이스북 콜백 호출 GET', (done) => {
+		it('facebook-callback 호출 GET', (done) => {
 			const options = {};
 			options.url = `http://localhost:${appConfig.testServerPort || 9999}/facebook-callback`;
 

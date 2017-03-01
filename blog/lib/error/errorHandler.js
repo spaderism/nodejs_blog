@@ -14,14 +14,15 @@ module.exports = {
 	},
 
 	errorHandler: (err, req, res, next) => {
-		const errCode = err.status || constant.statusCodes.INTERNAL_SERVER_ERROR;
-		res.status(errCode);
-
 		if (req.url.startsWith('/api')) {
 			new BlogError(req, res, err);
 		} else {
+			const errCode = err.status || constant.statusCodes.INTERNAL_SERVER_ERROR;
 			const errMessage = err.message || constant.statusMessages[errCode];
+
+			res.status(errCode);
 			res.render('error', { errCode: errCode, errMessage: errMessage });
+
 			new BlogError(req, res, err);
 		}
 	}

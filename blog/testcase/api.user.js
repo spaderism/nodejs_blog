@@ -9,7 +9,7 @@ const url = `http://localhost:${appConfig.testServerPort || 9999}/api/user`;
 
 const userIds = [];
 
-describe('api.user controller', () => {
+describe('api.user', () => {
 	context('성공', () => {
 		it('api.user 호출 POST CASE1 local', (done) => {
 			const options = {};
@@ -135,8 +135,6 @@ describe('api.user controller', () => {
 				should.notStrictEqual(200, res.statusCode);
 				should.not.exist(body.response.user_id);
 
-				userIds.push(body.response.user_id);
-
 				done();
 			});
 		});
@@ -159,8 +157,6 @@ describe('api.user controller', () => {
 
 				should.notStrictEqual(200, res.statusCode);
 				should.not.exist(body.response.user_id);
-
-				userIds.push(body.response.user_id);
 
 				done();
 			});
@@ -185,8 +181,6 @@ describe('api.user controller', () => {
 				should.notStrictEqual(200, res.statusCode);
 				should.not.exist(body.response.user_id);
 
-				userIds.push(body.response.user_id);
-
 				done();
 			});
 		});
@@ -209,8 +203,6 @@ describe('api.user controller', () => {
 
 				should.notStrictEqual(200, res.statusCode);
 				should.not.exist(body.response.user_id);
-
-				userIds.push(body.response.user_id);
 
 				done();
 			});
@@ -235,8 +227,6 @@ describe('api.user controller', () => {
 				should.notStrictEqual(200, res.statusCode);
 				should.not.exist(body.response.user_id);
 
-				userIds.push(body.response.user_id);
-
 				done();
 			});
 		});
@@ -259,8 +249,6 @@ describe('api.user controller', () => {
 
 				should.notStrictEqual(200, res.statusCode);
 				should.not.exist(body.response.user_id);
-
-				userIds.push(body.response.user_id);
 
 				done();
 			});
@@ -289,8 +277,6 @@ describe('api.user controller', () => {
 				should.notStrictEqual(200, res.statusCode);
 				should.not.exist(body.response.user_id);
 
-				userIds.push(body.response.user_id);
-
 				done();
 			});
 		});
@@ -317,8 +303,6 @@ describe('api.user controller', () => {
 
 				should.notStrictEqual(200, res.statusCode);
 				should.not.exist(body.response.user_id);
-
-				userIds.push(body.response.user_id);
 
 				done();
 			});
@@ -347,7 +331,62 @@ describe('api.user controller', () => {
 				should.notStrictEqual(200, res.statusCode);
 				should.not.exist(body.response.user_id);
 
-				userIds.push(body.response.user_id);
+				done();
+			});
+		});
+		it('api.user 호출 DELETE CASE10', (done) => {
+			const options = {};
+			options.url = url;
+			options.form = {
+				user_id: 'testcase',
+				master_key: appConfig.masterKey
+			};
+
+			request.delete(options, (err, res, body) => {
+				if (err) throw err;
+
+				body = JSON.parse(body);
+
+				should.notStrictEqual(200, res.statusCode);
+				should.not.exist(body.response.user_id);
+
+				done();
+			});
+		});
+		it('api.user 호출 DELETE CASE11', (done) => {
+			const options = {};
+			options.url = url;
+			options.form = {
+				user_id: '000000000000000000000000',
+				master_key: appConfig.masterKey
+			};
+
+			request.delete(options, (err, res, body) => {
+				if (err) throw err;
+
+				body = JSON.parse(body);
+
+				should.notStrictEqual(200, res.statusCode);
+				should.not.exist(body.response.user_id);
+
+				done();
+			});
+		});
+		it('api.user 호출 DELETE CASE12', (done) => {
+			const options = {};
+			options.url = url;
+			options.form = {
+				user_id: '',
+				master_key: appConfig.masterKey
+			};
+
+			request.delete(options, (err, res, body) => {
+				if (err) throw err;
+
+				body = JSON.parse(body);
+
+				should.notStrictEqual(200, res.statusCode);
+				should.not.exist(body.response.user_id);
 
 				done();
 			});

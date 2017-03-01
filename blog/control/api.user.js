@@ -6,7 +6,7 @@ const constant = require('config/constant');
 
 const userPOST = (req, res, next) => {
 	passport.authenticate('signup', (err, user) => {
-        if (err) throw err;
+        if (err) return next(err);
 
         const meta = {};
 
@@ -27,7 +27,7 @@ const userPOST = (req, res, next) => {
 const userDELETE = (req, res, next) => {
     const database = req.app.get('database');
     database.mongodb.UserModel.findByIdAndRemove(req.body.user_id, (err, user) => {
-        if (err) throw err;
+        if (err) return next(err);
 
         const meta = {};
 

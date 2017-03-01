@@ -8,11 +8,8 @@ module.exports = (req, res, next) => {
     const execPath = [ '/login' ];
     if (execPath.indexOf(req.url) === -1) { return next(); }
 
-    if (req.session.user) {
-        logger.debug('clear login data before');
-        delete req.session.user;
-        delete req.cookie.user;
-    }
+    logger.debug('clear login data before');
+    delete req.session.user;
 
     next();
 };

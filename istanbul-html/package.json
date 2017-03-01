@@ -10,7 +10,7 @@
         "istanbul-html": "bin/istanbul-html.js"
     },
     "preferGlobal": true,
-    "author": "yicho@simplexi.com",
+    "author": "spaderism@gmail.com",
     "license": "ISC",
     "dependencies": {
         "chalk": "^1.1.3",

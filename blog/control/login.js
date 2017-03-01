@@ -34,7 +34,7 @@ const facebook = passport.authenticate('facebook', { scope: 'email' });
 
 const facebookCallback = (req, res, next) => {
     passport.authenticate('facebook', (err, user, thirdParty) => {
-        if (err) throw err;
+        if (err) next(err);
 
         const meta = {};
 

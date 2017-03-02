@@ -84,8 +84,6 @@ class Validation {
 
 	static xssFilter(object) {
 	    for (const prop of Object.keys(object)) {
-	        if (!object.hasOwnProperty(prop)) continue;
-
 	        if (typeof object[prop] === 'object') {
 	            this.xssFilter(object[prop]);
 	        } else {

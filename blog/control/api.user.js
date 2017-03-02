@@ -20,7 +20,7 @@ const userPOST = (req, res, next) => {
         meta.code = constant.statusCodes.SUCCESS;
         meta.message = constant.statusMessages[meta.code];
 
-        endpoint(req, res, { meta: meta, response: { user_id: user._id } });
+        endpoint(req, res, { meta: meta, response: { user_id: user._id.toString() } });
     })(req, res, next);
 };
 
@@ -41,7 +41,7 @@ const userDELETE = (req, res, next) => {
         meta.code = constant.statusCodes.SUCCESS;
         meta.message = constant.statusMessages[meta.code];
 
-        endpoint(req, res, { meta: meta, response: { user_id: user._id } });
+        endpoint(req, res, { meta: meta, response: { user_id: user._id.toString() } });
     });
 };
 

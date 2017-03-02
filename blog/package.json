@@ -46,7 +46,6 @@
     "should": "^11.2.0",
     "stylus": "^0.54.5",
     "swagger-ui": "^2.2.10",
-    "uuid": "^3.0.1",
     "xss": "^0.3.3"
   },
   "devDependencies": {

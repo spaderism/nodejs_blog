@@ -2,7 +2,7 @@
 
 const app = require('app');
 const http = require('http');
-const logger = require('lib/logger')('testcase/index');
+const logger = require('lib/logger')('testcase:testcase');
 
 const database = require('database/database');
 const appConfig = require('config/config.app');
@@ -46,7 +46,7 @@ process.on('uncaughtException', (err) => {
 	logger.debug(err.stack);
 });
 
-process.on('SIGTERM', () => {
+process.on('SIGTERM' || 'SIGINT', () => {
 	logger.debug('프로세스가 종료됩니다.');
 	app.close();
 });

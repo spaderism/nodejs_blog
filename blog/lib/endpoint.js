@@ -1,6 +1,5 @@
 'use strict';
 
-const uuid = require('uuid');
 const clone = require('clone');
 const moment = require('moment');
 const bcrypt = require('bcrypt');
@@ -8,6 +7,7 @@ const handlebars = require('handlebars');
 const logSaver = require('lib/logSaver');
 const constant = require('config/constant');
 const appConfig = require('config/config.app');
+const Identifier = require('lib/Identifier');
 
 module.exports = (req, res, data, error) => {
 	data = reformData(req, data, error);
@@ -22,7 +22,7 @@ module.exports = (req, res, data, error) => {
 };
 
 const reformData = (req, data, error) => {
-	const traceId = uuid.v4().replace(/-/gi, '');
+	const traceId = Identifier.setAlgorithm('sha256').getIdentifier();
 
 	if (data) {
 		data.meta.code = data.meta.code || constant.statusMessages.UNKNOWN_ERROR;

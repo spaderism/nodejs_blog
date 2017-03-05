@@ -113,7 +113,10 @@ const facebook = (app, passport) => {
                     name: `${profile._json.last_name}${profile._json.first_name}`,
                     email: profile._json.email,
                     provider: profile.provider,
-                    thirdParty: profile._json
+                    thirdParty: {
+                        email: profile._json.email,
+                        id: profile._json.id
+                    }
                 });
             }
 
@@ -123,80 +126,70 @@ const facebook = (app, passport) => {
 };
 
 const github = (app, passport) => {
-    return new (require('passport-facebook').Strategy)({
-        clientID: appConfig.oauthSocial.facebook.clientID,
-        clientSecret: appConfig.oauthSocial.facebook.clientSecret,
-        callbackURL: appConfig.oauthSocial.facebook.callbackURL,
+    return new (require('passport-github').Strategy)({
+        clientID: appConfig.oauthSocial.github.clientID,
+        clientSecret: appConfig.oauthSocial.github.clientSecret,
+        callbackURL: appConfig.oauthSocial.github.callbackURL,
         _passReqToCallback: true,
         profileFields: [ 'id', 'emails', 'name' ]
     }, (accessToken, refreshToken, profile, next) => {
-        logger.debug('passport의 facebook 호출됨.');
-        logger.debug(profile);
+        logger.debug('passport의 github 호출됨.');
 
-        //const conditions = { email: profile.emails[0].value };
+        console.log(profile);
 
         const database = app.get('database');
-        const UserModel = database.mongodb.UserModel;
-        //UserModel.findByConditions()
-        //UserModel.load(options, function (err, user) {
-        //    if (err) return next(err);
-        //
-        //    if (!user) {
-        //        const user = new UserModel({
-        //            name: profile.displayName,
-        //            email: profile.emails[0].value,
-        //            provider: 'facebook',
-        //            authToken: accessToken,
-        //            facebook: profile._json
-        //        });
-        //
-        //        user.save(function (err) {
-        //            if (err) console.log(err);
-        //            return next(err, user);
-        //        });
-        //    } else {
-        //        return next(err, user);
-        //    }
-        //});
+
+        const options = { criteria: { 'github.id': profile.id } };
+        database.mongodb.UserModel.load(options, (err, user) => {
+            if (err) return next(err);
+
+            if (!user) {
+                return next(null, null, {
+                    name: profile.username,
+                    email: profile._json.email,
+                    provider: profile.provider,
+                    thirdParty: {
+                        email: profile._json.email,
+                        id: profile._json.id
+                    }
+                });
+            }
+
+            next(null, { email: profile._json.email, name: user.name });
+        });
     });
 };
 
 const google = (app, passport) => {
-    return new (require('passport-facebook').Strategy)({
-        clientID: appConfig.oauthSocial.facebook.clientID,
-        clientSecret: appConfig.oauthSocial.facebook.clientSecret,
-        callbackURL: appConfig.oauthSocial.facebook.callbackURL,
+    return new (require('passport-google-oauth').OAuth2Strategy)({
+        clientID: appConfig.oauthSocial.google.clientID,
+        clientSecret: appConfig.oauthSocial.google.clientSecret,
+        callbackURL: appConfig.oauthSocial.google.callbackURL,
         _passReqToCallback: true,
         profileFields: [ 'id', 'emails', 'name' ]
     }, (accessToken, refreshToken, profile, next) => {
-        logger.debug('passport의 facebook 호출됨.');
-        logger.debug(profile);
-
-        //const conditions = { email: profile.emails[0].value };
+        logger.debug('passport의 google 호출됨.');
 
         const database = app.get('database');
-        const UserModel = database.mongodb.UserModel;
-        //UserModel.findByConditions()
-        //UserModel.load(options, function (err, user) {
-        //    if (err) return next(err);
-        //
-        //    if (!user) {
-        //        const user = new UserModel({
-        //            name: profile.displayName,
-        //            email: profile.emails[0].value,
-        //            provider: 'facebook',
-        //            authToken: accessToken,
-        //            facebook: profile._json
-        //        });
-        //
-        //        user.save(function (err) {
-        //            if (err) console.log(err);
-        //            return next(err, user);
-        //        });
-        //    } else {
-        //        return next(err, user);
-        //    }
-        //});
+
+        const options = { criteria: { 'google.id': profile.id } };
+        database.mongodb.UserModel.load(options, (err, user) => {
+            if (err) return next(err);
+
+            if (!user) {
+                return next(null, null, {
+                    name: `${profile._json.name.familyName}${profile._json.name.givenName}`,
+                    email: profile._json.emails[0].value,
+                    provider: profile.provider,
+                    thirdParty: {
+                        email: profile._json.emails[0].value,
+                        id: profile._json.id
+                    }
+                });
+            }
+
+            next(null, { email: profile._json.email, name: user.name });
+        });
     });
 };
 

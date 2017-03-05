@@ -42,6 +42,12 @@ const appConfig = {
         // facebook
         { file: 'control/login', path: '/facebook', method: 'facebook', type: 'get' },
         { file: 'control/login', path: '/facebook-callback', method: 'facebookCallback', type: 'get' },
+        // github
+        { file: 'control/login', path: '/github', method: 'github', type: 'get' },
+        { file: 'control/login', path: '/github-callback', method: 'githubCallback', type: 'get' },
+        // google
+        { file: 'control/login', path: '/google', method: 'google', type: 'get' },
+        { file: 'control/login', path: '/google-callback', method: 'googleCallback', type: 'get' },
         // swagger
         { file: 'control/swagger', path: '/swagger', method: 'swaggerGET', type: 'get' },
         { file: 'control/api.swagger', path: '/api/swagger', method: 'swaggerGET', type: 'get' },

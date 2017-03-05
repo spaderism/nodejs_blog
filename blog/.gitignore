@@ -1,7 +1,7 @@
 coverage
 node_modules
 bower_components
-privateConfig.js
+config.private.js
 *.log
 *.rdb
 dummy

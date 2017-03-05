@@ -38,16 +38,12 @@ class Validation {
 
 		if (model.provider !== 'local') {
 			const thirdParty = req.body[model.provider] || {};
+
 			model.thirdPartyEmail = thirdParty.email || null;
-			model.thirdPartyFirstName = thirdParty.first_name || null;
-			model.thirdPartyLastName = thirdParty.last_name || null;
 			model.thirdPartyId = thirdParty.id || null;
 
 			if (model.thirdPartyEmail !== model.email) {
 				return callback({ isValid: false, message: `not equal ${model.provider} email with email` });
-			}
-			if (`${model.thirdPartyLastName}${model.thirdPartyFirstName}` !== model.name) {
-				return callback({ isValid: false, message: `not equal ${model.provider} full_name(${model.thirdPartyLastName}${model.thirdPartyFirstName}) with name(${model.name})` });
 			}
 		}
 
@@ -59,8 +55,6 @@ class Validation {
 			confirmPassword: Joi.string().regex(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}$/).required(),
 			masterKey: appConfig.masterKey,
 			thirdPartyEmail: Joi.string().email(),
-			thirdPartyFirstName: Joi.string().min(2).max(20),
-			thirdPartyLastName: Joi.string().min(1).max(10),
 			thirdPartyId: Joi.number()
 		});
 

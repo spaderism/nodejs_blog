@@ -64,8 +64,60 @@ describe('api.user', () => {
 				email: 'testcase@testcase.com',
 				name: 'LastnameFirstname',
 				facebook: {
-					first_name: 'Firstname',
-					last_name: 'Lastname',
+					email: 'testcase@testcase.com',
+					id: 123123
+				},
+				master_key: appConfig.masterKey
+			};
+
+			request.post(options, (err, res, body) => {
+				if (err) throw err;
+
+				body = JSON.parse(body);
+
+				should.strictEqual(200, res.statusCode);
+				should.exist(body.response.user_id);
+
+				userIds.push(body.response.user_id);
+
+				done();
+			});
+		});
+		it('api.user 호출 POST CASE3 github', (done) => {
+			const options = {};
+			options.url = url;
+			options.form = {
+				provider: 'github',
+				email: 'testcase@testcase.com',
+				name: 'LastnameFirstname',
+				github: {
+					email: 'testcase@testcase.com',
+					id: 123123
+				},
+				master_key: appConfig.masterKey
+			};
+
+			request.post(options, (err, res, body) => {
+				if (err) throw err;
+
+				body = JSON.parse(body);
+
+				should.strictEqual(200, res.statusCode);
+				should.exist(body.response.user_id);
+
+				userIds.push(body.response.user_id);
+
+				done();
+			});
+		});
+		it('api.user 호출 POST CASE3 google', (done) => {
+			const options = {};
+			options.url = url;
+			options.form = {
+				provider: 'google',
+				email: 'testcase@testcase.com',
+				name: 'LastnameFirstname',
+				google: {
 					email: 'testcase@testcase.com',
 					id: 123123
 				},
@@ -261,9 +313,7 @@ describe('api.user', () => {
 				email: 'testcase@testcase.com',
 				name: 'LastnameFirstname',
 				facebook: {
-					first_name: '',
-					last_name: 'Lastname',
-					email: 'testcase@testcase.com',
+					email: '',
 					id: 123123
 				},
 				master_key: appConfig.masterKey
@@ -288,8 +338,31 @@ describe('api.user', () => {
 				email: 'testcase@testcase.com',
 				name: 'LastnameFirstname',
 				facebook: {
-					first_name: 'Firstname',
-					last_name: 'Lastname',
+					email: 'testcase@testcase.com',
+					id: ''
+				},
+				master_key: appConfig.masterKey
+			};
+
+			request.post(options, (err, res, body) => {
+				if (err) throw err;
+
+				body = JSON.parse(body);
+
+				should.notStrictEqual(200, res.statusCode);
+				should.not.exist(body.response.user_id);
+
+				done();
+			});
+		});
+		it('api.user 호출 POST CASE8', (done) => {
+			const options = {};
+			options.url = url;
+			options.form = {
+				provider: 'github',
+				email: 'testcase@testcase.com',
+				name: 'LastnameFirstname',
+				github: {
 					email: '',
 					id: 123123
 				},
@@ -311,12 +384,10 @@ describe('api.user', () => {
 			const options = {};
 			options.url = url;
 			options.form = {
-				provider: 'facebook',
+				provider: 'github',
 				email: 'testcase@testcase.com',
 				name: 'LastnameFirstname',
-				facebook: {
-					first_name: 'Firstname',
-					last_name: 'Lastname',
+				github: {
 					email: 'testcase@testcase.com',
 					id: ''
 				},
@@ -334,7 +405,57 @@ describe('api.user', () => {
 				done();
 			});
 		});
-		it('api.user 호출 DELETE CASE10', (done) => {
+		it('api.user 호출 POST CASE10', (done) => {
+			const options = {};
+			options.url = url;
+			options.form = {
+				provider: 'google',
+				email: 'testcase@testcase.com',
+				name: 'LastnameFirstname',
+				google: {
+					email: '',
+					id: 123123
+				},
+				master_key: appConfig.masterKey
+			};
+
+			request.post(options, (err, res, body) => {
+				if (err) throw err;
+
+				body = JSON.parse(body);
+
+				should.notStrictEqual(200, res.statusCode);
+				should.not.exist(body.response.user_id);
+
+				done();
+			});
+		});
+		it('api.user 호출 POST CASE11', (done) => {
+			const options = {};
+			options.url = url;
+			options.form = {
+				provider: 'google',
+				email: 'testcase@testcase.com',
+				name: 'LastnameFirstname',
+				google: {
+					email: 'testcase@testcase.com',
+					id: ''
+				},
+				master_key: appConfig.masterKey
+			};
+
+			request.post(options, (err, res, body) => {
+				if (err) throw err;
+
+				body = JSON.parse(body);
+
+				should.notStrictEqual(200, res.statusCode);
+				should.not.exist(body.response.user_id);
+
+				done();
+			});
+		});
+		it('api.user 호출 DELETE CASE12', (done) => {
 			const options = {};
 			options.url = url;
 			options.form = {
@@ -353,7 +474,7 @@ describe('api.user', () => {
 				done();
 			});
 		});
-		it('api.user 호출 DELETE CASE11', (done) => {
+		it('api.user 호출 DELETE CASE13', (done) => {
 			const options = {};
 			options.url = url;
 			options.form = {
@@ -372,7 +493,7 @@ describe('api.user', () => {
 				done();
 			});
 		});
-		it('api.user 호출 DELETE CASE12', (done) => {
+		it('api.user 호출 DELETE CASE14', (done) => {
 			const options = {};
 			options.url = url;
 			options.form = {

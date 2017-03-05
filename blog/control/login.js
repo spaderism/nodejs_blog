@@ -31,6 +31,8 @@ const logoutGET = (req, res, next) => {
 };
 
 const facebook = passport.authenticate('facebook', { scope: 'email' });
+const github = passport.authenticate('github', { scope: 'email' });
+const google = passport.authenticate('google', { scope: [ 'profile', 'email' ] });
 
 const facebookCallback = (req, res, next) => {
     passport.authenticate('facebook', (err, user, thirdParty) => {
@@ -65,7 +67,75 @@ const facebookCallback = (req, res, next) => {
     })(req, res, next);
 };
 
+const githubCallback = (req, res, next) => {
+    passport.authenticate('github', (err, user, thirdParty) => {
+        if (err) next(err);
+
+        const meta = {};
+
+        if (!user) {
+            meta.code = constant.statusCodes.BAD_REQUEST;
+            meta.message = 'Third-party needs membership';
+
+            req.flash('flashBody', thirdParty);
+
+            res.redirect('/login');
+
+            return endpoint(req, res);
+        }
+
+        // 정상인 경우
+        logger.debug('계정과 비밀번호가 일치함.');
+
+        req.session.user = user;
+
+        logger.debug('세션 저장함. %o', req.session.user);
+
+        meta.code = constant.statusCodes.SUCCESS;
+        meta.message = constant.statusMessages[meta.code];
+
+        res.redirect('/');
+
+        endpoint(req, res);
+    })(req, res, next);
+};
+
+const googleCallback = (req, res, next) => {
+    passport.authenticate('google', (err, user, thirdParty) => {
+        if (err) next(err);
+
+        const meta = {};
+
+        if (!user) {
+            meta.code = constant.statusCodes.BAD_REQUEST;
+            meta.message = 'Third-party needs membership';
+
+            req.flash('flashBody', thirdParty);
+
+            res.redirect('/login');
+
+            return endpoint(req, res);
+        }
+
+        // 정상인 경우
+        logger.debug('계정과 비밀번호가 일치함.');
+
+        req.session.user = user;
+
+        logger.debug('세션 저장함. %o', req.session.user);
+
+        meta.code = constant.statusCodes.SUCCESS;
+        meta.message = constant.statusMessages[meta.code];
+
+        res.redirect('/');
+
+        endpoint(req, res);
+    })(req, res, next);
+};
+
 module.exports = {
     loginGET: loginGET, logoutGET: logoutGET,
-    facebook: facebook, facebookCallback: facebookCallback
+    facebook: facebook, facebookCallback: facebookCallback,
+    github: github, githubCallback: githubCallback,
+    google: google, googleCallback: googleCallback
 };

@@ -108,18 +108,6 @@
                     },
                     {
                         "in": "formData",
-                        "name": "facebook[first_name]",
-                        "description": "facebook 이름(provider = facebook 경우 필수)",
-                        "type": "string"
-                    },
-                    {
-                        "in": "formData",
-                        "name": "facebook[last_name]",
-                        "description": "facebook 성(provider = facebook 경우 필수)",
-                        "type": "string"
-                    },
-                    {
-                        "in": "formData",
                         "name": "facebook[email]",
                         "description": "facebook 이메일(provider = facebook 경우 필수)",
                         "type": "string"
@@ -132,18 +120,6 @@
                     },
                     {
                         "in": "formData",
-                        "name": "github[first_name]",
-                        "description": "github 이름(provider = github 경우 필수)",
-                        "type": "string"
-                    },
-                    {
-                        "in": "formData",
-                        "name": "github[last_name]",
-                        "description": "github 성(provider = github 경우 필수)",
-                        "type": "string"
-                    },
-                    {
-                        "in": "formData",
                         "name": "github[email]",
                         "description": "github 이메일(provider = github 경우 필수)",
                         "type": "string"
@@ -152,18 +128,6 @@
                         "in": "formData",
                         "name": "github[id]",
                         "description": "github id 넘버(provider = github 경우 필수)",
-                        "type": "string"
-                    },
-                    {
-                        "in": "formData",
-                        "name": "google[first_name]",
-                        "description": "google 이름(provider = google 경우 필수)",
-                        "type": "string"
-                    },
-                    {
-                        "in": "formData",
-                        "name": "google[last_name]",
-                        "description": "google 성(provider = google 경우 필수)",
                         "type": "string"
                     },
                     {

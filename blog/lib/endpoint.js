@@ -8,16 +8,21 @@ const logSaver = require('lib/logSaver');
 const constant = require('config/constant');
 const appConfig = require('config/config.app');
 const Identifier = require('lib/Identifier');
+const logger = require('lib/logger')('lib:endpoint');
 
 module.exports = (req, res, data, error) => {
-	data = reformData(req, data, error);
+	try {
+		data = reformData(req, data, error);
 
-	if (req.url.startsWith('/api')) {
-		resJson(res, clone(data));
-	}
+		if (req.url.startsWith('/api')) {
+			resJson(res, clone(data));
+		}
 
-	if (!error || (error && error.errMessage !== constant.statusMessages[constant.statusCodes.NOT_FOUND])) {
-		logSaver(req, res, data);
+		if (!error || (error && error.errMessage !== constant.statusMessages[constant.statusCodes.NOT_FOUND])) {
+			logSaver(req, res, data);
+		}
+	} catch (err) {
+		logger.error(err);
 	}
 };
 

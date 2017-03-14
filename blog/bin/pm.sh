@@ -2,6 +2,7 @@
 
 # command path
 prog="nodeblog"
+node="/usr/local/bin/node"
 npm="/usr/local/bin/npm"
 pm2="/usr/local/bin/pm2"
 pwd="/home/nodeblog"
@@ -41,7 +42,7 @@ start() {
     $bower-installer
 
     printf "${green}[NODEBLOG]${nc} ${red}starting${nc} \n"
-    $npm start
+    $node bin/pm.js start
     printf "${green}[NODEBLOG]${nc} ${red}completed${nc} \n"
 }
 
@@ -51,7 +52,7 @@ restart() {
     $bower-installer
 
     printf "${green}[NODEBLOG]${nc} ${red}restarting${nc} \n"
-    $npm restart
+    $node bin/pm.js restart
     printf "${green}[NODEBLOG]${nc} ${red}completed${nc} \n"
 }
 
@@ -61,7 +62,7 @@ reload() {
     $bower-installer
 
     printf "${green}[NODEBLOG]${nc} ${red}reloading${nc} \n"
-    $npm run reload
+    $node bin/pm.js reload
     printf "${green}[NODEBLOG]${nc} ${red}completed${nc} \n"
 }
 
@@ -71,7 +72,7 @@ graceful() {
     $bower-installer
 
     printf "${green}[NODEBLOG]${nc} ${red}gracefuling${nc} \n"
-    $npm run graceful
+    $node bin/pm.js graceful
     printf "${green}[NODEBLOG]${nc} ${red}completed${nc} \n"
 }
 

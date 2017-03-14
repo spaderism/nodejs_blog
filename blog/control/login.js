@@ -5,6 +5,10 @@ const endpoint = require('lib/endpoint');
 const constant = require('config/constant');
 const logger = require('lib/logger')('control:login');
 
+const facebook = passport.authenticate('facebook', { scope: 'email' });
+const github = passport.authenticate('github', { scope: 'email' });
+const google = passport.authenticate('google', { scope: [ 'profile', 'email' ] });
+
 // 로그인 페이지 요청
 const loginGET = (req, res, next) => {
     logger.debug('loginGET method 호출됨');
@@ -29,10 +33,6 @@ const logoutGET = (req, res, next) => {
 
     endpoint(req, res);
 };
-
-const facebook = passport.authenticate('facebook', { scope: 'email' });
-const github = passport.authenticate('github', { scope: 'email' });
-const google = passport.authenticate('google', { scope: [ 'profile', 'email' ] });
 
 const facebookCallback = (req, res, next) => {
     passport.authenticate('facebook', (err, user, thirdParty) => {

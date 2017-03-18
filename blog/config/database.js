@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const logger = require('lib/logger')('database');
+const logger = require('lib/logger')('config/database.js');
 
 // database 객체에 db, schema, model 모두 추가
 const database = {};

@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('lib/logger')('databases:mongo:user');
+const logger = require('lib/logger')('database/mongo.user.model.js');
 
 const findByEmail = (database, email, callback) => {
     logger.debug('findByEmail method 호출됨.');

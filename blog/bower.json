@@ -1,5 +1,6 @@
 {
     "name": "nodeblog",
+    "homepage": "https://github.com/spaderism/nodejs_blog/",
     "license": "MIT",
     "ignore": [
         "**/.*",

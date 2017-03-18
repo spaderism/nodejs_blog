@@ -6,9 +6,9 @@ const bcrypt = require('bcrypt');
 const handlebars = require('handlebars');
 const logSaver = require('lib/logSaver');
 const constant = require('config/constant');
-const appConfig = require('config/config.app');
+const appConfig = require('config/app');
 const Identifier = require('lib/Identifier');
-const logger = require('lib/logger')('lib:endpoint');
+const logger = require('lib/logger')('lib/endpoint.js');
 
 module.exports = (req, res, data, error) => {
 	try {

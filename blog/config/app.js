@@ -1,6 +1,6 @@
 'use strict';
 
-const privateConfig = require('config/config.private');
+const privateConfig = require('config/private');
 
 const NODE_PATH = process.env.NODE_PATH;
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -30,27 +30,27 @@ const appConfig = {
     // type   : get or post
     routeInfo: [
         // index
-        { file: 'control/index', path: '/', method: 'indexGET', type: 'get' },
+        { file: 'route/index', path: '/', method: 'indexGET', type: 'get' },
         // login
-        { file: 'control/login', path: '/login', method: 'loginGET', type: 'get' },
-        { file: 'control/api.login', path: '/api/login', method: 'loginPOST', type: 'post' },
-        // user
-        { file: 'control/api.user', path: '/api/user', method: 'userPOST', type: 'post' },
-        { file: 'control/api.user', path: '/api/user', method: 'userDELETE', type: 'delete' },
-        // logout
-        { file: 'control/login', path: '/logout', method: 'logoutGET', type: 'get'},
-        // facebook
-        { file: 'control/login', path: '/facebook', method: 'facebook', type: 'get' },
-        { file: 'control/login', path: '/facebook-callback', method: 'facebookCallback', type: 'get' },
-        // github
-        { file: 'control/login', path: '/github', method: 'github', type: 'get' },
-        { file: 'control/login', path: '/github-callback', method: 'githubCallback', type: 'get' },
-        // google
-        { file: 'control/login', path: '/google', method: 'google', type: 'get' },
-        { file: 'control/login', path: '/google-callback', method: 'googleCallback', type: 'get' },
-        // swagger
-        { file: 'control/swagger', path: '/swagger', method: 'swaggerGET', type: 'get' },
-        { file: 'control/api.swagger', path: '/api/swagger', method: 'swaggerGET', type: 'get' },
+        // { file: 'control/login', path: '/login', method: 'loginGET', type: 'get' },
+        // { file: 'control/api.login', path: '/api/login', method: 'loginPOST', type: 'post' },
+        // // user
+        // { file: 'control/api.user', path: '/api/user', method: 'userPOST', type: 'post' },
+        // { file: 'control/api.user', path: '/api/user', method: 'userDELETE', type: 'delete' },
+        // // logout
+        // { file: 'control/login', path: '/logout', method: 'logoutGET', type: 'get'},
+        // // facebook
+        // { file: 'control/login', path: '/facebook', method: 'facebook', type: 'get' },
+        // { file: 'control/login', path: '/facebook-callback', method: 'facebookCallback', type: 'get' },
+        // // github
+        // { file: 'control/login', path: '/github', method: 'github', type: 'get' },
+        // { file: 'control/login', path: '/github-callback', method: 'githubCallback', type: 'get' },
+        // // google
+        // { file: 'control/login', path: '/google', method: 'google', type: 'get' },
+        // { file: 'control/login', path: '/google-callback', method: 'googleCallback', type: 'get' },
+        // // swagger
+        // { file: 'control/swagger', path: '/swagger', method: 'swaggerGET', type: 'get' },
+        // { file: 'control/api.swagger', path: '/api/swagger', method: 'swaggerGET', type: 'get' },
     ],
 
     oauthSocial: {
@@ -75,7 +75,7 @@ const appConfig = {
         mongodb: {
             url: privateConfig.database.mongodb.url[NODE_ENV],
             schemas: [
-                { file: 'database/mongo/user.schema', collection: 'users', schemaName: 'UserSchema', modelName: 'UserModel' }
+                { file: 'database/mongo.user.schema', collection: 'users', schemaName: 'UserSchema', modelName: 'UserModel' }
             ]
         },
         redis: {

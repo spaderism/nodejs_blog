@@ -5,7 +5,7 @@ const path = require('path');
 const async = require('async');
 const mkdirp = require('mkdirp');
 const prettyjson = require('prettyjson');
-const logger = require('lib/logger')('lib:logSaver');
+const logger = require('lib/logger')('lib/logSaver.js');
 
 module.exports = (req, res, data) => {
 	toFile(req, res, data);

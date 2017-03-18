@@ -1,7 +1,7 @@
 'use strict';
 
 const passportStrategy = require('config/passport.strategy');
-const logger = require('lib/logger')('config:passport');
+const logger = require('lib/logger')('config/passport.js');
 
 module.exports = (app, passport) => {
     logger.debug('config/passport 호출됨.');

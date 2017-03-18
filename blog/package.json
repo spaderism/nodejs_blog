@@ -2,6 +2,9 @@
   "name": "nodeblog",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
   "author": {
     "name": "spaderism",
     "email": "spaderism@gmail.com"
@@ -42,10 +45,5 @@
     "stylus": "^0.54.5",
     "swagger-ui": "^2.2.10",
     "xss": "^0.3.3"
-  },
-  "devDependencies": {
-    "bower-installer": "^1.3.5",
-    "istanbul": "^0.4.5",
-    "mocha": "^3.2.0"
   }
 }

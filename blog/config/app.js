@@ -14,44 +14,12 @@ const appConfig = {
 
     serverPort: privateConfig.serverPort[NODE_ENV], testServerPort: 9999,
 
-    // cookie  : 쿠키 옵션
-    // session : express 세션 옵션
-    cookie: {
-        maxAge: 60 * 60 * 24 * 7
-    },
+    // session : 세션 옵션
     session: {
         secret: privateConfig.masterKey,
-        resave: false, saveUninitialized: true
+        resave: true, saveUninitialized: true,
+        cookie: { maxAge: 60 * 60 * 1000 }
     },
-
-    // file   : 라우팅 파일
-    // path   : 클라이언트로부터 받은 요청 패스
-    // method : 라우팅 파일 안에 만들어 놓은 객체의 함수 이름
-    // type   : get or post
-    routeInfo: [
-        // index
-        { file: 'route/index', path: '/', method: 'indexGET', type: 'get' },
-        // login
-        // { file: 'control/login', path: '/login', method: 'loginGET', type: 'get' },
-        // { file: 'control/api.login', path: '/api/login', method: 'loginPOST', type: 'post' },
-        // // user
-        // { file: 'control/api.user', path: '/api/user', method: 'userPOST', type: 'post' },
-        // { file: 'control/api.user', path: '/api/user', method: 'userDELETE', type: 'delete' },
-        // // logout
-        // { file: 'control/login', path: '/logout', method: 'logoutGET', type: 'get'},
-        // // facebook
-        // { file: 'control/login', path: '/facebook', method: 'facebook', type: 'get' },
-        // { file: 'control/login', path: '/facebook-callback', method: 'facebookCallback', type: 'get' },
-        // // github
-        // { file: 'control/login', path: '/github', method: 'github', type: 'get' },
-        // { file: 'control/login', path: '/github-callback', method: 'githubCallback', type: 'get' },
-        // // google
-        // { file: 'control/login', path: '/google', method: 'google', type: 'get' },
-        // { file: 'control/login', path: '/google-callback', method: 'googleCallback', type: 'get' },
-        // // swagger
-        // { file: 'control/swagger', path: '/swagger', method: 'swaggerGET', type: 'get' },
-        // { file: 'control/api.swagger', path: '/api/swagger', method: 'swaggerGET', type: 'get' },
-    ],
 
     oauthSocial: {
         facebook: {

@@ -1,0 +1,323 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "node.js blog api spec.",
+        "version": "1.0.0",
+        "title": "Binary's api about node.js blog."
+    },
+    "host": "",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "login",
+            "description": "Everything about Login API"
+        },
+        {
+            "name": "user",
+            "description": "Everything about User API"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "login"
+                ],
+                "summary": "패스포트 로그인, 권한을 얻는 API",
+                "description": "로컬 패스포트 로그인",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "email",
+                        "description": "email address",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password",
+                        "description": "password",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS",
+                        "schema": { "$ref": "#/definitions/Session" }
+                    },
+                    "400": {
+                        "description": "BAD REQUEST",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
+                    }
+                }
+            }
+        },
+
+        "/api/user": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "사용자 등록 API",
+                "description": "사용자 등록",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "provider",
+                        "description": "local | facebook | github | google",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "email",
+                        "description": "이메일",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "name",
+                        "description": "이름",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password",
+                        "description": "패스워드(provider = local 경우 필수)<br>REGEX: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "confirm_password",
+                        "description": "패스워드 확인(provider = local 경우 필수)<br>REGEX: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "facebook[email]",
+                        "description": "facebook 이메일(provider = facebook 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "facebook[id]",
+                        "description": "facebook id 넘버(provider = facebook 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "github[email]",
+                        "description": "github 이메일(provider = github 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "github[id]",
+                        "description": "github id 넘버(provider = github 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "google[email]",
+                        "description": "google 이메일(provider = google 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "google[id]",
+                        "description": "google id 넘버(provider = google 경우 필수)",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "master_key",
+                        "description": "마스터키",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS",
+                        "schema": { "$ref": "#/definitions/User" }
+                    },
+                    "400": {
+                        "description": "BAD REQUEST",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "사용자 삭제 API",
+                "description": "사용자 삭제",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "user_id",
+                        "description": "사용자 고유번호",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "master_key",
+                        "description": "마스터키",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS",
+                        "schema": { "$ref": "#/definitions/User" }
+                    },
+                    "400": {
+                        "description": "BAD REQUEST",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Session": {
+            "type": "object",
+            "required": [ "meta", "response" ],
+            "properties": {
+                "meta": {
+                    "title": "meta",
+                    "type": "object",
+                    "description": "메타 정보",
+                    "required": [ "code", "message", "trace_id" ],
+                    "properties": {
+                        "code": {
+                            "type": "integer",
+                            "format": "int64",
+                            "description": "상태 코드"
+                        },
+                        "message": {
+                            "type": "string",
+                            "description": "상태 메시지"
+                        },
+                        "trace_id": {
+                            "type": "string",
+                            "description": "고유 번호"
+                        }
+                    }
+                },
+                "response": {
+                    "title": "response",
+                    "type": "object",
+                    "description": "응답 데이터",
+                    "required": [ "email", "name" ],
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "description": "이메일"
+                        },
+                        "session_id": {
+                            "type": "string",
+                            "description": "세션 아이디"
+                        }
+                    }
+                }
+            }
+        },
+
+        "User": {
+            "type": "object",
+            "required": [ "meta", "response" ],
+            "properties": {
+                "meta": {
+                    "title": "meta",
+                    "type": "object",
+                    "description": "메타 정보",
+                    "required": [ "code", "message", "trace_id" ],
+                    "properties": {
+                        "code": {
+                            "type": "integer",
+                            "format": "int64",
+                            "description": "상태 코드"
+                        },
+                        "message": {
+                            "type": "string",
+                            "description": "상태 메시지"
+                        },
+                        "trace_id": {
+                            "type": "string",
+                            "description": "고유 번호"
+                        }
+                    }
+                },
+                "response": {
+                    "title": "response",
+                    "type": "object",
+                    "description": "응답 데이터",
+                    "required": [ "user_id" ],
+                    "properties": {
+                        "user_id": {
+                            "type": "string",
+                            "description": "사용자 고유번호"
+                        }
+                    }
+                }
+            }
+        },
+
+        "EmptyRes": {
+            "type": "object",
+            "required": [ "meta", "response" ],
+            "properties": {
+                "meta": {
+                    "title": "meta",
+                    "type": "object",
+                    "description": "메타 정보",
+                    "required": [ "code", "message", "trace_id" ],
+                    "properties": {
+                        "code": {
+                            "type": "integer",
+                            "format": "int64",
+                            "description": "상태 코드"
+                        },
+                        "message": {
+                            "type": "string",
+                            "description": "상태 메시지"
+                        },
+                        "trace_id": {
+                            "type": "string",
+                            "description": "고유 번호"
+                        }
+                    }
+                },
+                "response": {
+                    "title": "response",
+                    "type": "object",
+                    "description": "응답 데이터"
+                }
+            }
+        }
+    },
+    "externalDocs": {
+        "description": "Binary's BLOG",
+        "url": "http://localhost:3002"
+    }
+}

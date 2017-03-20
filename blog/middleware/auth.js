@@ -2,11 +2,17 @@
 
 const logger = require('lib/logger')('middleware/auth.js');
 const moment = require('moment');
+const url = require('url');
 
 module.exports = (req, res, next) => {
     logger.debug('auth middleware 실행.');
 
-    const execPath = [ '/swagger', '/swagger-ui' ];
+    const execPaths = [ '/swagger' ];
+    const execPath = execPaths.filter((ele, idx) => {
+        return ele === url.parse(req.url).pathname;
+    });
+
+    if (!execPath.pop()) return next();
 
     if (!req.isAuthenticated()) {
         const userCookie = req.cookies.user;
@@ -36,8 +42,6 @@ module.exports = (req, res, next) => {
                 }
             });
         } else {
-            if (!execPath.includes(req.url)) return next();
-
             return res.redirect('/login');
         }
     } else {

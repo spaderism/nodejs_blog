@@ -28,6 +28,7 @@ app.get('/favicon.ico', (req, res) => {
 
 // swagger
 app.use('/swagger-ui', express.static(path.join(appConfig.NODE_PATH, 'node_modules/swagger-ui/dist')));
+app.use('/swagger.json', (req, res) => { res.json(require('swagger/swagger')); });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

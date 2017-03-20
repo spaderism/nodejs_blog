@@ -1,14 +1,16 @@
 'use strict';
 
-const clone = require('clone');
-const moment = require('moment');
-const bcrypt = require('bcrypt');
-const handlebars = require('handlebars');
+const logger = require('lib/logger')('lib/endpoint.js');
 const logSaver = require('lib/logSaver');
 const constant = require('config/constant');
 const appConfig = require('config/app');
 const Identifier = require('lib/Identifier');
-const logger = require('lib/logger')('lib/endpoint.js');
+const url = require('url');
+
+const clone = require('clone');
+const moment = require('moment');
+const bcrypt = require('bcrypt');
+const handlebars = require('handlebars');
 
 module.exports = (req, res, data, error) => {
 	try {
@@ -48,11 +50,11 @@ const reformData = (req, data, error) => {
 	debugLog.datetime = logtime;
 
 	debugLog.url = {};
-	debugLog.url.method = `${req.method}:${req.url}`;
+	debugLog.url.method = `${req.method}:${url.parse(req.url).pathname}`;
 	debugLog.url.protocol = req.protocol ? req.protocol : 'http';
 	debugLog.url.hostname = (req.headers.host).split(':')[0] || '';
 	debugLog.url.port = (req.headers.host).split(':')[1] || '';
-	debugLog.url.fulltext = `${debugLog.url.protocol}://${debugLog.url.hostname}${req.url}`;
+	debugLog.url.fulltext = `${debugLog.url.protocol}://${req.headers.host}${req.url}`;
 
 	debugLog.headers = req.headers;
 

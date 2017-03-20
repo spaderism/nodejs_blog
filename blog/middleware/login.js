@@ -3,7 +3,7 @@
 const logger = require('lib/logger')('middleware/login.js');
 
 module.exports = (req, res, next) => {
-    logger.debug('login interceptor 실행.');
+    logger.debug('login middleware 실행.');
 
     const execPath = [ '/login' ];
     if (execPath.indexOf(req.url) === -1) { return next(); }

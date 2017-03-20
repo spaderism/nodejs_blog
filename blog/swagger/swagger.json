@@ -3,7 +3,7 @@
     "info": {
         "description": "node.js blog api spec.",
         "version": "1.0.0",
-        "title": "Binary's api about node.js blog."
+        "title": "Spader's api about node.js blog."
     },
     "host": "",
     "basePath": "/",
@@ -317,7 +317,7 @@
         }
     },
     "externalDocs": {
-        "description": "Binary's BLOG",
+        "description": "Spader's BLOG",
         "url": "http://localhost:3002"
     }
 }

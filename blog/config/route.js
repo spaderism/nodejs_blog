@@ -22,8 +22,7 @@ const routeInfo = [
     // api
     { file: 'route/api.login', path: '/api/login', method: 'loginPOST', type: 'post' },
     { file: 'route/api.user', path: '/api/user', method: 'userPOST', type: 'post' },
-    { file: 'route/api.user', path: '/api/user', method: 'userDELETE', type: 'delete' },
-    { file: 'route/api.swagger', path: '/api/swagger', method: 'swaggerGET', type: 'get' }
+    { file: 'route/api.user', path: '/api/user', method: 'userDELETE', type: 'delete' }
 ];
 
 module.exports = (app) => {

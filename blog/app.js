@@ -57,7 +57,7 @@ app.use(require('middleware/auth'));
 app.use(require('middleware/login'));
 
 require('config/passport').init(app, passport); // 패스포트 설정
-require('config/route')(app); // 라우팅
+require('config/route').routeLoader(app); // 라우팅
 
 // catch 404 and forward to error handler
 // error handler

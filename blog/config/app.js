@@ -18,7 +18,7 @@ const appConfig = {
     session: {
         secret: privateConfig.masterKey,
         resave: true, saveUninitialized: true,
-        cookie: { maxAge: 60 * 60 * 1000 }
+        cookie: { maxAge: 60 * 60 * 1000 * 24 * 7 }
     },
 
     oauthSocial: {

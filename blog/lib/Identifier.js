@@ -2,7 +2,6 @@
 
 const crypto = require('crypto');
 const os = require('os');
-let _algorithm = 'sha1';
 let sequence = 1;
 let pastTime = null;
 
@@ -23,11 +22,6 @@ class Identifier {
         return { sequence: sequence, timestamp: presentTime };
     }
 
-    static setAlgorithm(algorithm) {
-        _algorithm = algorithm;
-        return this;
-    }
-
     static getIdentifier() {
 
         const parking = Identifier._getSequenceAndTimestamp();
@@ -39,7 +33,7 @@ class Identifier {
 
         const plainText = `${timestamp}${hostname}${pid}${sequence}`;
 
-        const hash = crypto.createHash(_algorithm);
+        const hash = crypto.createHash('sha1');
         hash.update(plainText, 'utf8');
         const cipherText = hash.digest('hex');
 

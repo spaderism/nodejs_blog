@@ -15,49 +15,42 @@
 <body>
 <% include ./include/header.ejs %>
 
-<div class="content-body toggled" id="wrapper">
-    <div class="container body-content-wrapper" id="newPostDiv" style="display: none;">
-        <div class="row">
-            <div class="col-sm-12 col-sm-offset-0">
-                <div class="modal-content" style="border-radius: 0px; box-shadow: none; display: block;">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"
-                            aria-hidden="true">×</button>
-                        <h1 class="modal-title text-center" style="font-weight: 900;">
-                            <i class="fa fa-fw fa-file-text-o"></i>CREATE NEW POST
-                        </h1>
-                    </div><br>
-                    <div class="col-md-12">
-                        <div class="input-group input-group">
-                            <span class="input-group-btn">
-                                <a class="btn btn-default disabled" style="font-weight: bold; border: 1px solid gray;">TITLE</a>
-                            </span>
-                            <input type="text" name="title" class="form-control" style="border: 1px solid gray;" maxlength="65">
-                        </div>
-                    </div>
-                    <div class="modal-body col-sm-12" style="margin-bottom: 7px; padding-bottom: 0px;">
-                        <textarea id="simpleMDE"></textarea>
-                        <div class="col-md-9">
-                            <a class="btn btn-default btn-select btn-select-light" style="border-radius: 3px; font-weight: bold;">
-                                <input type="hidden" class="btn-select-input" id="" name="" value="" />
-                                <span class="btn-select-value">Select an Category</span>
-                                <span class='btn-select-arrow glyphicon glyphicon-chevron-down'></span>
-                                <ul>
-                                    <li>Javascript</li>
-                                    <li>Node.js</li>
-                                    <li>Java</li>
-                                    <li>PHP</li>
-                                    <li>Database</li>
-                                    <li>Linux</li>
-                                    <li>Etc</li>
-                                </ul>
-                            </a>
-                        </div>
-                        <div class="col-md-3">
-                            <a id="postSubmit" class="btn btn-block btn-primary" style="font-weight: bold;">Submit</a>
-                        </div>
-                    </div>
-                    <div class="modal-footer" style="border: 0px; margin-bottom: 7px; padding-bottom: 0px;"></div>
+<div id="newPostModal" class="custom-modal" style="display: none;">
+    <div class="modal-dialog modal-fullsize" role="document">
+        <div class="modal-content modal-fullsize">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h1 class="modal-title text-center" style="font-weight: 900;">
+                    <i class="fa fa-fw fa-file-text-o"></i>CREATE NEW POST
+                </h1>
+            </div>
+            <div class="modal-body col-sm-12" style="margin-bottom: 7px; padding-bottom: 0px;">
+                <a class="btn btn-default btn-select btn-select-light" style="border-radius: 3px; font-weight: bold;">
+                    <span class='btn-select-arrow glyphicon glyphicon-chevron-down'></span>
+                    <input type="hidden" class="btn-select-input" id="" name="" value="" />
+                    <span class="btn-select-value">Select an Category</span>
+                    <ul>
+                        <li>Javascript</li>
+                        <li>Node.js</li>
+                        <li>Java</li>
+                        <li>PHP</li>
+                        <li>Database</li>
+                        <li>Linux</li>
+                        <li>Etc</li>
+                    </ul>
+                </a>
+                <br><div class="input-group input-group">
+                    <span class="input-group-btn">
+                        <a class="btn btn-default disabled" style="font-weight: bold; border: 1px solid gray;">TITLE</a>
+                    </span>
+                    <input type="text" name="title" class="form-control" style="border: 1px solid gray;" maxlength="65">
+                </div><br>
+
+                <textarea id="simpleMDE"></textarea>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-3">
+                    <a id="postSubmit" class="btn btn-block btn-primary" style="font-weight: bold;">Submit</a>
                 </div>
             </div>
         </div>

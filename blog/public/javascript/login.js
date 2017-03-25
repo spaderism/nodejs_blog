@@ -5,7 +5,7 @@ var login = {
     signupForm: $('div.signup-modal #signup'),
     showSignupBtn: $('div.login-container #signin #showSignupBtn'),
     closeSignupModalBtn: $('div.signup-modal span.close'),
-    signinEvent: function () {
+    signinEvent: function() {
         var regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
         var email = login.signinForm.find('input[name=email]');
         var password = login.signinForm.find('input[name=password]');
@@ -117,7 +117,7 @@ var login = {
         $('div.signup-modal').fadeOut('fast');
         return false;
     },
-    init: function () {
+    init: function() {
         var self = this;
         self.signinForm.submit(self.signinEvent);
         self.signupForm.submit(self.signupEvent);

@@ -1,20 +1,40 @@
 'use strict';
 
 const logger = require('lib/logger')('middleware/auth.js');
+const routeInfos = require('config/route').routeInfos;
+const constant = require('config/constant');
+const endpoint = require('lib/endpoint');
 const moment = require('moment');
 const url = require('url');
 
 module.exports = (req, res, next) => {
     logger.debug('auth middleware 실행.');
 
-    const execPaths = [ '/swagger' ];
-    const execPath = execPaths.filter((ele, idx) => {
-        return ele === url.parse(req.url).pathname;
-    });
+    const pathname = url.parse(req.url).pathname;
+    const routeInfo = routeInfos.filter((ele, idx) => {
+        return ele.path === pathname;
+    })[0];
 
-    if (!execPath.pop()) return next();
+    logger.debug(`path: ${pathname} auth require: ${routeInfo.auth}`);
+
+    if (!routeInfo.auth) return next();
+
+    const unAuthHandler = () => {
+        if (pathname.startsWith('/api')) {
+            const meta = {};
+            meta.code = constant.statusCodes.UNAUTHORIZED;
+            meta.message = constant.statusMessages[meta.code];
+
+            return endpoint(req, res, { meta: meta });
+        }
+
+        res.redirect('/login');
+        return endpoint(req, res);
+    };
 
     if (!req.isAuthenticated()) {
+        logger.debug(`auth: ${req.isAuthenticated()}`);
+
         const userCookie = req.cookies.user;
 
         if (userCookie) {
@@ -37,14 +57,20 @@ module.exports = (req, res, next) => {
                             updated: moment(user.updated_at).format('YYYY-MM-DD HH:mm:ss')
                         };
 
+                        logger.debug('userCookie 로 인증 통과, 세션 만듬');
                         return next();
                     });
+                } else {
+                    logger.debug('userCookie 로 인증 통과하지 못함');
+                    return unAuthHandler();
                 }
             });
         } else {
-            return res.redirect('/login');
+            logger.debug('userCookie 존재하지 않음. 인증 통과하지 못함');
+            return unAuthHandler();
         }
     } else {
-        next();
+        logger.debug(`인증 성공 auth: ${req.isAuthenticated()}`);
+        return next();
     }
 };

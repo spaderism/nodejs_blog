@@ -6,7 +6,7 @@ const logger = require('lib/logger')('config/route.js');
 // path   : 클라이언트로부터 받은 요청 패스
 // method : 라우팅 파일 안에 만들어 놓은 객체의 함수 이름
 // type   : get or post
-const routeInfo = [
+const routeInfos = [
     // general
     { file: 'route/index', path: '/', method: 'indexGET', type: 'get' },
     { file: 'route/login', path: '/login', method: 'loginGET', type: 'get' },
@@ -17,20 +17,20 @@ const routeInfo = [
     { file: 'route/login', path: '/github-callback', method: 'githubCallback', type: 'get' },
     { file: 'route/login', path: '/google', method: 'google', type: 'get' },
     { file: 'route/login', path: '/google-callback', method: 'googleCallback', type: 'get' },
-    { file: 'route/swagger', path: '/swagger', method: 'swaggerGET', type: 'get' },
+    { file: 'route/swagger', path: '/swagger', method: 'swaggerGET', type: 'get', auth: true },
 
     // api
-    { file: 'route/api.login', path: '/api/login', method: 'loginPOST', type: 'post' },
-    { file: 'route/api.user', path: '/api/user', method: 'userPOST', type: 'post' },
-    { file: 'route/api.user', path: '/api/user', method: 'userDELETE', type: 'delete' }
+    { file: 'route/api.login', path: '/api/login', method: 'loginPOST', type: 'post', auth: true },
+    { file: 'route/api.user', path: '/api/user', method: 'userPOST', type: 'post', auth: true },
+    { file: 'route/api.user', path: '/api/user', method: 'userDELETE', type: 'delete', auth: true }
 ];
 
-module.exports = (app) => {
-    const infoLen = routeInfo.length;
+const routeLoader = (app) => {
+    const infoLen = routeInfos.length;
     logger.debug('Number of routing module in appConfig : %d', infoLen);
 
     for (let i = 0; i < infoLen; i++) {
-        const curItem = routeInfo[i];
+        const curItem = routeInfos[i];
 
         // Load in module file
         const curModule = require(curItem.file);
@@ -46,3 +46,5 @@ module.exports = (app) => {
         logger.debug(`Comp setting routing module [${curItem.method}]`);
     }
 };
+
+module.exports = { routeInfos: routeInfos, routeLoader: routeLoader };

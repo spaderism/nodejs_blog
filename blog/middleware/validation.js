@@ -4,9 +4,7 @@ const logger = require('lib/logger')('middleware/validation.js');
 const appConfig = require('config/app');
 const constant = require('config/constant');
 const endpoint = require('lib/endpoint');
-
 const Joi = require('joi');
-const xss = require('xss');
 
 class Validation {
 	static apiloginpost(req, res, callback) {
@@ -82,7 +80,10 @@ class Validation {
 	        if (typeof object[prop] === 'object') {
 	            this.xssFilter(object[prop]);
 	        } else {
-	            object[prop] = xss(object[prop]);
+	            object[prop] = (object[prop]).replace(/\#/g, '&#35;').replace(/\&/g, '&#38;')
+		            				.replace(/\"/, '&#34;').replace(/\'/, '&#39;')
+		            				.replace(/\</g, '&lt;').replace(/\>/g, '&gt;')
+		            				.replace(/\(/g, '&#40;').replace(/\)/g, '&#41;');
 	        }
 	    }
 	}

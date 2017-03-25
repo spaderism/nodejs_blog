@@ -20,6 +20,13 @@
                 <a href="#" style="font-weight: bold;">Linux.</a>
                 <a href="#" style="font-weight: bold;">Etc.</a>
             </li>
+
+            <% if (user) { %>
+            <hr><li>
+                <a href="/swagger" style="font-weight: bold;" target="_blank">Swagger</a>
+            </li>
+            <% } %>
+
             <hr><li>
                 <a href="#" style="font-weight: bold;">Guest Book.</a>
             </li>
@@ -37,7 +44,7 @@
                     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                         <div class="site-heading" style="height: 400px;">
                             <a href="/" style="text-decoration: none;">
-                                <h1 class="typo" style="font-size: 50px; font-weight: 900; color: beige;">
+                                <h1 class="typo" style="font-size: 35px; font-weight: 900; color: beige;">
                                     SPADER.DEV.LOG
                                 </h1>
                             </a>
@@ -45,10 +52,15 @@
                             <hr style="border: double 1px; width: 40%; color: beige;">
 
                             <% if (user) { %>
-                            <br>
-                            <button id="newPostBtn" class="custom-button" data-toggle="modal" data-target="#newPostModal">
-                                <i class="fa fa-fw fa-file-text-o"></i>NEW POST
-                            </button>
+                                <br>
+                                <button id="newPostBtn" class="custom-button" data-toggle="modal" data-target="#newPostModal">
+                                    <i class="fa fa-fw fa-file-text-o"></i>NEW POST
+                                </button>
+                            <% } else { %>
+                                <br>
+                                <a id="getLoginBtn" class="custom-button" href="/login">
+                                    <i class="fa fa-fw fa-user-secret"></i>GET AUTH
+                                </a>
                             <% } %>
                         </div>
                     </div>

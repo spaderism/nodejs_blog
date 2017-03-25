@@ -7,7 +7,7 @@ const constant = require('config/constant');
 const appConfig = require('config/app');
 
 const loginPOST = (req, res, next) => {
-	passport.authenticate('login', (err, user) => {
+	passport.authenticate('local', (err, user) => {
         if (err) return next(err);
 
         const meta = {};

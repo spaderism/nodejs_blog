@@ -6,7 +6,7 @@ const endpoint = require('lib/endpoint');
 const indexGET = (req, res, next) => {
 	logger.debug('index');
 
-    res.render('index', { user: {} });
+    res.render('index', { user: req.session.user });
 
     endpoint(req, res);
 };

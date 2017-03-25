@@ -78,3 +78,29 @@
     background-color: white;
     color: black;
 }
+
+.custom-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 100;
+}
+
+.modal-dialog.modal-fullsize {
+    border: 2px solid black;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.modal-content.modal-fullsize {
+    border: 2px solid black;
+    height: auto;
+    min-height: 100%;
+    border-radius: 0;
+}

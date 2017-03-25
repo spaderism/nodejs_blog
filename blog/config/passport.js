@@ -7,43 +7,6 @@ const appConfig = require('config/app');
 const LocalStrategy = require('passport-local').Strategy;
 
 const strategy = {
-    loginPOST: new LocalStrategy({
-        usernameField : 'email',
-        passwordField : 'password',
-        passReqToCallback : true
-    }, (req, email, password, next) => {
-        logger.debug('loginPOST method 호출됨');
-
-        const database = req.app.get('database');
-        const conditions = { email :  email, provider: 'local' };
-
-        database.mongodb.UserModel.findOne(conditions, (err, user) => {
-            if (err) return next(err);
-
-            // 등록된 사용자가 없는 경우
-            if (!user) {
-                logger.debug('계정이 일치하지 않음.');
-                return next(null, false, req.flash('message', 'Account is not exists'));
-            }
-
-            // 비밀번호 비교하여 맞지 않는 경우
-            const authenticated = user.authenticate(password, user._doc.salt, user._doc.hashed_password);
-            if (!authenticated) {
-                logger.debug('비밀번호 일치하지 않음.');
-                return next(null, false, req.flash('message', 'Wrong passpord'));
-            }
-
-            // 정상인 경우
-            logger.debug('계정과 비밀번호가 일치함.');
-
-            req.session.user = { email: user.email, name: user.name };
-
-            logger.debug('세션 저장함. %o', req.session.user);
-
-            next(null, clone(req.session.user));
-        });
-    }),
-
     userPOST: new LocalStrategy({
         usernameField : 'email',
         passwordField : 'password',
@@ -88,6 +51,43 @@ const strategy = {
                     return next(null, user);
                 });
             });
+        });
+    }),
+
+    local: new LocalStrategy({
+        usernameField : 'email',
+        passwordField : 'password',
+        passReqToCallback : true
+    }, (req, email, password, next) => {
+        logger.debug('passport의 local 호출됨.');
+
+        const database = req.app.get('database');
+        const conditions = { email :  email, provider: 'local' };
+
+        database.mongodb.UserModel.findOne(conditions, (err, user) => {
+            if (err) return next(err);
+
+            // 등록된 사용자가 없는 경우
+            if (!user) {
+                logger.debug('계정이 일치하지 않음.');
+                return next(null, false, req.flash('message', 'Account is not exists'));
+            }
+
+            // 비밀번호 비교하여 맞지 않는 경우
+            const authenticated = user.authenticate(password, user._doc.salt, user._doc.hashed_password);
+            if (!authenticated) {
+                logger.debug('비밀번호 일치하지 않음.');
+                return next(null, false, req.flash('message', 'Wrong passpord'));
+            }
+
+            // 정상인 경우
+            logger.debug('계정과 비밀번호가 일치함.');
+
+            req.session.user = { email: user.email, name: user.name };
+
+            logger.debug('세션 저장함. %o', req.session.user);
+
+            next(null, clone(req.session.user));
         });
     }),
 
@@ -217,8 +217,8 @@ module.exports = {
         });
 
         // 인증방식 설정
-        _passport.use('login', strategy.loginPOST);
         _passport.use('signup', strategy.userPOST);
+        _passport.use('local', strategy.local);
         _passport.use('facebook', strategy.facebook(app, _passport));
         _passport.use('github', strategy.github(app, _passport));
         _passport.use('google', strategy.google(app, _passport));

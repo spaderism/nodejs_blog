@@ -29,7 +29,7 @@ module.exports = (req, res, data, error) => {
 };
 
 const reformData = (req, data, error) => {
-	const traceId = Identifier.setAlgorithm('sha256').getIdentifier();
+	const traceId = Identifier.getIdentifier();
 
 	if (data) {
 		data.meta.code = data.meta.code || constant.statusMessages.UNKNOWN_ERROR;
@@ -48,6 +48,7 @@ const reformData = (req, data, error) => {
 	debugLog.trace_id = traceId;
 	debugLog.client_ip = req.headers['x-forwarded-for'] || 'development';
 	debugLog.datetime = logtime;
+	debugLog.session = req.isAuthenticated() ? 'true' : 'false';
 
 	debugLog.url = {};
 	debugLog.url.method = `${req.method}:${url.parse(req.url).pathname}`;

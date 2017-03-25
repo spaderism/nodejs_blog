@@ -15,44 +15,73 @@
 <body>
 <% include ./include/header.ejs %>
 
-<div id="newPostModal" class="custom-modal" style="display: none;">
+<div id="newPostModal" class="custom-modal file-drop" style="display: none;">
     <div class="modal-dialog modal-fullsize" role="document">
         <div class="modal-content modal-fullsize">
+            <div class="file-drag"></div>
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><br>
                 <h1 class="modal-title text-center" style="font-weight: 900;">
                     <i class="fa fa-fw fa-file-text-o"></i>CREATE NEW POST
                 </h1>
             </div>
-            <div class="modal-body col-sm-12" style="margin-bottom: 7px; padding-bottom: 0px;">
-                <a class="btn btn-default btn-select btn-select-light" style="border-radius: 3px; font-weight: bold;">
-                    <span class='btn-select-arrow glyphicon glyphicon-chevron-down'></span>
-                    <input type="hidden" class="btn-select-input" id="" name="" value="" />
-                    <span class="btn-select-value">Select an Category</span>
-                    <ul>
-                        <li>Javascript</li>
-                        <li>Node.js</li>
-                        <li>Java</li>
-                        <li>PHP</li>
-                        <li>Database</li>
-                        <li>Linux</li>
-                        <li>Etc</li>
-                    </ul>
-                </a>
-                <br><div class="input-group input-group">
-                    <span class="input-group-btn">
-                        <a class="btn btn-default disabled" style="font-weight: bold; border: 1px solid gray;">TITLE</a>
-                    </span>
-                    <input type="text" name="title" class="form-control" style="border: 1px solid gray;" maxlength="65">
-                </div><br>
+            <div class="modal-body col-sm-12" style="margin-bottom: 7px; padding-bottom: 0px;"><br>
+                <form class="form-horizontal" id="newPostModalForm" role="form" enctype="multipart/form-data">
+                    <a class="btn btn-default btn-select btn-select-light" style="border-radius: 3px; font-weight: bold;">
+                        <span class='btn-select-arrow glyphicon glyphicon-chevron-down'></span>
+                        <input type="hidden" class="btn-select-input" id="" name="" value="" />
+                        <span class="btn-select-value">Select an Category</span>
+                        <ul>
+                            <li>Javascript</li>
+                            <li>Node.js</li>
+                            <li>Java</li>
+                            <li>PHP</li>
+                            <li>Database</li>
+                            <li>Linux</li>
+                            <li>Etc</li>
+                        </ul>
+                    </a><br>
 
-                <textarea id="simpleMDE"></textarea>
+                    <div class="input-group input-group">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default disabled" style="width: 120px; font-weight: bold; border: 1px solid gray;">TITLE</a>
+                        </span>
+                        <input type="text" name="title" class="form-control" style="border: 1px solid gray;" maxlength="65">
+                    </div><br>
+
+                    <div class="input-group input-group">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default disabled" style="width: 120px; font-weight: bold; border: 1px solid gray;">MASTER KEY</a>
+                        </span>
+                        <input type="password" name="password" class="form-control" style="border: 1px solid gray;" maxlength="65">
+                    </div><br>
+
+                    <textarea id="simpleMDE"></textarea><hr>
+
+                    <input id="attachFiles" type="file" multiple="multiple" style="display: none;">
+                    <button id="searchImage" class="btn btn-block btn-danger" style="font-weight: bold; border-radius: 0px;">
+                        <i class="fa fa-fw fa-file-picture-o"></i>SEARCH IMAGE
+                    </button><br>
+                    <div id="attachFileThumbDiv" class="row"></div>
+                    <div class="panel panel-default" style="border-radius: 0px;">
+                        <div class="panel-heading">
+                            <p class="panel-title" style="font-weight: 900;">UPLOAD NOTE</p>
+                        </div>
+                        <div class="panel-body" style="font-size: 13px;">
+                            <ul>
+                                <li>The maximum file size for uploads is <strong>10 MB</strong>.</li>
+                                <li>Only image files (<strong>JPEG, JPG, GIF, PNG</strong>) are allowed.</li>
+                                <li>You can <strong>drag &amp; drop</strong> files from your desktop on this window.</li>
+                            </ul>
+                        </div>
+                    </div><hr>
+
+                    <button id="submit" class="btn btn-block btn-primary" style="font-weight: bold; border-radius: 0px;">
+                        <i class="fa fa-fw fa-save"></i>SUBMIT
+                    </button>
+                </form>
             </div>
-            <div class="modal-footer">
-                <div class="col-md-3">
-                    <a id="postSubmit" class="btn btn-block btn-primary" style="font-weight: bold;">Submit</a>
-                </div>
-            </div>
+            <div class="modal-footer" style="border: none;"></div>
         </div>
     </div>
 </div>

@@ -21,10 +21,10 @@
             y = Math.sin(Math.acos(x)).toFixed(3) - 0;
 
         $typo.css('text-shadow', '0 1px 0 #ccc,' +
-            '0 4px 0 #000081,' +
-            '0 4px 0 #000081,' +
-            '0 4px 0 #000081,' +
-            '0 4px 0 #000081,' +
+            '0 4px 0 black,' +
+            '0 4px 0 black,' +
+            '0 4px 0 black,' +
+            '0 4px 0 black,' +
             '0 4px 1px rgba(0,0,0,0.1),' +
             '0 0 4px rgba(0,0,0,0.1),' +
             1 * -x + 'px ' + 1 * y + 'px 3px rgba(0,0,0,0.3),' +

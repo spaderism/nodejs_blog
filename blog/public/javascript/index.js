@@ -3,47 +3,103 @@
 var index = {
     SimpleMDE: undefined,
     SimpleMDEInitValue: undefined,
+    attachFile: { files: [], fileIndex: 0, fileCount: 0 },
     newPostBtn: $('#newPostBtn'),
     newPostModalClose: $('#newPostModal .close'),
-    postSubmitBtn: $("#postSubmit"),
+    newPostModalFormSearchImageBtn: $('#newPostModalForm #searchImage'),
+    newPostModalFormImageUtil: function(files) {
+        var filesLen = files.length;
+        for(var i = 0; i < filesLen; i++) {
+            var imageFile = files[i];
+            var imageFileName = imageFile.name;
+            var imageRegex = /\.(jpeg|jpg|gif|png)$/i;
+
+            if(imageFile.size <= 10485760 && imageRegex.test(imageFileName)) {
+                var reader = new FileReader();
+                reader.readAsDataURL(imageFile);
+                reader.onload = function(e) {
+                    var imageThumbnail = e.target.result;
+                    var attachFileThumb =
+                        '<div class="col-md-2" id="attachFileThumb' + index.attachFile.fileIndex + '">' +
+                            '<div class="thumbnail-wrapper">' +
+                                '<div class="thumbnail" id="thumbnail' + index.attachFile.fileIndex + '">' +
+                                    '<div class="centered">' +
+                                        '<img src="' + imageThumbnail + '">' +
+                                    '</div>' +
+                                    '<div class="thumbnail-hover">' +
+                                        '<a id="deleteBoardFile">' +
+                                            '<i class="fa fa-fw fa-close pull-right" id="deleteFileThumb' + index.attachFile.fileIndex + '" style="color: white;" ' +
+                                                'attachFileThumbNo="' + index.attachFile.fileIndex + '" data-toggle="tooltip" data-original-title="Close"></i>' +
+                                        '</a>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>';
+                    $("#newPostModal").on("mouseenter", "#thumbnail" + index.attachFile.fileIndex, function() {
+                        var that = $(this).context.children[1];
+                        $(that).css("opacity", "0.7");
+                    }).on("mouseleave", "#thumbnail" + index.attachFile.fileIndex, function() {
+                        var that = $(this).context.children[1];
+                        $(that).css("opacity", "0");
+                    });
+
+                    $("#newPostModal").on("click", "#deleteFileThumb" + index.attachFile.fileIndex, function() {
+                        var attachFileThumbNo = $(this).attr("attachFileThumbNo");
+                        $("#newPostModal #attachFileThumb" + attachFileThumbNo).fadeOut(200, function() {
+                            $(this).remove();
+                        });
+                        index.attachFile.files[attachFileThumbNo] = undefined;
+                        index.attachFile.fileCount--;
+                    });
+
+                    $("#newPostModal #attachFileThumbDiv").append(attachFileThumb);
+                    imageFile.index = index.attachFile.fileIndex++;
+                    index.attachFile.fileCount++;
+                    index.attachFile.files.push(imageFile);
+                }
+            }
+        }
+        return false;
+    },
+    postSubmitBtn: $('#postSubmit'),
     newPostBtnClickEvent: function() {
         $(document).ready(function () {
-            $(".btn-select").each(function (e) {
-                var value = $(this).find("ul li.selected").html();
+            $('.btn-select').each(function (e) {
+                var value = $(this).find('ul li.selected').html();
                 if (value != undefined) {
-                    $(this).find(".btn-select-input").val(value);
-                    $(this).find(".btn-select-value").html(value);
+                    $(this).find('.btn-select-input').val(value);
+                    $(this).find('.btn-select-value').html(value);
                 }
             });
         });
 
         $(document).on('click', '.btn-select', function (e) {
             e.preventDefault();
-            var ul = $(this).find("ul");
-            if ($(this).hasClass("active")) {
-                if (ul.find("li").is(e.target)) {
+            var ul = $(this).find('ul');
+            if ($(this).hasClass('active')) {
+                if (ul.find('li').is(e.target)) {
                     var target = $(e.target);
-                    target.addClass("selected").siblings().removeClass("selected");
+                    target.addClass('selected').siblings().removeClass('selected');
                     var value = target.html();
-                    $(this).find(".btn-select-input").val(value);
-                    $(this).find(".btn-select-value").html(value);
+                    $(this).find('.btn-select-input').val(value);
+                    $(this).find('.btn-select-value').html(value);
                 }
                 ul.hide();
-                $(this).removeClass("active");
+                $(this).removeClass('active');
             }
             else {
                 $('.btn-select').not(this).each(function () {
-                    $(this).removeClass("active").find("ul").hide();
+                    $(this).removeClass('active').find('ul').hide();
                 });
                 ul.slideDown(200);
-                $(this).addClass("active");
+                $(this).addClass('active');
             }
         });
 
         $(document).on('click', function (e) {
-            var target = $(e.target).closest(".btn-select");
+            var target = $(e.target).closest('.btn-select');
             if (!target.length) {
-                $(".btn-select").removeClass("active").find("ul").hide();
+                $('.btn-select').removeClass('active').find('ul').hide();
             }
         });
 
@@ -66,7 +122,7 @@ var index = {
         index.SimpleMDEInitValue = simplemdeInitValue.join('\n');
         index.SimpleMDE = new SimpleMDE({
             autofocus: true,
-            element: $("#simpleMDE")[0],
+            element: $('#simpleMDE')[0],
             initialValue: index.SimpleMDEInitValue,
             toolbar: [
                 'bold', 'italic', 'strikethrough', '|',
@@ -77,7 +133,15 @@ var index = {
             ]
         });
 
-        $("#newPostModal").fadeIn(500);
+        $("#newPostModalForm input[name=title]").val('');
+        $("#newPostModalForm input#attachFiles").val('');
+        $("#newPostModal #attachFiles").val('');
+        $("#newPostModal #attachFileThumbDiv").html('');
+        index.attachFile.files = [];
+        index.attachFile.fileIndex = 0;
+        index.attachFile.fileCount = 0;
+
+        $('#newPostModal').fadeIn(500);
 
         return false;
     },
@@ -88,8 +152,13 @@ var index = {
         if (confirmBool) {
             index.SimpleMDE.toTextArea();
             index.SimpleMDE = null;
-            $("#newPostModal").fadeOut(0);
+            $('#newPostModal').fadeOut(0);
         }
+
+        return false;
+    },
+    newPostModalFormSearchImageBtnClickEvent: function() {
+        $('#newPostModalForm input#attachFiles').trigger('click');
 
         return false;
     },
@@ -101,7 +170,28 @@ var index = {
         var self = this;
         self.newPostBtn.on('click', self.newPostBtnClickEvent);
         self.newPostModalClose.on('click', self.newPostModalCloseBtnClickEvent);
+        self.newPostModalFormSearchImageBtn.on('click', self.newPostModalFormSearchImageBtnClickEvent);
         self.postSubmitBtn.on('click', self.postSubmitBtnClickEvent);
+
+        $(".file-drop").on("dragenter dragover", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            $("#newPostModal .file-drag").css("opacity", "0.7");
+        }).on("drop", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            $("#newPostModal .file-drag").css("opacity", "0");
+
+            var files = e.originalEvent.dataTransfer.files;
+            index.newPostModalFormImageUtil(files);
+        }).on("dragleave dragend", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            $("#newPostModal .file-drag").css("opacity", "0");
+        });
     }
 };
 

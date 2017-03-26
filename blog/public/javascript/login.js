@@ -17,13 +17,13 @@ var login = {
         }
 
         $.post('/api/login', login.signinForm.serialize())
-            .done(function (data) {
+            .done(function(data) {
                 if (data.meta.code === 200 && data.meta.message === 'SUCCESS') {
                     alert(data.meta.message);
                     location.href = '/';
                 }
             }, 'json')
-            .fail(function (xhr) {
+            .fail(function(xhr) {
                 alert(xhr.responseJSON.meta.message);
                 email.val('');
                 password.val('');

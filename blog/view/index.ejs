@@ -46,14 +46,14 @@
                         <span class="input-group-btn">
                             <a class="btn btn-default disabled" style="width: 120px; font-weight: bold; border: 1px solid gray;">TITLE</a>
                         </span>
-                        <input type="text" name="title" class="form-control" style="border: 1px solid gray;" maxlength="65">
+                        <input type="text" name="title" class="form-control" style="border: 1px solid gray;" maxlength="65" required>
                     </div><br>
 
                     <div class="input-group input-group">
                         <span class="input-group-btn">
                             <a class="btn btn-default disabled" style="width: 120px; font-weight: bold; border: 1px solid gray;">MASTER KEY</a>
                         </span>
-                        <input type="password" name="password" class="form-control" style="border: 1px solid gray;" maxlength="65">
+                        <input type="password" name="masterKey" class="form-control" style="border: 1px solid gray;" maxlength="65" required>
                     </div><br>
 
                     <textarea id="simpleMDE"></textarea><hr>
@@ -69,7 +69,8 @@
                         </div>
                         <div class="panel-body" style="font-size: 13px;">
                             <ul>
-                                <li>The maximum file size for uploads is <strong>10 MB</strong>.</li>
+                                <li>Up to <strong>10 files</strong> can be uploaded at once.</li>
+                                <li>10 The maximum file size for uploads is <strong>5 MB</strong>.</li>
                                 <li>Only image files (<strong>JPEG, JPG, GIF, PNG</strong>) are allowed.</li>
                                 <li>You can <strong>drag &amp; drop</strong> files from your desktop on this window.</li>
                             </ul>

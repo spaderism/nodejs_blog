@@ -36,11 +36,11 @@
         <form id="signin" role="form" class="text">
             <div class="loginbox-textbox">
                 <input type="text" name="email" class="form-control"
-                    style="font-weight: bold;" placeholder="EMAIL" required="required">
+                    style="font-weight: bold;" placeholder="EMAIL" required>
             </div>
             <div class="loginbox-textbox">
                 <input type="password" name="password" class="form-control"
-                    style="font-weight: bold;" placeholder="PASSWORD" required="required">
+                    style="font-weight: bold;" placeholder="PASSWORD" required>
             </div>
             <div class="loginbox-checkbox">
                 <label class="checkbox">
@@ -91,7 +91,7 @@
                         <i class="glyphicon glyphicon-envelope"></i>
                     </span>
                     <input size="60" maxlength="255" class="form-control"
-                        style="font-weight: bold;" placeholder="Email" required="required"
+                        style="font-weight: bold;" placeholder="Email" required
                         name="email" id="email" type="email"
                         <% if (provider !== 'local') { %>
                             value=<%= email %>
@@ -103,7 +103,7 @@
                         <i class="glyphicon glyphicon-user"></i>
                     </span>
                     <input size="60" maxlength="255" class="form-control"
-                        style="font-weight: bold;" required="required" placeholder="Name"
+                        style="font-weight: bold;" required placeholder="Name"
                         name="name" id="name" type="text"
                         <% if (provider !== 'local') { %>
                             value=<%= name %>
@@ -117,7 +117,7 @@
                         <i class="glyphicon glyphicon-lock"></i>
                     </span>
                     <input size="60" maxlength="255" class="form-control" style="font-weight: bold;"
-                        required="required" placeholder="Password" name="password"
+                        required placeholder="Password" name="password"
                         id="password" type="password" title="At least 8 characters (with number and special char)"
                         pattern="(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}">
                 </div>
@@ -126,7 +126,7 @@
                         <i class="glyphicon glyphicon-lock"></i>
                     </span>
                     <input size="60" maxlength="255" class="form-control" style="font-weight: bold;"
-                        required="required" placeholder="Confirm Password"
+                        required placeholder="Confirm Password"
                         name="confirmPassword" id="confirmPassword"
                         type="password" title="At least 8 characters (with number and special char)"
                         pattern="(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}">
@@ -138,7 +138,7 @@
                         <i class="glyphicon glyphicon-lock"></i>
                     </span>
                     <input size="60" maxlength="255" class="form-control"
-                        required="required" placeholder="Master Key" style="font-weight: bold;"
+                        required placeholder="Master Key" style="font-weight: bold;"
                         name="masterKey" id="masterKey" type="password"
                         title="Master Key is required">
                 </div><hr/><br/>

@@ -126,6 +126,17 @@
     transform: translate(50%,50%);
 }
 
+#newPostModal .thumbnail-hover .centered  {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transform: translate(50%,50%);
+    -ms-transform: translate(50%,50%);
+    transform: translate(50%,50%);
+}
+
 #newPostModal .thumbnail .centered img {
     position: absolute;
     top: 0;
@@ -157,6 +168,34 @@
     left: 0;
     width: 100%;
     height: 100%;
-    border: 5px dashed #FF0000;
+    border: 3px solid blue;
     opacity:0;
+}
+
+@media(max-width: 767px) {
+    .attach-file-thumb {
+        width: 50%;
+        display: inline-block;
+    }
+}
+
+@media(min-width: 768px) {
+    .attach-file-thumb {
+        width: 25%;
+        display: inline-block;
+    }
+}
+
+@media(min-width: 992px) {
+    .attach-file-thumb {
+        width: 20%;
+        display: inline-block;
+    }
+}
+
+@media(min-width: 1200px) {
+    .attach-file-thumb {
+        width: 20%;
+        display: inline-block;
+    }
 }

@@ -3,7 +3,7 @@
 var index = {
     SimpleMDE: undefined,
     SimpleMDEInitValue: undefined,
-    attachFile: { files: [], fileVirtualPath:[], fileIndex: 0, fileCount: 0 },
+    attachFile: { files: [], fileIndex: 0, fileCount: 0 },
     newPostBtn: $('#newPostBtn'),
     newPostModalClose: $('#newPostModal .close'),
     newPostModalForm: $('#newPostModal #newPostModalForm'),
@@ -23,30 +23,31 @@ var index = {
             if(imageFile.size <= 5242880 && imageRegex.test(imageFileName)) {
                 if (index.attachFile.fileCount > 9) return;
 
-                index.attachFile.files.push(imageFile);
+                var yyyymmdd = new Date().toISOString().slice(0, 10).replace(/\-/g, '/');
+                var uuid = function() {
+                    var d = new Date().getTime();
+                    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                        var r = (d + Math.random() * 16) % 16 | 0;
+                        d = Math.floor(d / 16);
+                        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+                    });
+                    return uuid;
+                }();
+                var filetype = imageFileName.substring(imageFileName.lastIndexOf('.') + 1, imageFileName.length).toLowerCase();
+                var fileVirtualPath = '/image/upload/' + yyyymmdd + '/' + uuid + '.' + filetype;
+                var file = {};
+
+                file[fileVirtualPath] = imageFile;
+                index.attachFile.files.push(file);
 
                 var reader = new FileReader();
                 reader.readAsDataURL(imageFile);
                 reader.onload = function(e) {
                     if (index.attachFile.fileCount > 9) return;
 
-                    var yyyymmdd = new Date().toISOString().slice(0, 10).replace(/\-/g, '/');
-                    var uuid = function() {
-                        var d = new Date().getTime();
-                        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                            var r = (d + Math.random() * 16) % 16 | 0;
-                            d = Math.floor(d / 16);
-                            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-                        });
-                        return uuid;
-                    }();
-                    var filetype = imageFileName.substring(imageFileName.lastIndexOf('.') + 1, imageFileName.length).toLowerCase();
-                    var fileVirtualPath = '/upload/' + yyyymmdd + '/' + uuid + '.' + filetype;
-                    index.attachFile.files.push(imageFile);
-
                     var imageThumbnail = e.target.result;
-
                     var attachFileThumbDiv = [];
+
                     attachFileThumbDiv.push('<div class="col-md-2 attach-file-thumb" id="attachFileThumb' + index.attachFile.fileIndex + '">');
                     attachFileThumbDiv.push('   <div class="thumbnail-wrapper">');
                     attachFileThumbDiv.push('       <div class="thumbnail" id="thumbnail' + index.attachFile.fileIndex + '">');
@@ -77,7 +78,7 @@ var index = {
                         $('#newPostModal #attachFileThumb' + attachFileThumbNo).fadeOut(200, function() {
                             $(this).remove();
                         });
-                        index.attachFile.files[attachFileThumbNo] = undefined;
+                        delete index.attachFile.files[attachFileThumbNo];
                         index.attachFile.fileCount--;
                     });
 
@@ -161,6 +162,7 @@ var index = {
         });
 
         $('#newPostModalForm input[name=title]').val('');
+        $('#newPostModalForm input[name=masterKey]').val('');
         $('#newPostModalForm input#attachFiles').val('');
         $('#newPostModal #attachFiles').val('');
         $('#newPostModal #attachFileThumbDiv').html('');
@@ -185,22 +187,31 @@ var index = {
         return false;
     },
     newPostModalFormSubmitEvent: function() {
+        var category = $("#newPostModal #newPostModalForm input[name=category]");
+
+        if (!category.val()) {
+            alert('Select a category');
+            return false;
+        }
+
         var title = $("#newPostModal #newPostModalForm input[name=title]");
         var masterKey = $("#newPostModal #newPostModalForm input[name=masterKey]");
         var content = index.SimpleMDE.value();
         var attachFiles = {};
-
         var formData = new FormData();
-        Array.prototype.sort.call(index.attachFile.files);
-        for (var i = 0; i < index.attachFile.fileCount; i++) {
-            formData.append(i, index.attachFile.files[i]);
+        var filesLen = index.attachFile.files.length;
+        for (var i = 0; i < filesLen; i++) {
+            if (!index.attachFile.files[i]) continue;
+
+            for (var key in index.attachFile.files[i]) {
+                formData.append(key, index.attachFile.files[i][key]);
+            }
         }
 
+        formData.append('category', category.val());
         formData.append('title', title.val());
         formData.append('master_key', masterKey.val());
         formData.append('content', content);
-
-        console.log(formData);
 
         $.ajax({
             url: '/api/board', data: formData, dataType: 'json',

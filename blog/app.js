@@ -52,7 +52,7 @@ app.use(passport.session());
 app.use(require('connect-flash')());
 
 // middleware
-app.use(require('middleware/validation'));
+app.use(require('middleware/preprocessor'));
 app.use(require('middleware/auth'));
 app.use(require('middleware/login'));
 

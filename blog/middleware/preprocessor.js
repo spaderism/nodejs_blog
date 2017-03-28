@@ -1,10 +1,13 @@
 'use strict';
 
-const logger = require('lib/logger')('middleware/validation.js');
+const logger = require('lib/logger')('middleware/preprocessor.js');
 const appConfig = require('config/app');
 const constant = require('config/constant');
 const endpoint = require('lib/endpoint');
 const Joi = require('joi');
+const typeis = require('type-is');
+const formidable = require('formidable');
+const qs = require('qs');
 
 class Validation {
 	static apiloginpost(req, res, callback) {
@@ -89,6 +92,28 @@ class Validation {
 	}
 };
 
+const multipartParser = (req, res, next) => {
+	if (typeis(req, ['multipart'])) {
+		const form = new formidable.IncomingForm();
+		form.keepExtensions = true;
+		form.maxFieldsSize = 10485760;
+		form.maxFields = 500000;
+		form.multiples = true;
+
+		form.parse(req, (err, fields, files) => {
+			if (err) return next(err);
+
+			const qsOptions = { arrayLimit: 50000, parameterLimit: 500000 };
+			req.body = qs.parse(qs.stringify(fields), qsOptions);
+			req.files = files;
+
+			next();
+		});
+	} else {
+		next();
+	}
+};
+
 module.exports = (req, res, next) => {
 	logger.debug('유효성 검사 미들웨어');
 
@@ -107,10 +132,10 @@ module.exports = (req, res, next) => {
 			}
 
 			Validation.xssFilter(req.method === 'GET' ? req.query : req.body);
-			next();
+			multipartParser(req, res, next);
 		});
 	} else {
 		Validation.xssFilter(req.method === 'GET' ? req.query : req.body);
-		next();
+		multipartParser(req, res, next);
 	}
 };

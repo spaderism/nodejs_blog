@@ -1,10 +1,10 @@
 'use strict';
 
+const Crypto = require('lib/Crypto');
 const logger = require('lib/logger')('lib/endpoint.js');
 const logSaver = require('lib/logSaver');
 const constant = require('config/constant');
 const appConfig = require('config/app');
-const Identifier = require('lib/Identifier');
 const url = require('url');
 
 const clone = require('clone');
@@ -29,7 +29,7 @@ module.exports = (req, res, data, error) => {
 };
 
 const reformData = (req, data, error) => {
-	const traceId = Identifier.getIdentifier();
+	const traceId = Crypto.getIdentifier();
 
 	if (data) {
 		data.meta.code = data.meta.code || constant.statusMessages.UNKNOWN_ERROR;
@@ -67,8 +67,6 @@ const reformData = (req, data, error) => {
 		debugLog.body = req.body || {};
 	}
 
-	bcryptDebug(debugLog.query || debugLog.body || {});
-
 	data.debug = debugLog;
 
 	data.debug.error = error ? true : false;
@@ -90,25 +88,6 @@ const getSubPath = (req, logtime) => {
 		month: datetimes[1] || 'blank',
 		day: datetimes[2] || 'blank'
 	});
-};
-
-const bcryptDebug = (reqData) => {
-	const bcryptField = [
-		'name', 'first_name', 'last_name',
-		'password', 'confirm_password', 'master_key'
-	];
-
-	for (const key of Object.keys(reqData)) {
-		const value = reqData[key];
-
-		if (typeof value === 'object') {
-			bcryptDebug(value);
-		}
-		if (typeof value === 'string') {
-			reqData[key] = !bcryptField.includes(key) ? value
-				  		 : bcrypt.hashSync(value, bcrypt.genSaltSync(10));
-		}
-	}
 };
 
 const resJson = (res, cloneData) => {

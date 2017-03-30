@@ -8,6 +8,7 @@ const Joi = require('joi');
 const typeis = require('type-is');
 const formidable = require('formidable');
 const qs = require('qs');
+const async = require('async');
 
 class Validation {
 	static apiloginpost(req, res, callback) {
@@ -92,7 +93,7 @@ class Validation {
 	}
 };
 
-const multipartParser = (req, res, next) => {
+const multipartParser = (req, res, callback) => {
 	if (typeis(req, ['multipart'])) {
 		const form = new formidable.IncomingForm();
 		form.keepExtensions = true;
@@ -101,16 +102,16 @@ const multipartParser = (req, res, next) => {
 		form.multiples = true;
 
 		form.parse(req, (err, fields, files) => {
-			if (err) return next(err);
+			if (err) return callback(err);
 
 			const qsOptions = { arrayLimit: 50000, parameterLimit: 500000 };
 			req.body = qs.parse(qs.stringify(fields), qsOptions);
 			req.files = files;
 
-			next();
+			callback();
 		});
 	} else {
-		next();
+		callback();
 	}
 };
 
@@ -119,23 +120,33 @@ module.exports = (req, res, next) => {
 
 	if (!req.url.startsWith('/api')) return next();
 
-	const validation = Validation[`${req.url.split('/').join('')}${req.method.toLowerCase()}`];
+	async.series([
+		(callback) => {
+			multipartParser(req, res, (err) => {
+				callback(err);
+			});
+		}
+	], (err) => {
+		if (err) return next(err);
 
-	if (validation) {
-		validation(req, res, (result) => {
-			if (!result.isValid) {
-				const meta = {};
-				meta.code = constant.statusCodes.BAD_REQUEST;
-				meta.message = result.message;
+		const validMethod = Validation[`${req.url.split('/').join('')}${req.method.toLowerCase()}`];
 
-				return endpoint(req, res, { meta: meta });
-			}
+		if (validMethod) {
+			validMethod(req, res, (result) => {
+				if (!result.isValid) {
+					const meta = {};
+					meta.code = constant.statusCodes.BAD_REQUEST;
+					meta.message = result.message;
 
+					return endpoint(req, res, { meta: meta });
+				}
+
+				Validation.xssFilter(req.method === 'GET' ? req.query : req.body);
+				next();
+			});
+		} else {
 			Validation.xssFilter(req.method === 'GET' ? req.query : req.body);
-			multipartParser(req, res, next);
-		});
-	} else {
-		Validation.xssFilter(req.method === 'GET' ? req.query : req.body);
-		multipartParser(req, res, next);
-	}
+			next();
+		}
+	});
 };

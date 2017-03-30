@@ -1,14 +1,38 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const async = require('async');
-const mkdirp = require('mkdirp');
-const prettyjson = require('prettyjson');
+const Crypto = require('lib/Crypto');
 const logger = require('lib/logger')('lib/logSaver.js');
+const appConfig = require('config/app');
+const prettyjson = require('prettyjson');
+const mkdirp = require('mkdirp');
+const async = require('async');
+const path = require('path');
+const fs = require('fs');
 
 module.exports = (req, res, data) => {
+	encryptData(req, res, data);
 	toFile(req, res, data);
+};
+
+const encryptData = (req, res, data) => {
+	const encryptField = [
+		'name', 'first_name', 'last_name',
+		'password', 'confirm_password', 'master_key'
+	];
+
+	for (const key of Object.keys(data)) {
+		const value = data[key];
+
+		if (typeof value === 'object') {
+			encryptData(req, res, value);
+		}
+		if (typeof value === 'string') {
+			data[key] = !encryptField.includes(key) ? value :
+				Crypto.tripledesEncrypt(
+					data[key], appConfig.crypto.key, appConfig.crypto.iv
+				);
+		}
+	}
 };
 
 const toFile = (req, res, data) => {

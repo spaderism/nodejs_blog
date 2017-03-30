@@ -14,6 +14,8 @@ const appConfig = {
 
     serverPort: privateConfig.serverPort[NODE_ENV], testServerPort: 9999,
 
+    crypto: privateConfig.crypto,
+
     // session : 세션 옵션
     session: {
         secret: privateConfig.masterKey,

@@ -7,6 +7,39 @@ let pastTime = null;
 let cipherText;
 
 class Identifier {
+    static tripledesEncrypt(plainText, key, iv) {
+        if (iv === undefined) {
+            iv = crypto.randomBytes(8);
+        }
+
+        const cipher = crypto.createCipheriv('des-ede3-cfb8', key, iv);
+        let cipherText = cipher.update(plainText, 'utf8', 'hex');
+        cipherText += cipher.final('hex');
+
+        return {
+            iv: new Buffer(iv, 'binary').toString('hex'),
+            sCipherText: cipherText
+        };
+    }
+
+    static tripledesDecrypt(cipherText, key, iv) {
+        const ivClone = Object.clone(iv);
+
+        iv = new Buffer(iv, 'hex').toString('binary');
+
+        cipherText = new Buffer(cipherText, 'hex').toString('binary');
+
+        const decipher = crypto.createDecipheriv('des-ede3-cfb8', key, iv);
+        let plainText = decipher.update(cipherText, 'binary', 'utf8');
+        plainText += decipher.final('utf8');
+
+        return {
+            sIv: ivClone,
+            sPlainText: plainText
+        };
+    };
+
+
 	static _getSequenceAndTimestamp() {
         const presentTime = new Date().getTime();
 

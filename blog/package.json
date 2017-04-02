@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "start": "export NODE_PATH=. && export DEBUG=*NODEBLOG* && node bin/www",
-    "nodemon": "export NODE_PATH=. && export DEBUG=*NODEBLOG* && nodemon ./bin/www",
+    "nodemon": "export NODE_PATH=. && export DEBUG=*NODEBLOG* && ./node_modules/nodemon/bin/nodemon.js ./bin/www",
     "eslint": "node ./node_modules/eslint/bin/eslint --config .eslintrc --ignore-path .eslintignore .",
-    "test": "istanbul cover ./node_modules/.bin/_mocha -- --recursive --timeout=60000 testcase"
+    "test": "export NODE_PATH=. && ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive --timeout=60000 testcase"
   },
   "author": {
     "name": "spaderism",
@@ -28,10 +28,13 @@
     "formidable": "^1.1.1",
     "handlebars": "^4.0.6",
     "ioredis": "^2.5.0",
+    "istanbul": "^0.4.5",
     "joi": "^10.2.2",
     "mkdirp": "^0.5.1",
+    "mocha": "^3.2.0",
     "moment": "^2.17.1",
     "mongoose": "^4.8.7",
+    "nodemon": "^1.11.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-github": "^1.1.0",

@@ -20,8 +20,8 @@ const routeInfos = [
     { file: 'route/swagger', path: '/swagger', method: 'swaggerGET', type: 'get', auth: true },
 
     // api
-    { file: 'route/api.login', path: '/api/login', method: 'loginPOST', type: 'post', auth: true },
-    { file: 'route/api.user', path: '/api/user', method: 'userPOST', type: 'post', auth: true },
+    { file: 'route/api.login', path: '/api/login', method: 'loginPOST', type: 'post' },
+    { file: 'route/api.user', path: '/api/user', method: 'userPOST', type: 'post' },
     { file: 'route/api.user', path: '/api/user', method: 'userDELETE', type: 'delete', auth: true },
     { file: 'route/api.board', path: '/api/board', method: 'boardPOST', type: 'post', auth: true }
 ];

@@ -15,9 +15,9 @@ module.exports = (req, res, next) => {
         return ele.path === pathname;
     })[0];
 
-    logger.debug(`path: ${pathname} auth require: ${routeInfo.auth}`);
+    if (!routeInfo || !routeInfo.auth) return next();
 
-    if (!routeInfo.auth) return next();
+    logger.debug(`path: ${pathname} auth require: ${routeInfo.auth}`);
 
     const unAuthHandler = () => {
         if (pathname.startsWith('/api')) {

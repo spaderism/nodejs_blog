@@ -11,7 +11,7 @@ module.exports = {
 
 		err.status = errCode;
 
-		next(err);
+		return res.status(errCode).render('error', { errCode: errCode, errMessage: err.message });
 	},
 
 	errorHandler: (err, req, res, next) => {

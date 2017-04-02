@@ -55,6 +55,8 @@ const appConfig = {
         }
     },
 
+    category: [ 'javascript', 'node.js', 'java', 'php', 'database', 'linux', 'etc' ],
+
     logFilePath: {
         server: '/Users/MacintoshHD/Documents/git/nodejs_blog/blog/log/server',
         history: '/Users/MacintoshHD/Documents/git/nodejs_blog/blog/log/history'

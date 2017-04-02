@@ -12,13 +12,10 @@
                 <a href="#" style="font-weight: bold;">Portfolio.</a>
             </li><hr>
             <li>
-                <a href="#" style="font-weight: bold;">Javascript.</a>
-                <a href="#" style="font-weight: bold;">Node.js.</a>
-                <a href="#" style="font-weight: bold;">Java.</a>
-                <a href="#" style="font-weight: bold;">Php.</a>
-                <a href="#" style="font-weight: bold;">Database.</a>
-                <a href="#" style="font-weight: bold;">Linux.</a>
-                <a href="#" style="font-weight: bold;">Etc.</a>
+                <% var categoryLength = category.length %>
+                <% for (var i = 0; i < categoryLength; i++) { %>
+                    <a href="#" style="font-weight: bold;"><%= category[i].substring(0, 1).toUpperCase() + category[i].substring(1, category[i].length).toLowerCase(); %>.</a>
+                <% } %>
             </li>
 
             <% if (user) { %>

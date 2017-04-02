@@ -91,67 +91,9 @@ var index = {
         return false;
     },
     newPostBtnClickEvent: function() {
-        $(document).ready(function () {
-            $('.btn-select').each(function (e) {
-                var value = $(this).find('ul li.selected').html();
-                if (value != undefined) {
-                    $(this).find('.btn-select-input').val(value);
-                    $(this).find('.btn-select-value').html(value);
-                }
-            });
-        });
-
-        $(document).on('click', '.btn-select', function (e) {
-            e.preventDefault();
-            var ul = $(this).find('ul');
-            if ($(this).hasClass('active')) {
-                if (ul.find('li').is(e.target)) {
-                    var target = $(e.target);
-                    target.addClass('selected').siblings().removeClass('selected');
-                    var value = target.html();
-                    $(this).find('.btn-select-input').val(value);
-                    $(this).find('.btn-select-value').html(value);
-                }
-                ul.hide();
-                $(this).removeClass('active');
-            }
-            else {
-                $('.btn-select').not(this).each(function () {
-                    $(this).removeClass('active').find('ul').hide();
-                });
-                ul.slideDown(200);
-                $(this).addClass('active');
-            }
-        });
-
-        $(document).on('click', function (e) {
-            var target = $(e.target).closest('.btn-select');
-            if (!target.length) {
-                $('.btn-select').removeClass('active').find('ul').hide();
-            }
-        });
-
-        var simplemdeInitValue = [];
-        simplemdeInitValue.push('# Intro');
-        simplemdeInitValue.push('Go ahead, play around with the editor! Be sure to check out **bold** and *italic* styling, or even [links](https://google.com). You can type the Markdown syntax, use the toolbar, or use shortcuts like `cmd-b` or `ctrl-b`.\n');
-        simplemdeInitValue.push('## Lists');
-        simplemdeInitValue.push('Unordered lists can be started using the toolbar or by typing `* `, `- `, or `+ `. Ordered lists can be started by typing `1. `.\n');
-        simplemdeInitValue.push('#### Unordered');
-        simplemdeInitValue.push('* Lists are a piece of cake');
-        simplemdeInitValue.push('* They even auto continue as you type');
-        simplemdeInitValue.push('* A double enter will end them');
-        simplemdeInitValue.push('* Tabs and shift-tabs work too\n');
-        simplemdeInitValue.push('#### Ordered');
-        simplemdeInitValue.push('1. Numbered lists...');
-        simplemdeInitValue.push('2. ...work too!\n');
-        simplemdeInitValue.push('## What about images?');
-        simplemdeInitValue.push('![Yes](https://i.imgur.com/sZlktY7.png)');
-
-        index.SimpleMDEInitValue = simplemdeInitValue.join('\n');
         index.SimpleMDE = new SimpleMDE({
             autofocus: true,
-            element: $('#simpleMDE')[0],
-            initialValue: index.SimpleMDEInitValue,
+            element: $('#newPostModalForm #simpleMDE')[0],
             toolbar: [
                 'bold', 'italic', 'strikethrough', '|',
                 'heading-1', 'heading-2', 'heading-3', '|',
@@ -160,6 +102,8 @@ var index = {
                 'preview', 'side-by-side', 'fullscreen'
             ]
         });
+
+        index.SimpleMDE.value(index.SimpleMDEInitValue);
 
         $('#newPostModalForm input[name=title]').val('');
         $('#newPostModalForm input[name=masterKey]').val('');
@@ -170,7 +114,7 @@ var index = {
         index.attachFile.fileIndex = 0;
         index.attachFile.fileCount = 0;
 
-        $('#newPostModal').fadeIn(500);
+        $('#newPostModal').fadeIn(1);
 
         return false;
     },
@@ -270,6 +214,63 @@ var index = {
 
             $('#newPostModal .file-drag').css('opacity', '0');
         });
+
+        $(document).ready(function () {
+            $('.btn-select').each(function (e) {
+                var value = $(this).find('ul li.selected').html();
+                if (value != undefined) {
+                    $(this).find('.btn-select-input').val(value);
+                    $(this).find('.btn-select-value').html(value);
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-select', function (e) {
+            e.preventDefault();
+            var ul = $(this).find('ul');
+            if ($(this).hasClass('active')) {
+                if (ul.find('li').is(e.target)) {
+                    var target = $(e.target);
+                    target.addClass('selected').siblings().removeClass('selected');
+                    var value = target.html();
+                    $(this).find('.btn-select-input').val(value);
+                    $(this).find('.btn-select-value').html(value);
+                }
+                ul.hide();
+                $(this).removeClass('active');
+            }
+            else {
+                $('.btn-select').not(this).each(function () {
+                    $(this).removeClass('active').find('ul').hide();
+                });
+                ul.slideDown(200);
+                $(this).addClass('active');
+            }
+        });
+
+        $(document).on('click', function (e) {
+            var target = $(e.target).closest('.btn-select');
+            if (!target.length) {
+                $('.btn-select').removeClass('active').find('ul').hide();
+            }
+        });
+
+        var simplemdeInitValue = [];
+        simplemdeInitValue.push('# Intro');
+        simplemdeInitValue.push('Go ahead, play around with the editor! Be sure to check out **bold** and *italic* styling, or even [links](https://google.com). You can type the Markdown syntax, use the toolbar, or use shortcuts like `cmd-b` or `ctrl-b`.\n');
+        simplemdeInitValue.push('## Lists');
+        simplemdeInitValue.push('Unordered lists can be started using the toolbar or by typing `* `, `- `, or `+ `. Ordered lists can be started by typing `1. `.\n');
+        simplemdeInitValue.push('#### Unordered');
+        simplemdeInitValue.push('* Lists are a piece of cake');
+        simplemdeInitValue.push('* They even auto continue as you type');
+        simplemdeInitValue.push('* A double enter will end them');
+        simplemdeInitValue.push('* Tabs and shift-tabs work too\n');
+        simplemdeInitValue.push('#### Ordered');
+        simplemdeInitValue.push('1. Numbered lists...');
+        simplemdeInitValue.push('2. ...work too!\n');
+        simplemdeInitValue.push('## What about images?');
+        simplemdeInitValue.push('![Yes](https://i.imgur.com/sZlktY7.png)');
+        index.SimpleMDEInitValue = simplemdeInitValue.join('\n');
     }
 };
 

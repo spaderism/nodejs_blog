@@ -49,8 +49,6 @@ const onListening = () => {
                : 'port ' + addr.port;
 
     logger.debug('Listening on ' + bind);
-
-    database.init(app, appConfig);
 };
 
 const port = normalizePort(appConfig.serverPort);
@@ -61,6 +59,7 @@ app.on('close', () => {
 
     if (database.mongodb) {
         database.mongodb.close();
+        database.mysqldb.close();
     }
 });
 
@@ -76,6 +75,8 @@ process.on('SIGTERM' || 'SIGINT', () => {
 });
 
 const server = http.createServer(app);
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+database.init(app, () => {
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
+});

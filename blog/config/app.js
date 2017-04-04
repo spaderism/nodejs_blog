@@ -52,10 +52,17 @@ const appConfig = {
             host: privateConfig.database.redis.host,
             port: privateConfig.database.redis.port,
             db: privateConfig.database.redis.db[NODE_ENV]
+        },
+        mysql: {
+            host: privateConfig.database.mysql.host,
+            port: privateConfig.database.mysql.port,
+            user: privateConfig.database.mysql.user,
+            password: privateConfig.database.mysql.password,
+            database: privateConfig.database.mysql.database[NODE_ENV],
+            connectionLimit: 10,
+            wateForConnections: true
         }
     },
-
-    category: [ 'javascript', 'node.js', 'java', 'php', 'database', 'linux', 'etc' ],
 
     logFilePath: {
         server: '/Users/MacintoshHD/Documents/git/nodejs_blog/blog/log/server',

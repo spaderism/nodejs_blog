@@ -1,9 +1,9 @@
 <header id="wrapper" class="wrapper-content toggled">
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
-            <li style="text-align: center; margin-top: 30px;">
-                <img src="/image/include/useravatar.jpg" class="img-circle profile-avatar" alt="User avatar" width="110px", height="110px" style="border: 2px solid #999999;"><br>
-                <div style="font-weight: bold; margin-top: 10px;">YoungIl Cho</div>
+            <li style="text-align: center; margin-top: 30px; padding-right:10px;">
+                <img src="/image/include/useravatar.jpg" class="img-circle profile-avatar" alt="User avatar" width="110px", height="110px" style="border: 2px solid black;"><br>
+                <div style="font-weight: bold; font-size:15px; margin-top: 10px;">SPADERISM&nbsp;</div>
             </li><hr>
             <li class="active">
                 <a href="/" style="font-weight: bold;">Home.</a>
@@ -12,10 +12,13 @@
                 <a href="#" style="font-weight: bold;">Portfolio.</a>
             </li><hr>
             <li>
-                <% var categoryLength = category.length %>
-                <% for (var i = 0; i < categoryLength; i++) { %>
-                    <a href="#" style="font-weight: bold;"><%= category[i].substring(0, 1).toUpperCase() + category[i].substring(1, category[i].length).toLowerCase(); %>.</a>
-                <% } %>
+                <a href="/board?category=javascript" style="font-weight: bold;">Javascript.</a>
+                <a href="/board?category=node.js" style="font-weight: bold;">Node.js.</a>
+                <a href="/board?category=java" style="font-weight: bold;">Java.</a>
+                <a href="/board?category=php" style="font-weight: bold;">Php.</a>
+                <a href="/board?category=database" style="font-weight: bold;">Database.</a>
+                <a href="/board?category=linux" style="font-weight: bold;">Linux.</a>
+                <a href="/board?category=etc" style="font-weight: bold;">Etc.</a>
             </li>
 
             <% if (user) { %>

@@ -17,6 +17,7 @@ const routeInfos = [
     { file: 'route/login', path: '/github-callback', method: 'githubCallback', type: 'get' },
     { file: 'route/login', path: '/google', method: 'google', type: 'get' },
     { file: 'route/login', path: '/google-callback', method: 'googleCallback', type: 'get' },
+    { file: 'route/board', path: '/board', method: 'boardGET', type: 'get' },
     { file: 'route/swagger', path: '/swagger', method: 'swaggerGET', type: 'get', auth: true },
 
     // api

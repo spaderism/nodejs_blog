@@ -1,50 +1,20 @@
--- 게시물
-ALTER TABLE `board`
-	DROP FOREIGN KEY `FK_category_TO_board`; -- 카테고리 -> 게시물
-
 -- 이미지첨부파일
 ALTER TABLE `fileattach`
 	DROP FOREIGN KEY `FK_board_TO_fileattach`; -- 게시물 -> 이미지첨부파일
+
+-- 이미지첨부파일
+ALTER TABLE `fileattach`
+	DROP PRIMARY KEY; -- 이미지첨부파일 기본키
 
 -- 게시물
 ALTER TABLE `board`
 	DROP PRIMARY KEY; -- 게시물 기본키
 
 -- 이미지첨부파일
-ALTER TABLE `fileattach`
-	DROP PRIMARY KEY; -- 이미지첨부파일 기본키
-
--- 카테고리
-ALTER TABLE `category`
-	DROP PRIMARY KEY; -- 카테고리 기본키
+DROP TABLE IF EXISTS `fileattach` RESTRICT;
 
 -- 게시물
 DROP TABLE IF EXISTS `board` RESTRICT;
-
--- 이미지첨부파일
-DROP TABLE IF EXISTS `fileattach` RESTRICT;
-
--- 카테고리
-DROP TABLE IF EXISTS `category` RESTRICT;
-
--- 게시물
-CREATE TABLE `board` (
-	`bno`     INTEGER      NOT NULL COMMENT '게시글일련번호', -- 게시글일련번호
-	`title`   VARCHAR(255) NOT NULL COMMENT '제목', -- 제목
-	`content` TEXT         NOT NULL COMMENT '내용', -- 내용
-	`cno`     INTEGER      NOT NULL COMMENT '카테고리일련번호' -- 카테고리일련번호
-)
-COMMENT '게시물';
-
--- 게시물
-ALTER TABLE `board`
-	ADD CONSTRAINT `PK_board` -- 게시물 기본키
-		PRIMARY KEY (
-			`bno` -- 게시글일련번호
-		);
-
-ALTER TABLE `board`
-	MODIFY COLUMN `bno` INTEGER NOT NULL AUTO_INCREMENT COMMENT '게시글일련번호';
 
 -- 이미지첨부파일
 CREATE TABLE `fileattach` (
@@ -64,32 +34,24 @@ ALTER TABLE `fileattach`
 ALTER TABLE `fileattach`
 	MODIFY COLUMN `fno` INTEGER NOT NULL AUTO_INCREMENT COMMENT '첨부파일일련번호';
 
--- 카테고리
-CREATE TABLE `category` (
-	`cno`  INTEGER     NOT NULL COMMENT '카테고리일련번호', -- 카테고리일련번호
-	`name` VARCHAR(50) NOT NULL COMMENT '카테고리이름' -- 카테고리이름
+-- 게시물
+CREATE TABLE `board` (
+	`bno`      INTEGER      NOT NULL COMMENT '게시글일련번호', -- 게시글일련번호
+	`category` VARCHAR(255) NOT NULL COMMENT '카테고리', -- 카테고리
+	`title`    VARCHAR(255) NOT NULL COMMENT '제목', -- 제목
+	`content`  TEXT         NOT NULL COMMENT '내용' -- 내용
 )
-COMMENT '카테고리';
-
--- 카테고리
-ALTER TABLE `category`
-	ADD CONSTRAINT `PK_category` -- 카테고리 기본키
-		PRIMARY KEY (
-			`cno` -- 카테고리일련번호
-		);
-
-ALTER TABLE `category`
-	MODIFY COLUMN `cno` INTEGER NOT NULL AUTO_INCREMENT COMMENT '카테고리일련번호';
+COMMENT '게시물';
 
 -- 게시물
 ALTER TABLE `board`
-	ADD CONSTRAINT `FK_category_TO_board` -- 카테고리 -> 게시물
-		FOREIGN KEY (
-			`cno` -- 카테고리일련번호
-		)
-		REFERENCES `category` ( -- 카테고리
-			`cno` -- 카테고리일련번호
+	ADD CONSTRAINT `PK_board` -- 게시물 기본키
+		PRIMARY KEY (
+			`bno` -- 게시글일련번호
 		);
+
+ALTER TABLE `board`
+	MODIFY COLUMN `bno` INTEGER NOT NULL AUTO_INCREMENT COMMENT '게시글일련번호';
 
 -- 이미지첨부파일
 ALTER TABLE `fileattach`

@@ -9,7 +9,6 @@ const url = require('url');
 
 const clone = require('clone');
 const moment = require('moment');
-const bcrypt = require('bcrypt');
 const handlebars = require('handlebars');
 
 module.exports = (req, res, data, error) => {

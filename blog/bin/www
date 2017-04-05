@@ -49,19 +49,22 @@ const onListening = () => {
                : 'port ' + addr.port;
 
     logger.debug('Listening on ' + bind);
+
+    database.init(app);
 };
 
 const port = normalizePort(appConfig.serverPort);
 
 app.set('port', port);
-app.on('close', () => {
-    logger.debug('서버 객체가 종료됩니다.');
 
-    if (database.mongodb) {
-        database.mongodb.close();
-        database.mysqldb.close();
-    }
-});
+const server = http.createServer(app);
+server.listen(port)
+    .on('error', onError)
+    .on('listening', onListening)
+    .on('close', () => {
+        logger.debug('서버 객체가 종료됩니다.');
+        process.exit(0);
+    });
 
 process.on('uncaughtException', (err) => {
     logger.debug('uncaughtException 발생함 : ' + err);
@@ -71,12 +74,5 @@ process.on('uncaughtException', (err) => {
 
 process.on('SIGTERM' || 'SIGINT', () => {
     logger.debug('프로세스가 종료됩니다.');
-    app.close();
-});
-
-const server = http.createServer(app);
-database.init(app, () => {
-    server.listen(port);
-    server.on('error', onError);
-    server.on('listening', onListening);
+    server.close();
 });

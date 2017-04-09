@@ -141,6 +141,12 @@ var index = {
         var title = $("#newPostModal #newPostModalForm input[name=title]");
         var masterKey = $("#newPostModal #newPostModalForm input[name=masterKey]");
         var content = index.SimpleMDE.value();
+
+        if (!content) {
+            alert('Content cannot be empty');
+            return false;
+        }
+
         var attachFiles = {};
         var formData = new FormData();
         var filesLen = index.attachFile.files.length;

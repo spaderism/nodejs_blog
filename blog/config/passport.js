@@ -134,8 +134,6 @@ const strategy = {
         }, (accessToken, refreshToken, profile, next) => {
             logger.debug('passport의 github 호출됨.');
 
-            console.log(profile);
-
             const database = app.get('database');
 
             const options = { criteria: { 'github.id': profile.id } };

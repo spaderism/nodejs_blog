@@ -5,3 +5,4 @@ private.js
 *.log
 *.rdb
 dummy
+public/image/upload

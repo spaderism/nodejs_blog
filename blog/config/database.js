@@ -12,38 +12,33 @@ const database = {};
 
 database.init = (app) => {
     logger.debug('init() 호출됨.');
-    connect(app);
-};
 
-//데이터베이스에 연결하고 응답 객체의 속성으로 db 객체 추가
-const connect = (app) => {
-    logger.debug('connect() 호출됨.');
-
-    mongoConnect();
-    mysqlConnect();
+    databaseConnect();
 
     app.set('database', database);
 };
 
-const mongoConnect = () => {
+//데이터베이스에 연결하고 응답 객체의 속성으로 db 객체 추가
+const databaseConnect = () => {
+    logger.debug('connect() 호출됨.');
+
+    // mysql
+    if (!database.mysqldb) {
+        database.mysqldb = { connPool: mysql.createPool(appConfig.database.mysql) };
+    }
+
+    // mongo
     mongoose.connect(appConfig.database.mongodb.url);
     database.mongodb = mongoose.connection;
+    database.mongodb
+        .on('error', console.error.bind(console, 'mongoose connection error'))
+        .on('open', () => {
+            logger.debug(`mongodb에 연결되었습니다. ${appConfig.database.mongodb.url}`);
 
-    database.mongodb.on('error', console.error.bind(console, 'mongoose connection error'));
-    database.mongodb.on('open', () => {
-        logger.debug(`mongodb에 연결되었습니다. ${appConfig.database.mongodb.url}`);
-
-        // appConfig에 등록된 스키마 및 모델 객체 생성
-        createMongoSchema();
-    });
-    database.mongodb.on('disconnected', mongoConnect);
-};
-
-const mysqlConnect = () => {
-    database.mysqldb = mysql.createPool(appConfig.database.mysql);
-
-    database.mysqldb.on('error', console.error.bind(console, 'mysql connection error.'));
-    database.mongodb.on('end', mysqlConnect);
+            // appConfig에 등록된 스키마 및 모델 객체 생성
+            createMongoSchema();
+        })
+        .on('disconnected', databaseConnect);
 };
 
 // appConfig에 정의된 스키마 및 모델 객체 생성

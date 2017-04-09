@@ -79,15 +79,36 @@ class Validation {
 		});
 	}
 
+	static apiboardpost(req, res, callback) {
+		const model = {
+			category: req.body.category,
+			title: req.body.title,
+			masterKey: req.body.master_key,
+			content: req.body.content
+		};
+
+		const schema = Joi.object().keys({
+			category: appConfig.category,
+			title: Joi.string().max(65).required(),
+			masterKey: appConfig.masterKey,
+			content: Joi.string().required()
+		});
+
+		Joi.validate(model, schema, (err) => {
+			if (err) return callback({ isValid: false, message: err.name });
+			callback({ isValid: true });
+		});
+	}
+
 	static xssFilter(object) {
 	    for (const prop of Object.keys(object)) {
 	        if (typeof object[prop] === 'object') {
 	            this.xssFilter(object[prop]);
 	        } else {
-	            object[prop] = (object[prop]).replace(/\#/g, '&#35;').replace(/\&/g, '&#38;')
-		            				.replace(/\"/, '&#34;').replace(/\'/, '&#39;')
-		            				.replace(/\</g, '&lt;').replace(/\>/g, '&gt;')
-		            				.replace(/\(/g, '&#40;').replace(/\)/g, '&#41;');
+	            object[prop] = (object[prop]).replace(/\&/g, '&#38;')
+            				 .replace(/\"/, '&#34;').replace(/\'/, '&#39;')
+            				 .replace(/\</g, '&lt;').replace(/\>/g, '&gt;')
+            				 .replace(/\(/g, '&#40;').replace(/\)/g, '&#41;');
 	        }
 	    }
 	}

@@ -13,19 +13,35 @@ const database = {};
 database.init = (app) => {
     logger.debug('init() 호출됨.');
 
-    databaseConnect();
+    mysqlConnect();
+    mongodbConnect();
 
     app.set('database', database);
 };
 
-//데이터베이스에 연결하고 응답 객체의 속성으로 db 객체 추가
-const databaseConnect = () => {
-    logger.debug('connect() 호출됨.');
+// mysql 데이터베이스에 연결하고 응답 객체의 속성으로 db 객체 추가
+const mysqlConnect = () => {
+    logger.debug('mysqldbConnect() 호출됨.');
 
     // mysql
-    if (!database.mysqldb) {
-        database.mysqldb = { connPool: mysql.createPool(appConfig.database.mysql) };
-    }
+    database.mysql = {
+        connectionPool: mysql.createPool({
+            host: appConfig.database.mysql.host,
+            port: appConfig.database.mysql.port,
+            user: appConfig.database.mysql.user,
+            password: appConfig.database.mysql.password,
+            database: appConfig.database.mysql.database,
+            connectionLimit: appConfig.database.mysql.connectionLimit,
+            waitForConnections: appConfig.database.mysql.waitForConnections
+        })
+    };
+
+    createMysqlModel();
+};
+
+// mongo 데이터베이스에 연결하고 응답 객체의 속성으로 db 객체 추가
+const mongodbConnect = () => {
+    logger.debug('mongodbConnect() 호출됨.');
 
     // mongo
     mongoose.connect(appConfig.database.mongodb.url);
@@ -38,10 +54,15 @@ const databaseConnect = () => {
             // appConfig에 등록된 스키마 및 모델 객체 생성
             createMongoSchema();
         })
-        .on('disconnected', databaseConnect);
+        .on('disconnected', mongodbConnect);
 };
 
-// appConfig에 정의된 스키마 및 모델 객체 생성
+// appConfig mysql에 정의된 스키마 및 모델 객체 생성
+const createMysqlModel = () => {
+
+};
+
+// appConfig mongodb에 정의된 스키마 및 모델 객체 생성
 const createMongoSchema = () => {
     const schemaLen = appConfig.database.mongodb.schemas.length;
     logger.debug(`mongodb설정에 정의된 스키마의 수 : ${schemaLen}`);

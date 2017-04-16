@@ -7,8 +7,7 @@ const prettyjson = require('prettyjson');
 
 class AppControlConfig {
 	static init() {
-		const dirname = __dirname;
-		const defaultAppPath = path.join(`${dirname}/..`);
+		const defaultAppPath = path.join(`${__dirname}/..`);
 
 		this.appPath = process.env.NODE_PATH || defaultAppPath;
 

@@ -58,6 +58,10 @@
                     "401": {
                         "description": "UNAUTHORIZED",
                         "schema": { "$ref": "#/definitions/EmptyRes" }
+                    },
+                    "500": {
+                        "description": "INTERNAL SERVER ERROR",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
                     }
                 }
             }
@@ -158,6 +162,10 @@
                     "400": {
                         "description": "BAD REQUEST",
                         "schema": { "$ref": "#/definitions/EmptyRes" }
+                    },
+                    "500": {
+                        "description": "INTERNAL SERVER ERROR",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
                     }
                 }
             },
@@ -192,6 +200,70 @@
                     },
                     "400": {
                         "description": "BAD REQUEST",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
+                    },
+                    "500": {
+                        "description": "INTERNAL SERVER ERROR",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
+                    }
+                }
+            }
+        },
+
+        "/api/board": {
+            "post": {
+                "tags": [
+                    "board"
+                ],
+                "summary": "Board Insert API",
+                "description": "게시글 등록",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "category",
+                        "description": "카테고리",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "title",
+                        "description": "글제목",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "master_key",
+                        "description": "마스터키",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "content",
+                        "description": "글내용",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS",
+                        "schema": { "$ref": "#/definitions/Session" }
+                    },
+                    "400": {
+                        "description": "BAD REQUEST",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED",
+                        "schema": { "$ref": "#/definitions/EmptyRes" }
+                    },
+                    "500": {
+                        "description": "INTERNAL SERVER ERROR",
                         "schema": { "$ref": "#/definitions/EmptyRes" }
                     }
                 }

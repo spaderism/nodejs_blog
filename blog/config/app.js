@@ -60,7 +60,7 @@ const appConfig = {
             password: privateConfig.database.mysql.password,
             database: privateConfig.database.mysql.database[NODE_ENV],
             connectionLimit: 10,
-            wateForConnections: true
+            waitForConnections: true
         }
     },
 

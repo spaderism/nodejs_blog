@@ -7,13 +7,14 @@ const fs = require('fs');
 const upload = (file, saveDest, callback) => {
 	async.series([
 		(callback) => {
-			mkdirp(saveDest, (err) => {
+			const dir = saveDest.substring(0, saveDest.lastIndexOf('/'));
+			mkdirp(dir, (err) => {
 				callback(err);
 			});
 		},
 		(callback) => {
 			const tempPath = file.path;
-			fs.move(tempPath, saveDest, (err) => {
+			fs.rename(tempPath, saveDest, (err) => {
 				callback(err);
 			});
 		}

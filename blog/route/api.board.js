@@ -2,95 +2,113 @@
 
 const logger = require('lib/logger')('route/api.board.js');
 const appConfig = require('config/app');
-const rdbModel = require('database/mysql.model');
+const boardDao = require('database/mysql.board.model');
+const fileattachDao = require('database/mysql.fileattach.model');
 const attachUtil = require('lib/attachUtil');
-const constant = require('config/constant');
 const endpoint = require('lib/endpoint');
 const async = require('async');
-
 
 const boardPOST = (req, res, next) => {
 	logger.debug('boardPOST 호출됨');
 
-	console.log(req.files);
+	const connectionPool = req.app.get('database').mysql.connectionPool;
+	connectionPool.getConnection((err, connection) => {
+		if (err) {
+			connection.release();
+			return next(err);
+		}
 
-	const connPool = req.app.get('database').mysqldb.connPool;
-
-	connPool.getConnection((err, conn) => {
-		if (err) return next(err);
-		beginTransaction(conn);
+		logger.debug('connection 얻음.');
+		beginTransaction(connection);
 	});
 
-	const beginTransaction = (conn) => {
-		conn.beginTransaction((err) => {
-			if (err) return next(err);
+	const beginTransaction = (connection) => {
+		connection.beginTransaction((err) => {
+			if (err) {
+				connection.release();
+				return next(err);
+			}
 
-			async.waterfall([
-				(callback) => {
-					const board = {
-						category: req.body.category,
-						title: req.body.title,
-						content: req.body.content
-					};
+			logger.debug('트랜잭션 시작.');
+			insertTasks(connection);
+		});
+	};
 
-					rdbModel.boardInsert(conn, board, (err, result) => {
-						if (err) return callback(err);
-						callback(result.insertId);
-					});
-				},
-				(boardInsertId, callback) => {
-					async.forEachOf(req.files, (file, key, _callback) => {
-						if (file.size > 5242880 || !(file.type).startsWith('image')) {
-							return _callback(new Error('BAD_REQUEST'));
+	const insertTasks = (connection) => {
+		async.waterfall([
+			(callback) => {
+				const board = {
+					bno: req.body.bno,
+					category: req.body.category,
+					title: req.body.title,
+					content: req.body.content
+				};
+
+				boardDao.insert(connection, board, (err, result) => {
+					if (err) return callback(err);
+
+					logger.debug(`board insert 성공, insertId: ${result.insertId}`);
+					callback(null, result.insertId);
+				});
+			},
+			(insertId, callback) => {
+				if (!Object.keys(req.files).length) return callback(null);
+
+				logger.debug('첨부파일 다운로드 시작');
+
+				const uploadPath = appConfig.uploadPath;
+				async.forEachOf(req.files, (value, key, iterateeCallback) => {
+					const saveDest = uploadPath + key.replace('/image/upload', '');
+					attachUtil.upload(value, saveDest, (err) => {
+						if (err) {
+							attachUtil.remove(saveDest, (err) => {
+								if (err) logger.error(err);
+							});
+
+							return iterateeCallback(err);
 						}
 
-						const splitKey = key.split('/');
-						const saveDest = `${appConfig.uploadPath}/${splitKey[3]}/${splitKey[4]}/${splitKey[5]}`;
+						const fileattach = {
+							bno: insertId,
+							dest_dir: key,
+						};
 
-						attachUtil.upload(file, saveDest, (err) => {
-							if (err) return _callback(err);
+						fileattachDao.insert(connection, fileattach, (err, result) => {
+							if (err) {
+								attachUtil.remove(saveDest, (err) => {
+									if (err) logger.error(err);
+								});
 
-							const fileattach = { bno: boardInsertId, dest_dir: saveDest };
+								return iterateeCallback(err);
+							}
 
-							rdbModel.fileattachInsert(conn, fileattach, (err, result) => {
-								if (err) {
-									attachUtil.remove(saveDest, (_err) => {
-										if (_err) logger.error(`file remove err: ${err}`);
-										return _callback(err);
-									});
-								}
-
-								_callback();
-							});
+							iterateeCallback();
 						});
-					}, (err) => {
-						return callback(err);
 					});
-				},
-				(callback) => {
-					conn.commit((err) => {
-						callback(err);
-					});
-				}
-			], (err) => {
+				}, (err) => {
+					callback(err);
+				});
+			}
+		], (err, result) => {
+			if (err) {
+				logger.error(`에러 발생, 롤백! ${err}`);
+
+				return connection.rollback(() => {
+					connection.release();
+					next(err);
+				});
+			}
+
+			connection.commit((err) => {
 				if (err) {
-					conn.rollback();
-
-					if (err.message === 'BAD_REQUEST') {
-						const meta = {};
-
-						meta.code = constant.statusCodes.BAD_REQUEST;
-						meta.message = constant.statusMessage[meta.code];
-
-						return endpoint(req, res, { meta: meta });
-					}
-
-					return next(err);
+					return connection.rollback(() => {
+						connection.release();
+						next(err);
+					});
 				}
 
-				conn.release();
-
-				endpoint(req, res, ).......
+				logger.debug('board, file insert 성공');
+				connection.release();
 			});
 		});
 	};

@@ -2,6 +2,7 @@
 
 const logger = require('lib/logger')('route/api.board.js');
 const appConfig = require('config/app');
+const constant = require('config/constant');
 const boardDao = require('database/mysql.board.model');
 const fileattachDao = require('database/mysql.fileattach.model');
 const attachUtil = require('lib/attachUtil');
@@ -10,6 +11,8 @@ const async = require('async');
 
 const boardPOST = (req, res, next) => {
 	logger.debug('boardPOST 호출됨');
+
+	const retRes = {};
 
 	const connectionPool = req.app.get('database').mysql.connectionPool;
 	connectionPool.getConnection((err, connection) => {
@@ -38,7 +41,6 @@ const boardPOST = (req, res, next) => {
 		async.waterfall([
 			(callback) => {
 				const board = {
-					bno: req.body.bno,
 					category: req.body.category,
 					title: req.body.title,
 					content: req.body.content
@@ -46,6 +48,8 @@ const boardPOST = (req, res, next) => {
 
 				boardDao.insert(connection, board, (err, result) => {
 					if (err) return callback(err);
+
+					retRes.board = board;
 
 					logger.debug(`board insert 성공, insertId: ${result.insertId}`);
 					callback(null, result.insertId);
@@ -82,6 +86,9 @@ const boardPOST = (req, res, next) => {
 								return iterateeCallback(err);
 							}
 
+							if (!retRes.fileattach) retRes.fileattach = [];
+							retRes.fileattach.push(fileattach);
+
 							iterateeCallback();
 						});
 					});
@@ -89,7 +96,7 @@ const boardPOST = (req, res, next) => {
 					callback(err);
 				});
 			}
-		], (err, result) => {
+		], (err) => {
 			if (err) {
 				logger.error(`에러 발생, 롤백! ${err}`);
 
@@ -108,7 +115,13 @@ const boardPOST = (req, res, next) => {
 				}
 
 				logger.debug('board, file insert 성공');
+
 				connection.release();
+
+				const meta = {};
+				meta.code = constant.statusCodes.SUCCESS;
+				meta.message = constant.statusMessages[meta.code];
+				endpoint(req, res, { meta: meta, response: retRes });
 			});
 		});
 	};

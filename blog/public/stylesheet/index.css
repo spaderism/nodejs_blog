@@ -1,3 +1,53 @@
+/* board list */
+.bs-callout+.bs-callout {
+    margin-top: -5px;
+}
+
+.bs-callout {
+    padding: 25px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+.bs-callout-warning {
+    border-left-color: #aa6708;
+}
+
+.bs-callout-warning h4 {
+    color: #aa6708;
+}
+
+.bs-callout-danger {
+    border-left-color: #d9534f;
+}
+
+.bs-callout-danger h4 {
+    color: black;
+    font-weight: 900;
+}
+
+.bs-callout-primary {
+    border-left-color: #337ab7;
+}
+
+.bs-callout-primary h4 {
+    color: black;
+    font-weight: 900;
+}
+
+.bs-callout ㅗ {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.bs-callout p:last-child {
+    margin-bottom: 0;
+}
+
+
+
 .btn-select {
     position: relative;
     padding: 0;

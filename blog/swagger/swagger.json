@@ -15,6 +15,10 @@
         {
             "name": "user",
             "description": "Everything about User API"
+        },
+        {
+            "name": "board",
+            "description": "Everything about Board API"
         }
     ],
     "schemes": [
@@ -215,7 +219,7 @@
                 "tags": [
                     "board"
                 ],
-                "summary": "Board Insert API",
+                "summary": "게시글 등록 API",
                 "description": "게시글 등록",
                 "consumes": [ "application/json" ],
                 "produces": [ "application/json" ],
@@ -252,7 +256,7 @@
                 "responses": {
                     "200": {
                         "description": "SUCCESS",
-                        "schema": { "$ref": "#/definitions/Session" }
+                        "schema": { "$ref": "#/definitions/Board" }
                     },
                     "400": {
                         "description": "BAD REQUEST",
@@ -271,6 +275,80 @@
         }
     },
     "definitions": {
+        "Board": {
+            "type": "object",
+            "required": [ "meta", "response" ],
+            "properties": {
+                "meta": {
+                    "title": "meta",
+                    "type": "object",
+                    "description": "메타 정보",
+                    "required": [ "code", "message", "trace_id" ],
+                    "properties": {
+                        "code": {
+                            "type": "integer",
+                            "format": "int64",
+                            "description": "상태 코드"
+                        },
+                        "message": {
+                            "type": "string",
+                            "description": "상태 메시지"
+                        },
+                        "trace_id": {
+                            "type": "string",
+                            "description": "고유 번호"
+                        }
+                    }
+                },
+                "response": {
+                    "title": "response",
+                    "type": "object",
+                    "description": "응답 데이터",
+                    "required": [ "board" ],
+                    "properties": {
+                        "board": {
+                            "title": "board",
+                            "type": "object",
+                            "description": "게시물 정보",
+                            "required": [ "category", "title", "content" ],
+                            "properties": {
+                                "category": {
+                                    "type": "string",
+                                    "description": "카테고리"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "description": "글 제목"
+                                },
+                                "content": {
+                                    "type": "string",
+                                    "description": "글 내용"
+                                }
+                            }
+                        },
+                        "fileattach": {
+                            "title": "fileattach",
+                            "type": "array",
+                            "description": "파일 정보",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "bno": {
+                                        "type": "string",
+                                        "description": "글 번호"
+                                    },
+                                    "dest_dir": {
+                                        "type": "string",
+                                        "description": "저장 경로"
+                                    }
+                                }
+                            },
+                            "collectionFormat": "multi"
+                        }
+                    }
+                }
+            }
+        },
         "Session": {
             "type": "object",
             "required": [ "meta", "response" ],

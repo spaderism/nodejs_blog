@@ -88,7 +88,7 @@ class Validation {
 		};
 
 		const schema = Joi.object().keys({
-			category: appConfig.category,
+			category: appConfig.board.category,
 			title: Joi.string().max(65).required(),
 			masterKey: appConfig.masterKey,
 			content: Joi.string().required()

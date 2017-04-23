@@ -35,8 +35,6 @@ const mysqlConnect = () => {
             waitForConnections: appConfig.database.mysql.waitForConnections
         })
     };
-
-    createMysqlModel();
 };
 
 // mongo 데이터베이스에 연결하고 응답 객체의 속성으로 db 객체 추가
@@ -55,11 +53,6 @@ const mongodbConnect = () => {
             createMongoSchema();
         })
         .on('disconnected', mongodbConnect);
-};
-
-// appConfig mysql에 정의된 스키마 및 모델 객체 생성
-const createMysqlModel = () => {
-
 };
 
 // appConfig mongodb에 정의된 스키마 및 모델 객체 생성

@@ -12,7 +12,7 @@ const async = require('async');
 const boardPOST = (req, res, next) => {
 	logger.debug('boardPOST 호출됨');
 
-	const retRes = {};
+	const retData = {};
 
 	const connectionPool = req.app.get('database').mysql.connectionPool;
 	connectionPool.getConnection((err, connection) => {
@@ -49,7 +49,7 @@ const boardPOST = (req, res, next) => {
 				boardDao.insert(connection, board, (err, result) => {
 					if (err) return callback(err);
 
-					retRes.board = board;
+					retData.board = board;
 
 					logger.debug(`board insert 성공, insertId: ${result.insertId}`);
 					callback(null, result.insertId);
@@ -86,8 +86,8 @@ const boardPOST = (req, res, next) => {
 								return iterateeCallback(err);
 							}
 
-							if (!retRes.fileattach) retRes.fileattach = [];
-							retRes.fileattach.push(fileattach);
+							if (!retData.fileattach) retData.fileattach = [];
+							retData.fileattach.push(fileattach);
 
 							iterateeCallback();
 						});
@@ -121,7 +121,7 @@ const boardPOST = (req, res, next) => {
 				const meta = {};
 				meta.code = constant.statusCodes.SUCCESS;
 				meta.message = constant.statusMessages[meta.code];
-				endpoint(req, res, { meta: meta, response: retRes });
+				endpoint(req, res, { meta: meta, response: retData });
 			});
 		});
 	};
